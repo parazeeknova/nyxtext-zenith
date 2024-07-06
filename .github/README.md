@@ -36,18 +36,17 @@
 
 <div align="center">
 
-![Python](https://img.shields.io/badge/Python-Programming%20Language-3776AB?style=for-the-badge&logo=python&logoColor=ffffff) 
-![PySide6](https://img.shields.io/badge/PySide6-GUI%20Framework-5C2D91?style=for-the-badge&logo=qt&logoColor=ffffff) 
-![QScintilla](https://img.shields.io/badge/QScintilla-Text%20Editor%20Component-48B9C7?style=for-the-badge)
+![Python](https://img.shields.io/badge/Python-Programming%20Language-8aadf4?style=for-the-badge&logo=python&logoColor=D9E0EE&labelColor=302D41) 
+![PySide6](https://img.shields.io/badge/PySide6-GUI%20Framework-a6da95?style=for-the-badge&logo=qt&logoColor=D9E0EE&labelColor=302D41) 
+![QScintilla](https://img.shields.io/badge/QScintilla-Text%20Editor%20Component-8bd5ca?style=for-the-badge&logoColor=D9E0EE&labelColor=302D41)
 
 </div>
 
 &nbsp;
 
-<a align="center">
+<p align="center">
 <strong>Nyxtext-zenith</strong> represents the next leap forward in text editing, building upon the foundation laid by its predecessor, <strong>Nyxtext</strong>. Reborn with PySide6 and QScintilla. As the successor to <strong>Nyxtext</strong>, the core mission of providing a comprehensive text editor for developers, students, and creatives. Nyxtext-zenith aims to surpass its forerunner by offering an even more robust, intelligent, and versatile text editing experience. It continues the nyxtext legacy of eliminating the need for multiple text-related applications, now with greater efficiency and an expanded feature set.
-
-</a>
+</p>
 
 <p align="center">
   <a href="https://github.com/parazeeknova/nyxtext">
