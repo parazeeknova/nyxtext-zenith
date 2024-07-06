@@ -158,14 +158,14 @@ Because Nyxtext Zenith is better.
 > [!NOTE]
 > Thank you for considering contributing to Nyxtext Zenith! We welcome contributions from everyone, whether you're fixing a bug, adding a feature, or improving documentation.
 
-See [CONTRIBUTING.md](docs/CONTRIBUTING.md)
+See [CONTRIBUTING.md](https://github.com/parazeeknova/nyxtext-zenith/blob/main/.github/CONTRIBUTING.md)
 
 &nbsp;
 
 ### 📜 License
 
 NyxText Zenith is released under the MIT license:
-For more convoluted language, see the [LICENSE](https://github.com/parazeeknova/nyxtext-zenith/LICENSE).
+For more convoluted language, see the [LICENSE](https://github.com/parazeeknova/nyxtext-zenith/blob/main/LICENSE).
 
 &nbsp;
 
@@ -177,5 +177,5 @@ For more convoluted language, see the [LICENSE](https://github.com/parazeeknova/
 ![Love](http://ForTheBadge.com/images/badges/built-with-love.svg)
 </div>
 <p align="center">Copyright &copy; 2024-present <a href="https://github.com/parazeeknova/nyxtext-zenith" target="_blank">NyxText Zenith</a>
-<p align="center"><a href="https://github.com/parazeeknova/nyxtext-zenith/LICENSE"><img src="https://img.shields.io/static/v1.svg?style=for-the-badge&label=License&message=MIT&logoColor=d9e0ee&colorA=302d41&colorB=b7bdf8"/></a></p>
+<p align="center"><a href="https://github.com/parazeeknova/nyxtext-zenith/blob/main/LICENSE"><img src="https://img.shields.io/static/v1.svg?style=for-the-badge&label=License&message=MIT&logoColor=d9e0ee&colorA=302d41&colorB=b7bdf8"/></a></p>
 
