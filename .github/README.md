@@ -6,15 +6,15 @@
 </h3>
 
 <h6 align="center">
-  <a href="https://github.com/parazeeknova/nyxtext#note-">Info</a>
+  <a href="https://github.com/parazeeknova/nyxtext-zenith#note-">Info</a>
   ·
-  <a href="https://github.com//parazeeknova/nyxtext#-installing-nyxtext">Install</a>
+  <a href="https://github.com//parazeeknova/nyxtext-zenith#-installing-nyxtext">Install</a>
   ·
-  <a href="https://github.com//parazeeknova/nyxtext#-early-editor-screenshots">Showcase</a>
+  <a href="https://github.com//parazeeknova/nyxtext-zenith#-early-editor-screenshots">Showcase</a>
   ·
-  <a href="https://github.com/parazeeknova/nyxtext#-contributing">Contribution</a>
+  <a href="https://github.com/parazeeknova/nyxtext-zenith#-contributing">Contribution</a>
   ·
-  <a href="https://github.com/parazeeknova/nyxtext#-support">Support</a>
+  <a href="https://github.com/parazeeknova/nyxtext-zenith#-support">Support</a>
 
 </h6>
 
@@ -158,7 +158,7 @@ Because Nyxtext Zenith is better.
 > [!NOTE]
 > Thank you for considering contributing to Nyxtext Zenith! We welcome contributions from everyone, whether you're fixing a bug, adding a feature, or improving documentation.
 
-See [CONTRIBUTING.md](.github/docs/CONTRIBUTING.md)
+See [CONTRIBUTING.md](docs/CONTRIBUTING.md)
 
 &nbsp;
 
