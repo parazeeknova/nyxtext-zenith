@@ -30,13 +30,13 @@ jobs:
           pip install nuitka
 
       - name: Build Standalone EXE
-        run: python -m nuitka --standalone --include-data-dir=zenith/media=zenith/media --enable-plugin=pyside6 --windows-console-mode=disable --windows-icon-from-ico=zenith/media/icon.ico Nyxtext.py
+        run: echo Yes | python -m nuitka --standalone --include-data-dir=zenith/media=zenith/media --enable-plugin=pyside6 --windows-console-mode=disable --windows-icon-from-ico=zenith/media/icon.ico Nyxtext.py
 
       - name: Zip Standalone Version
         run: Compress-Archive -Path zenith_core.dist\* -DestinationPath Zenith_Standalone.zip
 
       - name: Build One-File EXE
-        run: python -m nuitka --onefile --include-data-dir=zenith/media=zenith/media --enable-plugin=pyside6 --windows-console-mode=disable --windows-icon-from-ico=zenith/media/icon.ico Nyxtext.py
+        run: echo Yes | python -m nuitka --onefile --include-data-dir=zenith/media=zenith/media --enable-plugin=pyside6 --windows-console-mode=disable --windows-icon-from-ico=zenith/media/icon.ico Nyxtext.py
 
       - name: Zip One-File Version
         run: Compress-Archive -Path zenith_core.exe -DestinationPath Zenith_OneFile.zip
