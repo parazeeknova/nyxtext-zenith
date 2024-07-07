@@ -31,7 +31,7 @@
 		<img alt="Issues" src="https://img.shields.io/github/issues/parazeeknova/nyxtext-zenith?style=for-the-badge&logo=gitbook&color=B5E8E0&logoColor=D9E0EE&labelColor=302D41"></a>
     <a href="https://github.com/parazeeknova/nyxtext-zenith/releases">
     <img alt="Maintained" src="https://img.shields.io/badge/Maintained%3F-yes-green.svg?style=for-the-badge&logo=github&color=F2CDCD&logoColor=D9E0EE&labelColor=302D41"/></a>
-		<!-- <img alt="Releases" src="https://img.shields.io/github/release/parazeeknova/nyxtext-zenith.svg?style=for-the-badge&logo=github&color=F2CDCD&logoColor=D9E0EE&labelColor=302D41"/>--></a>
+		<img alt="Releases" src="https://img.shields.io/github/release/parazeeknova/nyxtext-zenith.svg?style=for-the-badge&logo=github&color=F2CDCD&logoColor=D9E0EE&labelColor=302D41"/></a>
 </p>
 
 <div align="center">
