@@ -32,10 +32,10 @@ Then install Python and [git](https://git-scm.com/), and run these commands:
     python3 -m venv env
     source env/bin/activate
     pip install -r requirements.txt
-    python3 -m editor/scripts/main.py
+    python -m zenith
 ```
 
-This should run Nyxtext Zenith. If you change some of Nyxtext Zenith's code in the `nyxtext` directory and you run `python3 -m editor/scripts/main.py` again, your changes should be visible right away.
+This should run Nyxtext Zenith. If you change some of Nyxtext Zenith's code in the `zenith` directory and you run `python -m zenith` again, your changes should be visible right away.
 
 Windows-specific notes:
 - You need to use `py` instead of `python3` when creating the venv, and `env\Scripts\activate` instead of `source env/bin/activate` to activate it.

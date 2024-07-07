@@ -84,8 +84,98 @@
 
 ---
 
+> [!IMPORTANT]
+> Because the application is not signed by Microsoft, Windows Defender blocks it; add an exclusion in Defender to run the application. Its a false positive, the application is safe to use. or build it yourself from the source code.
+
 > [!NOTE] 
 > Nyxtext & Nyxtext zenith is a work in progress. We appreciate any contributions, understanding that the project may have bugs, instability, and limited features during the time of active development. Please check back or join our Discord server to see our progress! 
+
+### ✨ Installing Nyxtext
+
+> [!TIP]
+> Use Nerd Font to avoid any broken symbols : [JetbrainsMono Nerd Font](https://www.nerdfonts.com/font-downloads) 
+
+<details>
+<summary>Windows</summary>
+
+There are multiple ways to run NyxText on Windows. Here are some common methods:
+
+**There are two versions (Standalone & OneFile) for steps 1 & 2**
+1. Using the standalone executable (recommended for users):
+    - Download the latest stable release from the [Releases](https://github.com/parazeeknova/nyxtext-zenith/releases)
+    - Extract the downloaded ZIP file
+    - Add an exclusion in Windows Defender to run the application
+    - Run the `Nyxtext.exe` file
+
+2. Using development release (recommended for testers):
+    - Download the latest development release from the [Action Build](https://github.com/parazeeknova/nyxtext-zenith/actions)
+    - Extract the downloaded ZIP file
+    - Add an exclusion in Windows Defender to run the application
+    - Run the `Nyxtext.exe` file
+ 
+3. Using development environment (recommended for developers):
+    - Open a terminal and run the following commands:
+      ```bash
+      git clone --depth 1 https://github.com/parazeeknova/nyxtext-zenith.git
+      cd nyxtext-zenith
+      python -m venv .venv
+      .venv\Scripts\activate
+      pip install -r requirements.txt
+      python -m zenith 
+      OR run Nyxtext.py in the root directory
+      ```
+
+</details>
+
+<details>
+
+<summary>Debian-based Linux distributions (e.g. Ubuntu, Mint)</summary>
+
+Didn't test it on Linux yet, but it should work. Currently only running from source code is supported.
+**Open a terminal and run these commands:**
+
+```bash
+sudo apt update
+sudo apt install python3 python3-pip python3-venv
+git clone --depth 1 https://github.com/parazeeknova/nyxtext-zenith.git
+cd nyxtext-zenith
+python3 -m venv nyxtext
+source nyxtext/bin/activate
+pip install -r requirements.txt
+python -m zenith 
+OR run Nyxtext.py in the root directory
+```
+Let me know if it works.
+
+</details>
+
+<details>
+<summary>Arch Linux</summary>
+
+Didn't test it on Arch Linux yet, but it should work. Currently only running from source code is supported.
+**To install NyxText on Arch Linux, you can follow these steps:**
+
+```bash
+sudo pacman -Sy python
+git clone --depth 1 https://github.com/parazeeknova/nyxtext-zenith.git
+cd nyxtext-zenith
+python -m venv nyxtext
+source nyxtext/bin/activate
+pip install -r requirements.txt
+python -m zenith 
+OR run Nyxtext.py in the root directory
+```
+Let me know if it works.
+
+</details>
+
+<details>
+<summary>MacOS</summary>
+
+I don't have a Mac. If you have a Mac, you can help me a lot by installing
+Nyxtext and letting me know how well it works.
+
+</details>
 
 ### 🧠 Design Philosophy
 

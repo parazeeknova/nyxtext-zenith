@@ -1,4 +1,4 @@
-from PySide6.QtCore import QSize, Qt
+from PySide6.QtCore import QPoint, QSize, Qt
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QHBoxLayout, QLabel, QPushButton, QWidget
 
@@ -59,6 +59,8 @@ class CustomTitleBar(QWidget):
         )
 
         self.setLayout(self.layout)
+        self.isDragging = False
+        self.dragPosition = QPoint()
 
     def toggleMaximize(self):
         if self.parent().isMaximized():
@@ -68,3 +70,16 @@ class CustomTitleBar(QWidget):
 
     def mouseDoubleClickEvent(self, event):
         self.toggleMaximize()
+
+    def mousePressEvent(self, event):
+        if event.button() == Qt.LeftButton:
+            self.isDragging = True
+            self.dragPosition = event.globalPosition().toPoint() - self.parent().pos()
+
+    def mouseMoveEvent(self, event):
+        if event.buttons() == Qt.LeftButton and self.isDragging:
+            self.parent().move(event.globalPosition().toPoint() - self.dragPosition)
+
+    def mouseReleaseEvent(self, event):
+        if event.button() == Qt.LeftButton:
+            self.isDragging = False
