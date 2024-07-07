@@ -29,23 +29,11 @@ jobs:
           pip install -r requirements.txt
           pip install nuitka
 
-      - name: Build Standalone EXE
-        run: echo Yes | python -m nuitka --standalone --include-data-dir=zenith/media=zenith/media --enable-plugin=pyside6 --windows-console-mode=disable --windows-icon-from-ico=zenith/media/icon.ico Nyxtext.py
-
-      - name: Zip Standalone Version
-        run: Compress-Archive -Path zenith_core.dist\* -DestinationPath Zenith_Standalone.zip
-
       - name: Build One-File EXE
         run: echo Yes | python -m nuitka --onefile --include-data-dir=zenith/media=zenith/media --enable-plugin=pyside6 --windows-console-mode=disable --windows-icon-from-ico=zenith/media/icon.ico Nyxtext.py
 
       - name: Zip One-File Version
-        run: Compress-Archive -Path zenith_core.exe -DestinationPath Zenith_OneFile.zip
-
-      - name: Upload Standalone ZIP as Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: Zenith-Standalone
-          path: Zenith_Standalone.zip
+        run: Compress-Archive -Path Nyxtext.exe -DestinationPath Zenith_OneFile.zip
 
       - name: Upload One-File ZIP as Artifact
         uses: actions/upload-artifact@v4
