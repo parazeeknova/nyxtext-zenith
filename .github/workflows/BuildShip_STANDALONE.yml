@@ -30,10 +30,12 @@ jobs:
           pip install nuitka
 
       - name: Build Standalone EXE
-        run: echo Yes | python -m nuitka --standalone --include-data-dir=zenith/media=zenith/media --enable-plugin=pyside6 --windows-console-mode=disable --windows-icon-from-ico=zenith/media/icon.ico Nyxtext.py
+        run: echo Yes | python -m nuitka --standalone --include-data-dir=zenith/media=zenith/media --include-data-files=zenith/shortcuts.json=zenith/shortcuts.json --enable-plugin=pyside6 --windows-console-mode=disable --windows-icon-from-ico=zenith/media/icon.ico Nyxtext.py
 
       - name: Zip Standalone Version
-        run: Compress-Archive -Path Nyxtext.dist\* -DestinationPath Zenith_Standalone.zip
+        run: | 
+          Remove-Item -Path Zenith_Standalone.zip -ErrorAction Ignore
+          Compress-Archive -Path Nyxtext.dist\* -DestinationPath Zenith_Standalone.zip -Force -Update
 
       - name: Upload Standalone ZIP as Artifact
         uses: actions/upload-artifact@v4
