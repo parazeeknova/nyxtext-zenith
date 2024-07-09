@@ -58,16 +58,25 @@ class FileTreeWidget(QWidget):
                 color: #fff;
                 padding: 2px;
                 border-top-left-radius: 4px;
-                border-top-right-radius: 4px;
             }
         """
         )
 
-        self.hideButton = QPushButton("-")
+        self.hideButton = QPushButton("🗙")
+        self.hideButton.setStyleSheet(
+            """
+            background-color: #333;
+            color: #fff; border: none;
+            border-top-right-radius: 4px;
+            """
+        )
         self.hideButton.setFixedSize(20, 20)
         self.hideButton.clicked.connect(self.toggleFileTreeVisibility)
 
         self.floatButton = QPushButton("🗗")
+        self.floatButton.setStyleSheet(
+            "background-color: #333; color: #fff; border: none;"
+        )
         self.floatButton.setFixedSize(20, 20)
         self.floatButton.clicked.connect(self.makeFileTreeFloat)
 
