@@ -1,4 +1,5 @@
 {
   "new_tab": "Ctrl+T",
-  "close_tab": "Ctrl+W"
+  "close_tab": "Ctrl+W",
+  "toggle_file_tree": "Ctrl+F"
 }

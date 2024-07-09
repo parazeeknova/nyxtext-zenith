@@ -27,19 +27,25 @@ class Zenith(QMainWindow):
         self.setCentralWidget(centralWidget)
         layout = QVBoxLayout(centralWidget)
 
-        splitter = QSplitter(Qt.Horizontal)
-        layout.addWidget(splitter)
+        self.splitter = QSplitter(Qt.Horizontal)
+        layout.addWidget(self.splitter)
 
-        tabRow(self, splitter)  # Tab row or the top bar
+        tabRow(self, self.splitter)  # Tab row or the top bar
 
-        fileTree = FileTreeWidget()
-        splitter.addWidget(fileTree)
+        self.fileTree = FileTreeWidget()
+        self.splitter.addWidget(self.fileTree)
+
+        self.fileTree.visibilityChanged.connect(self.adjustSplitter)
+        self.fileTree.dockingChanged.connect(self.handleDockingChange)
 
         self.statusBar = ZenithStatusBar(self, self)  # Status bar or the bottom bar
         self.setStatusBar(self.statusBar)
 
         key_shortcuts(self)  # Keyboard shortcuts defined in shortcuts.json
-        splitter.setSizes([600, 150])  # Set the initial size of the splitter panes
+        self.splitter.setSizes([600, 150])  # Set the initial size of the splitter panes
+
+        self.setDockNestingEnabled(True)
+        self.setDockOptions(QMainWindow.AnimatedDocks | QMainWindow.AllowNestedDocks)
 
     def addNewTab(self, content=""):
         newTab = QTextEdit()
@@ -54,3 +60,15 @@ class Zenith(QMainWindow):
     def closeTab(self, index):
         if self.tabWidget.count() > 1:
             self.tabWidget.removeTab(index)
+
+    def adjustSplitter(self, isVisible):
+        if isVisible:
+            self.splitter.setSizes([600, 150])
+        else:
+            self.splitter.setSizes([750, 0])
+
+    def handleDockingChange(self, isDocked):
+        if isDocked:
+            self.splitter.setSizes([750, 0])
+        else:
+            self.splitter.setSizes([600, 150])

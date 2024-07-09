@@ -21,6 +21,13 @@ def key_shortcuts(main_window):
             lambda: main_window.closeTab(main_window.tabWidget.currentIndex())
         )
 
+        toggle_file_tree_shortcut = QShortcut(
+            QKeySequence(shortcuts["toggle_file_tree"]), main_window
+        )
+        toggle_file_tree_shortcut.activated.connect(
+            main_window.fileTree.toggleFileTreeVisibility
+        )
+
     except FileNotFoundError:
         QMessageBox.warning(
             main_window, "Error", f"Shortcuts file not found: {filepath}"
