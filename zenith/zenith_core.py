@@ -1,15 +1,9 @@
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QIcon
-from PySide6.QtWidgets import (
-    QMainWindow,
-    QSplitter,
-    QTabWidget,
-    QTextEdit,
-    QVBoxLayout,
-    QWidget,
-)
+from PySide6.QtWidgets import QMainWindow, QSplitter, QTextEdit, QVBoxLayout, QWidget
 
 from .components.rightSideBar import FileTreeWidget
+from .components.tabTopbar import tabRow
 from .framework.statusBar import ZenithStatusBar
 from .framework.titleBar import CustomTitleBar
 from .scripts.def_path import resource
@@ -36,12 +30,7 @@ class Zenith(QMainWindow):
         splitter = QSplitter(Qt.Horizontal)
         layout.addWidget(splitter)
 
-        self.tabWidget = QTabWidget()
-        self.tabWidget.setTabsClosable(True)
-        self.tabWidget.tabCloseRequested.connect(self.closeTab)
-        splitter.addWidget(self.tabWidget)
-
-        self.addNewTab()  # Add the initial tab
+        tabRow(self, splitter)  # Tab row or the top bar
 
         fileTree = FileTreeWidget()
         splitter.addWidget(fileTree)
@@ -54,6 +43,7 @@ class Zenith(QMainWindow):
 
     def addNewTab(self, content=""):
         newTab = QTextEdit()
+        newTab.setStyleSheet("QTextEdit {border: none;}")
         if isinstance(content, str):
             newTab.setText(content)
         else:

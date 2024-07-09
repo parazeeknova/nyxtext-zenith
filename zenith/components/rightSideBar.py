@@ -31,7 +31,6 @@ class FileTreeWidget(QWidget):
             QLabel {
                 background-color: #333;
                 color: #aaa; padding: 2px;
-                font-style: italic;
                 font-weight: bold;
                 margin-bottom: 4px;
                 border-bottom-left-radius: 4px;
