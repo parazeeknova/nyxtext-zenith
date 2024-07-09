@@ -32,9 +32,9 @@ class FileTreeWidget(QWidget):
                 background-color: #333;
                 color: #aaa; padding: 2px;
                 font-weight: bold;
-                margin-bottom: 4px;
-                border-bottom-left-radius: 4px;
-                border-bottom-right-radius: 4px;
+                margin-bottom: 0px;
+                border-bottom-left-radius: 0px;
+                border-bottom-right-radius: 0px;
                 padding: 2px;
             }
         """
@@ -49,9 +49,12 @@ class FileTreeWidget(QWidget):
                 background-color: #333;
                 color: #fff;
                 padding: 4px;
-                margin-top: 4px;
-                border-radius: 4px;
+                margin-top: 0px;
                 font-style: italic;
+                border-top-left-radius: 0px;
+                border-top-right-radius: 0px;
+                border-bottom-left-radius: 4px;
+                border-bottom-right-radius: 4px;
             }
         """
         )

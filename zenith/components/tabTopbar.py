@@ -14,7 +14,7 @@ def tabRow(self, splitter):
             }
             QTabBar::tab {
                 background: #333;
-                border-radius: 0px;
+                border-radius: 2px;
                 color: white;
                 margin-bottom: 2px;
                 padding: 4px;

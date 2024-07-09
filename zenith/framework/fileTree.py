@@ -16,3 +16,11 @@ class FileTree(QTreeView):
 
         for column in range(1, self.model.columnCount()):
             self.hideColumn(column)
+
+        self.setStyleSheet(
+            """
+            QTreeView {
+                border-radius: 0px;
+            }
+        """
+        )
