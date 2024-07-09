@@ -1,6 +1,6 @@
 import sys
 
-from PySide6.QtWidgets import QApplication
+from PyQt6.QtWidgets import QApplication
 
 from .zenith_core import Zenith
 

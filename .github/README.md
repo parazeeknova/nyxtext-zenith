@@ -177,6 +177,16 @@ Nyxtext and letting me know how well it works.
 
 </details>
 
+### ⌨️ Shortcut Keys
+
+| Shortcut Key | Description |
+| ------------ | ----------- |
+| `Ctrl + T` | New Tab |
+| `Ctrl + W` | Close Current Tab |
+| `Ctrl + F` | Show/hide FileTree |
+| `...` | More soon |
+
+
 ### 🧠 Design Philosophy
 
 - **Simplicity**: Keep the user interface clean and intuitive. Avoid cluttering the interface with unnecessary features or options. Focus on providing essential functionality in an easy-to-use manner.
