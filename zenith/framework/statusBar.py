@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QPushButton, QStatusBar
+from PyQt6.QtWidgets import QPushButton, QStatusBar
 
 
 class ZenithStatusBar(QStatusBar):

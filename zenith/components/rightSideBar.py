@@ -1,7 +1,7 @@
 import os
 
-from PySide6.QtCore import Signal
-from PySide6.QtWidgets import (
+from PyQt6.QtCore import pyqtSignal
+from PyQt6.QtWidgets import (
     QDockWidget,
     QHBoxLayout,
     QLabel,
@@ -37,8 +37,8 @@ class DockedFileTreeWidget(QWidget):
 
 
 class FileTreeWidget(QWidget):
-    visibilityChanged = Signal(bool)
-    dockingChanged = Signal(bool)
+    visibilityChanged = pyqtSignal(bool)
+    dockingChanged = pyqtSignal(bool)
 
     def __init__(self, parent=None):
         super().__init__(parent)

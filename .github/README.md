@@ -37,7 +37,7 @@
 <div align="center">
 
 ![Python](https://img.shields.io/badge/Python-Programming%20Language-8aadf4?style=for-the-badge&logo=python&logoColor=D9E0EE&labelColor=302D41) 
-![PySide6](https://img.shields.io/badge/PySide6-GUI%20Framework-a6da95?style=for-the-badge&logo=qt&logoColor=D9E0EE&labelColor=302D41) 
+![PyQt6](https://img.shields.io/badge/PyQt6-GUI%20Framework-a6da95?style=for-the-badge&logo=qt&logoColor=D9E0EE&labelColor=302D41) 
 ![QScintilla](https://img.shields.io/badge/QScintilla-Text%20Editor%20Component-8bd5ca?style=for-the-badge&logoColor=D9E0EE&labelColor=302D41)
 
 </div>
@@ -45,7 +45,7 @@
 &nbsp;
 
 <p align="center">
-<strong>Nyxtext-zenith</strong> represents the next leap forward in text editing, building upon the foundation laid by its predecessor, <strong>Nyxtext</strong>. Reborn with PySide6 and QScintilla. As the successor to <strong>Nyxtext</strong>, the core mission of providing a comprehensive text editor for developers, students, and creatives. Nyxtext-zenith aims to surpass its forerunner by offering an even more robust, intelligent, and versatile text editing experience. It continues the nyxtext legacy of eliminating the need for multiple text-related applications, now with greater efficiency and an expanded feature set.
+<strong>Nyxtext-zenith</strong> represents the next leap forward in text editing, building upon the foundation laid by its predecessor, <strong>Nyxtext</strong>. Reborn with PyQt6 and QScintilla. As the successor to <strong>Nyxtext</strong>, the core mission of providing a comprehensive text editor for developers, students, and creatives. Nyxtext-zenith aims to surpass its forerunner by offering an even more robust, intelligent, and versatile text editing experience. It continues the nyxtext legacy of eliminating the need for multiple text-related applications, now with greater efficiency and an expanded feature set.
 </p>
 
 <p align="center">
@@ -228,7 +228,7 @@ Not at the moment. We are writing the very first version in `Neovim`, but will u
 5. **Aesthetic Appeal:** The combination of `Nyx` and `Zenith` creates a harmonious and visually appealing name. The juxtaposition of the ancient and the modern, the night and the peak, adds depth and intrigue to the editor's identity.
 
 ### What is the difference between NyxText and NyxText Zenith?
-NyxtText Zenith is a complete rewrite of NyxText, using PySide6 and QScintilla. It aims to provide a more robust, intelligent, and versatile text editing experience. NyxText Zenith builds upon the foundation laid by its predecessor, NyxText, with an expanded feature set and improved performance.
+NyxtText Zenith is a complete rewrite of NyxText, using PyQt6 and QScintilla. It aims to provide a more robust, intelligent, and versatile text editing experience. NyxText Zenith builds upon the foundation laid by its predecessor, NyxText, with an expanded feature set and improved performance.
 
 ### I want an editor that does X, but X is not in the feature list above. Does NyxText do X?
 You can run NyxText and find out,

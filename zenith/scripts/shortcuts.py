@@ -1,7 +1,7 @@
 import json
 
-from PySide6.QtGui import QKeySequence, QShortcut
-from PySide6.QtWidgets import QMessageBox
+from PyQt6.QtGui import QKeySequence, QShortcut
+from PyQt6.QtWidgets import QMessageBox
 
 
 def key_shortcuts(main_window):

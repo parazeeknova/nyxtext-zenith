@@ -1,14 +1,17 @@
 import os
 
-from PySide6.QtCore import QDir
-from PySide6.QtWidgets import QFileSystemModel, QTreeView
+from PyQt6.QtCore import QDir
+from PyQt6.QtGui import QFileSystemModel
+from PyQt6.QtWidgets import QTreeView
 
 
 class FileTree(QTreeView):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.model = QFileSystemModel()
-        self.model.setFilter(QDir.Files | QDir.Dirs | QDir.NoDotAndDotDot)
+        self.model.setFilter(
+            QDir.Filter.Files | QDir.Filter.Dirs | QDir.Filter.NoDotAndDotDot
+        )
         self.model.setRootPath(os.getcwd())
         self.setModel(self.model)
         self.setRootIndex(self.model.index(os.getcwd()))

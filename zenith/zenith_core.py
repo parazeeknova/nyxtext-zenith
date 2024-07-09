@@ -1,6 +1,7 @@
-from PySide6.QtCore import Qt
-from PySide6.QtGui import QIcon
-from PySide6.QtWidgets import QMainWindow, QSplitter, QTextEdit, QVBoxLayout, QWidget
+from PyQt6.Qsci import QsciLexerPython, QsciScintilla
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QIcon
+from PyQt6.QtWidgets import QMainWindow, QSplitter, QVBoxLayout, QWidget
 
 from .components.rightSideBar import FileTreeWidget
 from .components.tabTopbar import tabRow
@@ -14,7 +15,7 @@ class Zenith(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        self.setWindowFlag(Qt.FramelessWindowHint)
+        self.setWindowFlag(Qt.WindowType.FramelessWindowHint)
         self.setWindowTitle("Zenith")
         self.setGeometry(100, 100, 800, 600)
 
@@ -27,7 +28,7 @@ class Zenith(QMainWindow):
         self.setCentralWidget(centralWidget)
         layout = QVBoxLayout(centralWidget)
 
-        self.splitter = QSplitter(Qt.Horizontal)
+        self.splitter = QSplitter(Qt.Orientation.Horizontal)
         layout.addWidget(self.splitter)
 
         tabRow(self, self.splitter)  # Tab row or the top bar
@@ -45,15 +46,22 @@ class Zenith(QMainWindow):
         self.splitter.setSizes([600, 150])  # Set the initial size of the splitter panes
 
         self.setDockNestingEnabled(True)
-        self.setDockOptions(QMainWindow.AnimatedDocks | QMainWindow.AllowNestedDocks)
+        self.setDockOptions(
+            QMainWindow.DockOption.AnimatedDocks
+            | QMainWindow.DockOption.AllowNestedDocks
+        )
 
     def addNewTab(self, content=""):
-        newTab = QTextEdit()
-        newTab.setStyleSheet("QTextEdit {border: none;}")
+        newTab = QsciScintilla()
+        lexer = QsciLexerPython()
+        newTab.setLexer(lexer)
+        newTab.setUtf8(True)  # Use UTF-8 encoding
+
         if isinstance(content, str):
             newTab.setText(content)
         else:
             newTab.setText("")
+
         tabIndex = self.tabWidget.addTab(newTab, "Document")
         self.tabWidget.setCurrentIndex(tabIndex)
 

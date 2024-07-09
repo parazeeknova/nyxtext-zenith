@@ -1,6 +1,6 @@
-from PySide6.QtCore import QPoint, QSize, Qt
-from PySide6.QtGui import QIcon
-from PySide6.QtWidgets import QHBoxLayout, QLabel, QPushButton, QWidget
+from PyQt6.QtCore import QPoint, QSize, Qt
+from PyQt6.QtGui import QIcon
+from PyQt6.QtWidgets import QHBoxLayout, QLabel, QPushButton, QWidget
 
 from ..scripts.def_path import resource
 from .intMenuBar import menu_bar
@@ -20,13 +20,13 @@ class CustomTitleBar(QWidget):
         self.iconLabel = QLabel(self)
         self.iconLabel.setPixmap(QIcon(titleIcon).pixmap(15, 15))
         self.iconLabel.setStyleSheet("padding-left: 5px;")
-        self.layout.addWidget(self.iconLabel, 0, Qt.AlignLeft)
+        self.layout.addWidget(self.iconLabel, 0, Qt.AlignmentFlag.AlignLeft)
 
         self.menuBar = menu_bar(self)
         self.layout.addWidget(self.menuBar, 0)
 
         self.titleLabel = QLabel("Nyxtext Zenith", self)
-        self.layout.addWidget(self.titleLabel, 1, Qt.AlignCenter)
+        self.layout.addWidget(self.titleLabel, 1, Qt.AlignmentFlag.AlignCenter)
         self.titleLabel.setStyleSheet(
             "color: #cad3f5; font-style: italic; font-size: 12px;"
         )
@@ -72,14 +72,14 @@ class CustomTitleBar(QWidget):
         self.toggleMaximize()
 
     def mousePressEvent(self, event):
-        if event.button() == Qt.LeftButton:
+        if event.button() == Qt.MouseButton.LeftButton:
             self.isDragging = True
             self.dragPosition = event.globalPosition().toPoint() - self.parent().pos()
 
     def mouseMoveEvent(self, event):
-        if event.buttons() == Qt.LeftButton and self.isDragging:
+        if event.buttons() == Qt.MouseButton.LeftButton and self.isDragging:
             self.parent().move(event.globalPosition().toPoint() - self.dragPosition)
 
     def mouseReleaseEvent(self, event):
-        if event.button() == Qt.LeftButton:
+        if event.button() == Qt.MouseButton.LeftButton:
             self.isDragging = False

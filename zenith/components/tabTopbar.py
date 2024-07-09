@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QTabWidget
+from PyQt6.QtWidgets import QTabWidget
 
 
 def tabRow(self, splitter):

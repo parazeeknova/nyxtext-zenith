@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QMenuBar
+from PyQt6.QtWidgets import QMenuBar
 
 
 def menu_bar(parent):
