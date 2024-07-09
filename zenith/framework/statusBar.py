@@ -1,6 +1,4 @@
-import os
-
-from PySide6.QtWidgets import QLabel, QPushButton, QStatusBar
+from PySide6.QtWidgets import QPushButton, QStatusBar
 
 
 class ZenithStatusBar(QStatusBar):
@@ -39,11 +37,3 @@ class ZenithStatusBar(QStatusBar):
           }
           """
         )
-        self.statusMessageLabel = QLabel()
-        self.addWidget(self.statusMessageLabel, 1)
-
-        currentDir = os.getcwd()
-        self.updateStatusBarWithMessage(f"Current directory: {currentDir}")
-
-    def updateStatusBarWithMessage(self, message):
-        self.statusMessageLabel.setText(message)

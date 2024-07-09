@@ -5,10 +5,10 @@ from PySide6.QtWidgets import QHBoxLayout, QLabel, QPushButton, QWidget
 from ..scripts.def_path import resource
 from .intMenuBar import menu_bar
 
-titleIcon = resource("..\\media\\icon.ico")
-minimiseIcon = resource("..\\media\\titlebar\\minimise.svg")
-maximiseIcon = resource("..\\media\\titlebar\\maximise.svg")
-closeIcon = resource("..\\media\\titlebar\\close.svg")
+titleIcon = resource(r"../media/icon.ico")
+minimiseIcon = resource(r"../media/titlebar/minimise.svg")
+maximiseIcon = resource(r"../media/titlebar/maximise.svg")
+closeIcon = resource(r"../media/titlebar/close.svg")
 
 
 class CustomTitleBar(QWidget):

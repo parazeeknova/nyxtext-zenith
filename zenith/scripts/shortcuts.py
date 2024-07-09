@@ -1,18 +1,33 @@
 import json
 
 from PySide6.QtGui import QKeySequence, QShortcut
+from PySide6.QtWidgets import QMessageBox
 
 
 def key_shortcuts(main_window):
+    filepath = r"zenith\shortcuts.json"
 
-    filepath = "zenith\\shortcuts.json"
-    with open(filepath, "r") as file:
-        shortcuts = json.load(file)
+    try:
+        with open(filepath, "r") as file:
+            shortcuts = json.load(file)
 
-    new_tab_shortcut = QShortcut(QKeySequence(shortcuts["new_tab"]), main_window)
-    new_tab_shortcut.activated.connect(main_window.addNewTab)
+        new_tab_shortcut = QShortcut(QKeySequence(shortcuts["new_tab"]), main_window)
+        new_tab_shortcut.activated.connect(main_window.addNewTab)
 
-    close_tab_shortcut = QShortcut(QKeySequence(shortcuts["close_tab"]), main_window)
-    close_tab_shortcut.activated.connect(
-        lambda: main_window.closeTab(main_window.tabWidget.currentIndex())
-    )
+        close_tab_shortcut = QShortcut(
+            QKeySequence(shortcuts["close_tab"]), main_window
+        )
+        close_tab_shortcut.activated.connect(
+            lambda: main_window.closeTab(main_window.tabWidget.currentIndex())
+        )
+
+    except FileNotFoundError:
+        QMessageBox.warning(
+            main_window, "Error", f"Shortcuts file not found: {filepath}"
+        )
+    except json.JSONDecodeError:
+        QMessageBox.warning(
+            main_window, "Error", "Invalid JSON format in shortcuts file."
+        )
+    except KeyError as e:
+        QMessageBox.warning(main_window, "Error", f"Missing key in shortcuts file: {e}")

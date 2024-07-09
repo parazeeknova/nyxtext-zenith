@@ -9,7 +9,7 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
-from .framework.fileTree import FileTree
+from .components.rightSideBar import FileTreeWidget
 from .framework.statusBar import ZenithStatusBar
 from .framework.titleBar import CustomTitleBar
 from .scripts.def_path import resource
@@ -24,9 +24,9 @@ class Zenith(QMainWindow):
         self.setWindowTitle("Zenith")
         self.setGeometry(100, 100, 800, 600)
 
-        self.setWindowIcon(QIcon(resource("..\\media\\icon.ico")))
+        self.setWindowIcon(QIcon(resource(r"../media/icon.ico")))
 
-        self.titleBar = CustomTitleBar(self)  # Title bar
+        self.titleBar = CustomTitleBar(self)  # Title bar or the top bar
         self.setMenuWidget(self.titleBar)
 
         centralWidget = QWidget(self)
@@ -43,14 +43,14 @@ class Zenith(QMainWindow):
 
         self.addNewTab()  # Add the initial tab
 
-        self.fileTree = FileTree(self)
-        splitter.addWidget(self.fileTree)
+        fileTree = FileTreeWidget()
+        splitter.addWidget(fileTree)
 
-        self.statusBar = ZenithStatusBar(self, self)
+        self.statusBar = ZenithStatusBar(self, self)  # Status bar or the bottom bar
         self.setStatusBar(self.statusBar)
 
-        key_shortcuts(self)
-        splitter.setSizes([600, 150])
+        key_shortcuts(self)  # Keyboard shortcuts defined in shortcuts.json
+        splitter.setSizes([600, 150])  # Set the initial size of the splitter panes
 
     def addNewTab(self, content=""):
         newTab = QTextEdit()
