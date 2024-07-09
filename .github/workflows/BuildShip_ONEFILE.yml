@@ -1,4 +1,4 @@
-name: Build and Zip EXE
+name: Build and Ship Zenith as One-File
 
 on:
   push:
