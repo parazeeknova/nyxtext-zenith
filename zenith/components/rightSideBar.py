@@ -14,9 +14,22 @@ from ..framework.fileTree import FileTree
 
 
 class DockedFileTreeWidget(QWidget):
-    def __init__(self, fileTree, currentDirLabel, fullPathLabel, parent=None):
+    def __init__(
+        self,
+        fileTree,
+        currentDirLabel,
+        fullPathLabel,
+        explorerLabel,
+        hideButton,
+        parent=None,
+    ):
         super().__init__(parent)
         layout = QVBoxLayout(self)
+        headerLayout = QHBoxLayout()
+        headerLayout.addWidget(explorerLabel)
+        headerLayout.addWidget(hideButton)
+        layout.addLayout(headerLayout)
+
         layout.addWidget(currentDirLabel)
         layout.addWidget(fileTree)
         layout.addWidget(fullPathLabel)
@@ -117,7 +130,12 @@ class FileTreeWidget(QWidget):
     def makeFileTreeFloat(self):
         if not hasattr(self, "floatingWidget") or not self.floatingWidget:
             dockedWidget = DockedFileTreeWidget(
-                self.fileTree, self.currentDirLabel, self.fullPathLabel, self
+                self.fileTree,
+                self.currentDirLabel,
+                self.fullPathLabel,
+                self.explorerLabel,
+                self.hideButton,
+                self,
             )
             self.floatingWidget = QDockWidget("File Tree", self)
             self.floatingWidget.setWidget(dockedWidget)
