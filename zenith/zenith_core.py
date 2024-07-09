@@ -1,5 +1,5 @@
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QIcon, QKeySequence, QShortcut
+from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import (
     QMainWindow,
     QSplitter,
@@ -13,6 +13,7 @@ from .framework.fileTree import FileTree
 from .framework.statusBar import ZenithStatusBar
 from .framework.titleBar import CustomTitleBar
 from .scripts.def_path import resource
+from .scripts.shortcuts import key_shortcuts
 
 
 class Zenith(QMainWindow):
@@ -41,8 +42,6 @@ class Zenith(QMainWindow):
         splitter.addWidget(self.tabWidget)
 
         self.addNewTab()  # Add the initial tab
-        newTabShortcut = QShortcut(QKeySequence("Ctrl+T"), self)
-        newTabShortcut.activated.connect(self.addNewTab)
 
         self.fileTree = FileTree(self)
         splitter.addWidget(self.fileTree)
@@ -50,6 +49,7 @@ class Zenith(QMainWindow):
         self.statusBar = ZenithStatusBar(self, self)
         self.setStatusBar(self.statusBar)
 
+        key_shortcuts(self)
         splitter.setSizes([600, 150])
 
     def addNewTab(self, content=""):
