@@ -1,7 +1,6 @@
-from PyQt6.Qsci import QsciLexerPython, QsciScintilla
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import QMainWindow, QSplitter, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import QMainWindow, QSplitter, QTextEdit, QVBoxLayout, QWidget
 
 from .components.rightSideBar import FileTreeWidget
 from .components.tabTopbar import tabRow
@@ -52,16 +51,12 @@ class Zenith(QMainWindow):
         )
 
     def addNewTab(self, content=""):
-        newTab = QsciScintilla()
-        lexer = QsciLexerPython()
-        newTab.setLexer(lexer)
-        newTab.setUtf8(True)  # Use UTF-8 encoding
-
+        newTab = QTextEdit()
+        newTab.setStyleSheet("QTextEdit {border: none;}")
         if isinstance(content, str):
             newTab.setText(content)
         else:
             newTab.setText("")
-
         tabIndex = self.tabWidget.addTab(newTab, "Document")
         self.tabWidget.setCurrentIndex(tabIndex)
 
