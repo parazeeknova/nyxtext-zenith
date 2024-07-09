@@ -35,7 +35,7 @@ jobs:
       - name: Zip One-File Version
         run: | 
           Remove-Item -Path Zenith_OneFile.zip -ErrorAction Ignore
-          Compress-Archive -Path Nyxtext.dist\* -DestinationPath Zenith_OneFile.zip -Force -Update
+          Compress-Archive -Path Nyxtext.dist\* -DestinationPath Zenith_OneFile.zip -Force
 
       - name: Upload One-File ZIP as Artifact
         uses: actions/upload-artifact@v4
