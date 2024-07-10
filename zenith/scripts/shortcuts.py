@@ -3,6 +3,8 @@ import json
 from PyQt6.QtGui import QKeySequence, QShortcut
 from PyQt6.QtWidgets import QMessageBox
 
+from ..components.codeSpace import Codespace
+
 
 def key_shortcuts(main_window):
     filepath = r"zenith\shortcuts.json"
@@ -27,6 +29,16 @@ def key_shortcuts(main_window):
         toggle_file_tree_shortcut.activated.connect(
             main_window.fileTree.toggleFileTreeVisibility
         )
+
+        codespace_shortcut = QShortcut(
+            QKeySequence(shortcuts["codespace"]), main_window
+        )
+        codespace_shortcut.activated.connect(lambda: Codespace(main_window.tabWidget))
+
+        remove_codespace_shortcut = QShortcut(
+            QKeySequence(shortcuts["remove_codespace"]), main_window
+        )
+        remove_codespace_shortcut.activated.connect(main_window.removeCurrentCodespace)
 
     except FileNotFoundError:
         QMessageBox.warning(

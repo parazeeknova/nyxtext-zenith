@@ -1,9 +1,11 @@
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import QMainWindow, QSplitter, QTextEdit, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import QMainWindow, QSplitter, QVBoxLayout, QWidget
 
+from .components.codeSpace import Codespace
 from .components.rightSideBar import FileTreeWidget
 from .components.tabTopbar import tabRow
+from .components.workSpace import Workspace
 from .framework.statusBar import ZenithStatusBar
 from .framework.titleBar import CustomTitleBar
 from .scripts.def_path import resource
@@ -13,6 +15,8 @@ from .scripts.shortcuts import key_shortcuts
 class Zenith(QMainWindow):
     def __init__(self):
         super().__init__()
+
+        self.tabCounter = 0
 
         self.setWindowFlag(Qt.WindowType.FramelessWindowHint)
         self.setWindowTitle("Zenith")
@@ -50,19 +54,20 @@ class Zenith(QMainWindow):
             | QMainWindow.DockOption.AllowNestedDocks
         )
 
-    def addNewTab(self, content=""):
-        newTab = QTextEdit()
-        newTab.setStyleSheet("QTextEdit {border: none;}")
-        if isinstance(content, str):
-            newTab.setText(content)
-        else:
-            newTab.setText("")
-        tabIndex = self.tabWidget.addTab(newTab, "Document")
-        self.tabWidget.setCurrentIndex(tabIndex)
+        Codespace(self.tabWidget)
+        Workspace(self)
+
+    def addNewTab(self):
+        Workspace(self)
 
     def closeTab(self, index):
         if self.tabWidget.count() > 1:
             self.tabWidget.removeTab(index)
+
+    def removeCurrentCodespace(self):
+        currentIndex = self.tabWidget.currentIndex()
+        if currentIndex != -1:
+            self.tabWidget.removeTab(currentIndex)
 
     def adjustSplitter(self, isVisible):
         if isVisible:

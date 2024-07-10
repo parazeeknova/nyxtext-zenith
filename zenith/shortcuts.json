@@ -1,5 +1,7 @@
 {
   "new_tab": "Ctrl+T",
   "close_tab": "Ctrl+W",
-  "toggle_file_tree": "Ctrl+F"
+  "toggle_file_tree": "Ctrl+F",
+  "codespace": "Ctrl+Shift+P",
+  "remove_codespace": "Ctrl+Shift+W"
 }
