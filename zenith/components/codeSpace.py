@@ -34,17 +34,16 @@ def Codespace(tabWidget):
         C.setUtf8(True)
         C.setCaretForegroundColor(QColor("#fff"))
 
-        # Set up margins
-        # Margin 0: Line numbers
-        C.setMarginType(0, QsciScintilla.MarginType.NumberMargin)
-        C.setMarginWidth(0, 40)
+        # Margin 0: Symbol margin
+        C.setMarginType(0, QsciScintilla.MarginType.SymbolMargin)
+        C.setMarginWidth(0, 5)
+        C.setMarginMarkerMask(1, 0b1111111111111111)
+
+        # Margin 1: Line numbers
+        C.setMarginType(1, QsciScintilla.MarginType.NumberMargin)
+        C.setMarginWidth(1, 30)
         C.setMarginsForegroundColor(QColor("#fff"))
         C.setMarginsBackgroundColor(QColor("#444"))
-
-        # Margin 1: Symbol margin
-        C.setMarginType(1, QsciScintilla.MarginType.SymbolMargin)
-        C.setMarginWidth(1, 20)
-        C.setMarginMarkerMask(1, 0b1111111111111111)
 
         # Margin 2: Folding margin
         C.setMarginType(2, QsciScintilla.MarginType.SymbolMargin)
@@ -67,7 +66,7 @@ def Codespace(tabWidget):
 
         # Folding settings
         C.setFolding(QsciScintilla.FoldStyle.PlainFoldStyle, 2)
-        C.setFoldMarginColors(QColor("#2E2E2E"), QColor("#2E2E2E"))
+        C.setFoldMarginColors(QColor("#444"), QColor("#444"))
 
         # Marker settings for folding
         C.markerDefine(
@@ -85,5 +84,19 @@ def Codespace(tabWidget):
 
         C.setIndentationGuidesBackgroundColor(QColor("#aaa"))
         C.setIndentationGuidesForegroundColor(QColor("#aaa"))
+
+        BREAKPOINT_MARKER_NUM = 8  # Arbitrary marker number for breakpoints
+        C.markerDefine(QsciScintilla.MarkerSymbol.Circle, BREAKPOINT_MARKER_NUM)
+        C.setMarkerBackgroundColor(QColor("#ed8796"), BREAKPOINT_MARKER_NUM)
+
+        def on_margin_clicked(nmargin, nline):
+            if nmargin == 1:
+                if C.markersAtLine(nline) & (1 << BREAKPOINT_MARKER_NUM):
+                    C.markerDelete(nline, BREAKPOINT_MARKER_NUM)
+                else:
+                    C.markerAdd(nline, BREAKPOINT_MARKER_NUM)
+
+        C.marginClicked.connect(on_margin_clicked)
+        C.setMarginSensitivity(1, True)
 
     return C
