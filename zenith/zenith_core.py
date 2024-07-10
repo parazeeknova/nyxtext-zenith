@@ -1,6 +1,8 @@
+import os
+
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import QMainWindow, QSplitter, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import QFileDialog, QMainWindow, QSplitter, QVBoxLayout, QWidget
 
 from .components.codeSpace import Codespace
 from .components.rightSideBar import FileTreeWidget
@@ -80,3 +82,20 @@ class Zenith(QMainWindow):
             self.splitter.setSizes([750, 0])
         else:
             self.splitter.setSizes([600, 150])
+
+    def openFile(self):
+        filePath, _ = QFileDialog.getOpenFileName(
+            self, "Open File", "", "All Files (*)"
+        )
+        if filePath:
+            fileName = os.path.basename(filePath)
+            if filePath.endswith(".txt"):
+                with open(filePath, "r") as file:
+                    content = file.read()
+                    Workspace(self, content)
+                    self.tabWidget.setTabText(self.tabWidget.currentIndex(), fileName)
+            else:
+                with open(filePath, "r") as file:
+                    content = file.read()
+                Codespace(self.tabWidget, content)
+                self.tabWidget.setTabText(self.tabWidget.currentIndex(), fileName)

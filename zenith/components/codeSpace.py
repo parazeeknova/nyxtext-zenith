@@ -21,10 +21,14 @@ class codeSpaceContextManager:
         pass  # Cleanup
 
 
-def Codespace(tabWidget):
+def Codespace(tabWidget, content=""):
     global codespace_counter
     codespace_counter += 1
     codespace = QsciScintilla()
+    if isinstance(content, str):
+        codespace.setText(content)
+    else:
+        codespace.setText("")
 
     with codeSpaceContextManager(codespace) as C:
         romanTitle = f"Codespace {toRoman(codespace_counter)}"

@@ -24,6 +24,11 @@
 
 &nbsp;
 
+> [!NOTE] 
+> Nyxtext zenith is a work in progress. We appreciate any contributions, understanding that the project may have bugs, instability, and limited features during the time of active development. We are working hard to make it better every day.
+
+&nbsp;
+
 <p align="center">
 	<a href="https://github.com/parazeeknova/nyxtext-zenith/stargazers">
 		<img alt="Stargazers" src="https://img.shields.io/github/stars/parazeeknova/nyxtext-zenith?style=for-the-badge&logo=starship&color=C9CBFF&logoColor=D9E0EE&labelColor=302D41"></a>
@@ -87,13 +92,7 @@
 > [!IMPORTANT]
 > Because the application is not signed by Microsoft, Windows Defender blocks it; add an exclusion in Defender to run the application. Its a false positive, the application is safe to use. or build it yourself from the source code.
 
-> [!NOTE] 
-> Nyxtext & Nyxtext zenith is a work in progress. We appreciate any contributions, understanding that the project may have bugs, instability, and limited features during the time of active development. Please check back or join our Discord server to see our progress! 
-
 ### ✨ Installing Nyxtext
-
-> [!TIP]
-> Use Nerd Font to avoid any broken symbols : [JetbrainsMono Nerd Font](https://www.nerdfonts.com/font-downloads) 
 
 <details>
 <summary>Windows</summary>
@@ -179,11 +178,17 @@ Nyxtext and letting me know how well it works.
 
 ### ⌨️ Shortcut Keys
 
+> [!TIP]
+> These are the default shortcut keys, you can change them from `shortcuts.json` in `zenith` folder.
+
 | Shortcut Key | Description |
 | ------------ | ----------- |
-| `Ctrl + T` | New Tab |
-| `Ctrl + W` | Close Current Tab |
+| `Ctrl + T` | Create a new Workspace Tab (for txt editing) |
+| `Ctrl + W` | Close Current Workspace Tab |
+| `Ctrl + Shift + P` | Create a new Codespace Tab (for code editing) |
+| `Ctrl + Shift + W` | Close Current Codespace Tab |
 | `Ctrl + F` | Show/hide FileTree |
+| `Ctrl + O` | Open File (automatically detects filetype and opens in Workspace os Codespace) | 
 | `...` | More soon |
 
 

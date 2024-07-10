@@ -1,8 +1,9 @@
+from PyQt6.QtGui import QAction
 from PyQt6.QtWidgets import QMenuBar
 
 
-def menu_bar(parent):
-    menuBar = QMenuBar(parent)
+def menu_bar(self):
+    menuBar = QMenuBar(self)
     fileMenu = menuBar.addMenu("File")
     editMenu = menuBar.addMenu("Edit")
     selectMenu = menuBar.addMenu("Select")
@@ -32,9 +33,12 @@ def menu_bar(parent):
             color: #cad3f5;
             font-size: 12px;
             font-weight: bold;
+            spacing: 0px;
         }
         QMenu::item {
             background-color: transparent;
+            padding: 2px 15px 2px 15px;
+            margin: 2px 5px 5px 5px;
         }
         QMenu::item:selected {
             background-color: #2d2d2d;
@@ -43,7 +47,12 @@ def menu_bar(parent):
     )
 
     fileMenu.addAction("New")
-    fileMenu.addAction("Open")
+
+    openAction = QAction("Open", self)
+    openAction.setShortcut("Ctrl+O")
+    openAction.triggered.connect(lambda: self.parent().openFile())
+    fileMenu.addAction(openAction)
+
     fileMenu.addAction("Save")
     editMenu.addAction("Undo")
     editMenu.addAction("Redo")
