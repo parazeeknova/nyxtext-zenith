@@ -88,24 +88,37 @@ class Zenith(QMainWindow):
         else:
             self.splitter.setSizes([600, 150])
 
+    def centralizedOpenFile(self, filePath):
+        for tabIndex, openFilePath in self.filePathDict.items():
+            if openFilePath == filePath:
+                self.tabWidget.setCurrentIndex(tabIndex)
+                return
+        self.actualOpenFile(filePath)
+
+    def actualOpenFile(self, filePath):
+        fileName = os.path.basename(filePath)
+        folderName = os.path.basename(os.path.dirname(filePath))
+        self.titleBar.updateTitle(folderName, fileName)
+        with open(filePath, "r") as file:
+            content = file.read()
+            if filePath.endswith(".txt"):
+                tabIndex = self.tabWidget.addTab(Workspace(self, content), fileName)
+            else:
+                tabIndex = self.tabWidget.addTab(
+                    Codespace(self.tabWidget, content), fileName
+                )
+            self.tabWidget.setTabText(tabIndex, fileName)
+            self.filePathDict[tabIndex] = filePath
+
     def openFile(self):
         filePath, _ = QFileDialog.getOpenFileName(
             self, "Open File", "", "All Files (*)"
         )
         if filePath:
-            fileName = os.path.basename(filePath)
-            folderName = os.path.basename(os.path.dirname(filePath))
-            self.titleBar.updateTitle(folderName, fileName)
-            with open(filePath, "r") as file:
-                content = file.read()
-                if filePath.endswith(".txt"):
-                    tabIndex = self.tabWidget.addTab(Workspace(self, content), fileName)
-                else:
-                    tabIndex = self.tabWidget.addTab(
-                        Codespace(self.tabWidget, content), fileName
-                    )
-                self.tabWidget.setTabText(tabIndex, fileName)
-                self.filePathDict[tabIndex] = filePath
+            self.centralizedOpenFile(filePath)
+
+    def openFileFromTree(self, filePath):
+        self.centralizedOpenFile(filePath)
 
     def onTabChange(self, index):
         filePath = self.retrieveFilePathForTab(index)
@@ -118,19 +131,3 @@ class Zenith(QMainWindow):
 
     def retrieveFilePathForTab(self, index):
         return self.filePathDict.get(index, None)
-
-    def openFileFromTree(self, filePath):
-        if os.path.isfile(filePath):
-            fileName = os.path.basename(filePath)
-            folderName = os.path.basename(os.path.dirname(filePath))
-            self.titleBar.updateTitle(folderName, fileName)
-            with open(filePath, "r") as file:
-                content = file.read()
-                if filePath.endswith(".txt"):
-                    tabIndex = self.tabWidget.addTab(Workspace(self, content), fileName)
-                else:
-                    tabIndex = self.tabWidget.addTab(
-                        Codespace(self.tabWidget, content), fileName
-                    )
-                self.tabWidget.setTabText(tabIndex, fileName)
-                self.filePathDict[tabIndex] = filePath
