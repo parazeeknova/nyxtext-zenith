@@ -46,6 +46,7 @@ class Zenith(QMainWindow):
         self.fileTree.dockingChanged.connect(self.handleDockingChange)
         self.tabWidget.currentChanged.connect(self.onTabChange)
         self.fileTree.fileTree.fileSelected.connect(self.openFileFromTree)
+        self.tabWidget.tabCloseRequested.connect(self.handleTabClose)
 
         self.statusBar = ZenithStatusBar(self, self)  # Status bar or the bottom bar
         self.setStatusBar(self.statusBar)
@@ -68,6 +69,15 @@ class Zenith(QMainWindow):
     def closeTab(self, index):
         if self.tabWidget.count() > 1:
             self.tabWidget.removeTab(index)
+            if index in self.filePathDict:
+                del self.filePathDict[index]
+            updatedFilePathDict = {}
+            for tabIndex, filePath in self.filePathDict.items():
+                if tabIndex > index:
+                    updatedFilePathDict[tabIndex - 1] = filePath
+                else:
+                    updatedFilePathDict[tabIndex] = filePath
+            self.filePathDict = updatedFilePathDict
         if self.tabWidget.count() == 0:
             self.titleBar.updateTitle(None)
 
@@ -97,7 +107,9 @@ class Zenith(QMainWindow):
         with open(filePath, "r") as file:
             content = file.read()
             if filePath.endswith(".txt"):
-                tabIndex = self.tabWidget.addTab(Workspace(self, content), fileName)
+                tabIndex = self.tabWidget.addTab(
+                    Workspace(self, content, fileName=fileName), fileName
+                )
             else:
                 tabIndex = self.tabWidget.addTab(
                     Codespace(self.tabWidget, content), fileName
@@ -144,3 +156,16 @@ class Zenith(QMainWindow):
     def closeAllTabs(self):
         for index in range(self.tabWidget.count() - 1, -1, -1):
             self.closeTab(index)
+
+    def handleTabClose(self, index):
+        if index in self.filePathDict:
+            del self.filePathDict[index]
+        self.tabWidget.removeTab(index)
+        newFilePathDict = {}
+        for tabIndex in range(self.tabWidget.count()):
+            widget = self.tabWidget.widget(tabIndex)
+            if hasattr(widget, "fileName"):
+                filePath = self.filePathDict.get(tabIndex)
+                if filePath:
+                    newFilePathDict[tabIndex] = filePath
+        self.filePathDict = newFilePathDict

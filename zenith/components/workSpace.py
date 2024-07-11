@@ -3,7 +3,7 @@ from PyQt6.QtWidgets import QTextEdit
 from ..scripts.roman import toRoman
 
 
-def Workspace(self, content=""):
+def Workspace(self, content="", fileName=None):
     self.tabCounter += 1
     newTab = QTextEdit()
     newTab.setStyleSheet("QTextEdit {border: none;}")
@@ -11,6 +11,7 @@ def Workspace(self, content=""):
         newTab.setText(content)
     else:
         newTab.setText("")
-    romanNumeral = toRoman(self.tabCounter)
-    tabIndex = self.tabWidget.addTab(newTab, f"Workspace {romanNumeral}")
+
+    tabTitle = fileName if fileName else f"Workspace {toRoman(self.tabCounter)}"
+    tabIndex = self.tabWidget.addTab(newTab, tabTitle)
     self.tabWidget.setCurrentIndex(tabIndex)

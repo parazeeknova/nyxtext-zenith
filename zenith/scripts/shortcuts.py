@@ -1,4 +1,4 @@
-from lupa import LuaError, LuaRuntime
+from lupa import LuaError, LuaRuntime  # type: ignore
 from PyQt6.QtGui import QKeySequence, QShortcut
 from PyQt6.QtWidgets import QMessageBox
 
