@@ -40,7 +40,7 @@ def Codespace(tabWidget, content=""):
 
         # Margin 0: Symbol margin
         C.setMarginType(0, QsciScintilla.MarginType.SymbolMargin)
-        C.setMarginWidth(0, 5)
+        C.setMarginWidth(0, 10)
         C.setMarginMarkerMask(1, 0b1111111111111111)
 
         # Margin 1: Line numbers
@@ -102,5 +102,17 @@ def Codespace(tabWidget, content=""):
 
         C.marginClicked.connect(on_margin_clicked)
         C.setMarginSensitivity(1, True)
+
+        UNSAVED_CHANGES_MARKER_NUM = 9  # Arbitrary marker number for unsaved changes
+        C.markerDefine(
+            QsciScintilla.MarkerSymbol.LeftRectangle, UNSAVED_CHANGES_MARKER_NUM
+        )
+        C.setMarkerBackgroundColor(QColor("#a6da95"), UNSAVED_CHANGES_MARKER_NUM)
+
+        def on_text_changed():
+            current_line, _ = C.getCursorPosition()
+            C.markerAdd(current_line, UNSAVED_CHANGES_MARKER_NUM)
+
+        C.textChanged.connect(on_text_changed)
 
     return C
