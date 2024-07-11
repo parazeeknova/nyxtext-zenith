@@ -27,7 +27,7 @@ class Zenith(QMainWindow):
 
         self.setWindowIcon(QIcon(resource(r"../media/icon.ico")))
 
-        self.titleBar = CustomTitleBar(self)  # Title bar or the top bar
+        self.titleBar = CustomTitleBar(self, self)  # Title bar or the top bar
         self.setMenuWidget(self.titleBar)
 
         centralWidget = QWidget(self)
@@ -70,11 +70,6 @@ class Zenith(QMainWindow):
             self.tabWidget.removeTab(index)
         if self.tabWidget.count() == 0:
             self.titleBar.updateTitle(None)
-
-    def removeCurrentCodespace(self):
-        currentIndex = self.tabWidget.currentIndex()
-        if currentIndex != -1:
-            self.tabWidget.removeTab(currentIndex)
 
     def adjustSplitter(self, isVisible):
         if isVisible:
@@ -145,3 +140,7 @@ class Zenith(QMainWindow):
             self.tabWidget.setCurrentIndex(currentIndex - 1)
         else:
             self.tabWidget.setCurrentIndex(self.tabWidget.count() - 1)
+
+    def closeAllTabs(self):
+        for index in range(self.tabWidget.count() - 1, -1, -1):
+            self.closeTab(index)

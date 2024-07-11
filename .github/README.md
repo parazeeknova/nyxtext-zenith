@@ -179,18 +179,19 @@ Nyxtext and letting me know how well it works.
 ### ⌨️ Shortcut Keys
 
 > [!TIP]
-> These are the default shortcut keys, you can change them from `shortcuts.json` in `zenith` folder.
+> These are the default shortcut keys, you can change them from `shortcuts.lua` in `zenith` folder.
 
 | Shortcut Key | Description |
 | ------------ | ----------- |
-| `Ctrl + T` | Create a new Workspace Tab (for txt editing) |
-| `Ctrl + W` | Close Current Workspace Tab |
-| `Ctrl + Shift + P` | Create a new Codespace Tab (for code editing) |
-| `Ctrl + Shift + W` | Close Current Codespace Tab |
-| `Ctrl + F` | Show/hide FileTree |
+| `Ctrl + N` | Create a new Workspace Tab (for txt editing) |
+| `Ctrl + Shift + N` | Create a new Codespace Tab (for code editing) |
 | `Ctrl + O` | Open File (automatically detects filetype and opens in Workspace os Codespace) | 
 | `Ctrl + Tab` | Switch Tab next |
 | `Ctrl + Shift + Tab` | Switch Tab previous |
+| `Ctrl + F` | Show/hide FileTree |
+| `Ctrl + W` | Close Tab |
+| `Ctrl + Shift + W` | Close All Tabs |
+| `Ctrl + Shift + Q` | Exit |
 | `...` | More soon |
 
 

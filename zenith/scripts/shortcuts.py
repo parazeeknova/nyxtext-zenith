@@ -1,27 +1,17 @@
-import json
-
+from lupa import LuaError, LuaRuntime
 from PyQt6.QtGui import QKeySequence, QShortcut
 from PyQt6.QtWidgets import QMessageBox
 
-from ..components.codeSpace import Codespace
+lua = LuaRuntime(unpack_returned_tuples=True)
 
 
 def key_shortcuts(main_window):
-    filepath = r"zenith\shortcuts.json"
+    filepath = r"zenith\shortcuts.lua"
 
     try:
         with open(filepath, "r") as file:
-            shortcuts = json.load(file)
-
-        new_tab_shortcut = QShortcut(QKeySequence(shortcuts["new_tab"]), main_window)
-        new_tab_shortcut.activated.connect(main_window.addNewTab)
-
-        close_tab_shortcut = QShortcut(
-            QKeySequence(shortcuts["close_tab"]), main_window
-        )
-        close_tab_shortcut.activated.connect(
-            lambda: main_window.closeTab(main_window.tabWidget.currentIndex())
-        )
+            lua_code = file.read()
+        shortcuts = lua.execute(lua_code)
 
         toggle_file_tree_shortcut = QShortcut(
             QKeySequence(shortcuts["toggle_file_tree"]), main_window
@@ -30,29 +20,17 @@ def key_shortcuts(main_window):
             main_window.fileTree.toggleFileTreeVisibility
         )
 
-        codespace_shortcut = QShortcut(
-            QKeySequence(shortcuts["codespace"]), main_window
-        )
-        codespace_shortcut.activated.connect(lambda: Codespace(main_window.tabWidget))
-
-        remove_codespace_shortcut = QShortcut(
-            QKeySequence(shortcuts["remove_codespace"]), main_window
-        )
-        remove_codespace_shortcut.activated.connect(main_window.removeCurrentCodespace)
-
         next_tab_shortcut = QShortcut(QKeySequence(shortcuts["next_tab"]), main_window)
         next_tab_shortcut.activated.connect(main_window.nextTab)
 
         prev_tab_shortcut = QShortcut(QKeySequence(shortcuts["prev_tab"]), main_window)
         prev_tab_shortcut.activated.connect(main_window.prevTab)
 
+    except LuaError as e:
+        QMessageBox.warning(main_window, "Error", f"Error executing Lua script: {e}")
     except FileNotFoundError:
         QMessageBox.warning(
             main_window, "Error", f"Shortcuts file not found: {filepath}"
         )
-    except json.JSONDecodeError:
-        QMessageBox.warning(
-            main_window, "Error", "Invalid JSON format in shortcuts file."
-        )
-    except KeyError as e:
-        QMessageBox.warning(main_window, "Error", f"Missing key in shortcuts file: {e}")
+    except Exception as e:
+        QMessageBox.warning(main_window, "Error", f"An unexpected error occurred: {e}")

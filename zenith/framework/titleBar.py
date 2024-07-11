@@ -12,8 +12,9 @@ closeIcon = resource(r"../media/titlebar/close.svg")
 
 
 class CustomTitleBar(QWidget):
-    def __init__(self, parent=None):
+    def __init__(self, zenithInstance=None, parent=None):
         super().__init__(parent)
+        self.zenithInstance = zenithInstance
         self.layout = QHBoxLayout()
         self.layout.setContentsMargins(0, 0, 0, 0)
 
@@ -22,7 +23,7 @@ class CustomTitleBar(QWidget):
         self.iconLabel.setStyleSheet("padding-left: 5px;")
         self.layout.addWidget(self.iconLabel, 0, Qt.AlignmentFlag.AlignLeft)
 
-        self.menuBar = menu_bar(self)
+        self.menuBar = menu_bar(self, zenithInstance)
         self.layout.addWidget(self.menuBar, 0)
 
         self.titleLabel = QLabel("Nyxtext Zenith", self)
