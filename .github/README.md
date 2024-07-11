@@ -189,6 +189,8 @@ Nyxtext and letting me know how well it works.
 | `Ctrl + Shift + W` | Close Current Codespace Tab |
 | `Ctrl + F` | Show/hide FileTree |
 | `Ctrl + O` | Open File (automatically detects filetype and opens in Workspace os Codespace) | 
+| `Ctrl + Tab` | Switch Tab next |
+| `Ctrl + Shift + Tab` | Switch Tab previous |
 | `...` | More soon |
 
 

@@ -131,3 +131,17 @@ class Zenith(QMainWindow):
 
     def retrieveFilePathForTab(self, index):
         return self.filePathDict.get(index, None)
+
+    def nextTab(self):
+        currentIndex = self.tabWidget.currentIndex()
+        if currentIndex < self.tabWidget.count() - 1:
+            self.tabWidget.setCurrentIndex(currentIndex + 1)
+        else:
+            self.tabWidget.setCurrentIndex(0)
+
+    def prevTab(self):
+        currentIndex = self.tabWidget.currentIndex()
+        if currentIndex > 0:
+            self.tabWidget.setCurrentIndex(currentIndex - 1)
+        else:
+            self.tabWidget.setCurrentIndex(self.tabWidget.count() - 1)

@@ -40,6 +40,12 @@ def key_shortcuts(main_window):
         )
         remove_codespace_shortcut.activated.connect(main_window.removeCurrentCodespace)
 
+        next_tab_shortcut = QShortcut(QKeySequence(shortcuts["next_tab"]), main_window)
+        next_tab_shortcut.activated.connect(main_window.nextTab)
+
+        prev_tab_shortcut = QShortcut(QKeySequence(shortcuts["prev_tab"]), main_window)
+        prev_tab_shortcut.activated.connect(main_window.prevTab)
+
     except FileNotFoundError:
         QMessageBox.warning(
             main_window, "Error", f"Shortcuts file not found: {filepath}"
