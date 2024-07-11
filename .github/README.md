@@ -186,6 +186,9 @@ Nyxtext and letting me know how well it works.
 | `Ctrl + N` | Create a new Workspace Tab (for txt editing) |
 | `Ctrl + Shift + N` | Create a new Codespace Tab (for code editing) |
 | `Ctrl + O` | Open File (automatically detects filetype and opens in Workspace os Codespace) | 
+| `Ctrl + Shift + O` | Open Folder in Filetree|
+| `Ctrl + S` | Save File |
+| `Ctrl + Shift + S` | Save File As |
 | `Ctrl + Tab` | Switch Tab next |
 | `Ctrl + Shift + Tab` | Switch Tab previous |
 | `Ctrl + F` | Show/hide FileTree |

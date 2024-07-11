@@ -10,6 +10,7 @@ class FileTree(QTreeView):
 
     def __init__(self, parent=None):
         super().__init__(parent)
+
         self.doubleClicked.connect(self.onFileSelected)
         self.model = QFileSystemModel()
         self.model.setFilter(
@@ -34,3 +35,7 @@ class FileTree(QTreeView):
     def onFileSelected(self, index):
         filePath = self.model.filePath(index)
         self.fileSelected.emit(filePath)
+
+    def setRootFolder(self, folderPath):
+        self.model.setRootPath(folderPath)
+        self.setRootIndex(self.model.index(folderPath))

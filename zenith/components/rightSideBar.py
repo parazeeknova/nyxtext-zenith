@@ -40,11 +40,19 @@ class FileTreeWidget(QWidget):
     visibilityChanged = pyqtSignal(bool)
     dockingChanged = pyqtSignal(bool)
 
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, zenithInstance=None):
         super().__init__(parent)
         self.initUI()
 
         self.isFloating = False
+        zenithInstance.folderOpened.connect(self.updateLabels)
+
+    def updateLabels(self, folderPath):
+        self.currentDirLabel.setText(os.path.basename(folderPath))
+        self.fullPathLabel.setText(folderPath)
+
+    def setRootFolder(self, folderPath):
+        self.fileTree.setRootFolder(folderPath)
 
     def initUI(self):
         fileTreeLayout = QVBoxLayout(self)

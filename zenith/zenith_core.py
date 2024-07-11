@@ -1,7 +1,7 @@
 import os
 
 from PyQt6.Qsci import QsciScintilla
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import (
     QFileDialog,
@@ -24,6 +24,8 @@ from .scripts.shortcuts import key_shortcuts
 
 
 class Zenith(QMainWindow):
+    folderOpened = pyqtSignal(str)
+
     def __init__(self):
         super().__init__()
 
@@ -48,7 +50,7 @@ class Zenith(QMainWindow):
 
         tabRow(self, self.splitter)  # Tab row or the top bar
 
-        self.fileTree = FileTreeWidget()
+        self.fileTree = FileTreeWidget(self, self)
         self.splitter.addWidget(self.fileTree)
 
         self.fileTree.visibilityChanged.connect(self.adjustSplitter)
@@ -242,3 +244,9 @@ class Zenith(QMainWindow):
         elif isinstance(currentWidget, QTextEdit):
             return currentWidget.document().isModified()
         return False
+
+    def openFolder(self):
+        folderPath = QFileDialog.getExistingDirectory(self, "Select Folder")
+        if folderPath:
+            self.fileTree.setRootFolder(folderPath)
+            self.folderOpened.emit(folderPath)

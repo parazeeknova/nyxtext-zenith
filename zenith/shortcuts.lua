@@ -2,6 +2,7 @@ return {
   new_tab = "Ctrl+N",
   codespace = "Ctrl+Shift+N",
   open = "Ctrl+O",
+  open_folder = "Ctrl+Shift+O",
   save = "Ctrl+S",
   save_as = "Ctrl+Shift+S",
   close_tab = "Ctrl+W",

@@ -1,6 +1,6 @@
 from lupa import LuaError, LuaRuntime  # type: ignore
 from PyQt6.QtGui import QAction
-from PyQt6.QtWidgets import QApplication, QMenuBar, QMessageBox
+from PyQt6.QtWidgets import QApplication, QFileDialog, QMenuBar, QMessageBox
 
 from ..components.codeSpace import Codespace
 
@@ -82,8 +82,10 @@ def menu_bar(self, zenithInstance=None):
         openAction.triggered.connect(lambda: self.parent().openFile())
         fileMenu.addAction(openAction)
 
-        fileMenu.addAction("Open Folder")
-        fileMenu.addAction("Open Recent")
+        openFolderAction = QAction("Open Folder", self)
+        openFolderAction.setShortcut(shortcuts["open_folder"])
+        openFolderAction.triggered.connect(zenithInstance.openFolder)
+        fileMenu.addAction(openFolderAction)
 
         fileMenu.addSeparator()
 
