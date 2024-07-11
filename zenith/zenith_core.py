@@ -45,6 +45,7 @@ class Zenith(QMainWindow):
         self.fileTree.visibilityChanged.connect(self.adjustSplitter)
         self.fileTree.dockingChanged.connect(self.handleDockingChange)
         self.tabWidget.currentChanged.connect(self.onTabChange)
+        self.fileTree.fileTree.fileSelected.connect(self.openFileFromTree)
 
         self.statusBar = ZenithStatusBar(self, self)  # Status bar or the bottom bar
         self.setStatusBar(self.statusBar)
@@ -112,6 +113,24 @@ class Zenith(QMainWindow):
             folderName = os.path.basename(os.path.dirname(filePath))
             fileName = os.path.basename(filePath)
             self.titleBar.updateTitle(folderName, fileName)
+        else:
+            self.titleBar.updateTitle(None, "Untitled")
 
     def retrieveFilePathForTab(self, index):
         return self.filePathDict.get(index, None)
+
+    def openFileFromTree(self, filePath):
+        if os.path.isfile(filePath):
+            fileName = os.path.basename(filePath)
+            folderName = os.path.basename(os.path.dirname(filePath))
+            self.titleBar.updateTitle(folderName, fileName)
+            with open(filePath, "r") as file:
+                content = file.read()
+                if filePath.endswith(".txt"):
+                    tabIndex = self.tabWidget.addTab(Workspace(self, content), fileName)
+                else:
+                    tabIndex = self.tabWidget.addTab(
+                        Codespace(self.tabWidget, content), fileName
+                    )
+                self.tabWidget.setTabText(tabIndex, fileName)
+                self.filePathDict[tabIndex] = filePath

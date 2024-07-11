@@ -1,13 +1,16 @@
 import os
 
-from PyQt6.QtCore import QDir
+from PyQt6.QtCore import QDir, pyqtSignal
 from PyQt6.QtGui import QFileSystemModel
 from PyQt6.QtWidgets import QTreeView
 
 
 class FileTree(QTreeView):
+    fileSelected = pyqtSignal(str)
+
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.doubleClicked.connect(self.onFileSelected)
         self.model = QFileSystemModel()
         self.model.setFilter(
             QDir.Filter.Files | QDir.Filter.Dirs | QDir.Filter.NoDotAndDotDot
@@ -27,3 +30,7 @@ class FileTree(QTreeView):
             }
         """
         )
+
+    def onFileSelected(self, index):
+        filePath = self.model.filePath(index)
+        self.fileSelected.emit(filePath)
