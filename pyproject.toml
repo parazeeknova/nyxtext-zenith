@@ -40,6 +40,5 @@ classifiers = [
 keywords = ["nyxtext", "zenith", "IDE", "text-editor", "nyxtext-zenith"]
 dependencies = [
     "PyQt6",
-    "pywinstyles",
     "lupa",
 ]

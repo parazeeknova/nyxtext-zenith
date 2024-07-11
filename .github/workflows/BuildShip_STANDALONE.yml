@@ -32,9 +32,20 @@ jobs:
       - name: Build Standalone EXE
         run: echo Yes | python -m nuitka --standalone --include-data-dir=zenith/media=zenith/media --include-data-files=zenith/shortcuts.lua=zenith/shortcuts.lua --enable-plugin=pyqt6 --windows-console-mode=disable --windows-icon-from-ico=zenith/media/icon.ico Nyxtext.py
 
+      - name: List installed packages
+        run: |
+          Get-ChildItem -Path .venv\Lib\site-packages
+        shell: pwsh
+
       - name: Copy lupa folder to Nyxtext.dist
         run: |
-          Copy-Item -Path .venv\Lib\site-packages\lupa -Destination Nyxtext.dist\lupa -Recurse -Force
+          $lupaPath = Join-Path -Path (Get-Location) -ChildPath ".venv\Lib\site-packages\lupa"
+          if (Test-Path -Path $lupaPath) {
+            Copy-Item -Path $lupaPath -Destination Nyxtext.dist\lupa -Recurse -Force
+          }
+          else {
+            Write-Error "Lupa folder not found at $lupaPath"
+          }
         shell: pwsh
 
       - name: Zip Standalone Version
