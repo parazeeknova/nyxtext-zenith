@@ -91,7 +91,12 @@ def menu_bar(self, zenithInstance=None):
         saveAction.setShortcut(shortcuts["save"])
         saveAction.triggered.connect(lambda: self.parent().saveFile())
         fileMenu.addAction(saveAction)
-        fileMenu.addAction("Save As")
+
+        saveAsAction = QAction("Save As", self)
+        saveAsAction.setShortcut(shortcuts["save_as"])
+        saveAsAction.triggered.connect(lambda: self.parent().saveFileAs())
+        fileMenu.addAction(saveAsAction)
+
         fileMenu.addAction("Save All")
         fileMenu.addSeparator()
 

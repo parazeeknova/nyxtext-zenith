@@ -46,6 +46,7 @@ jobs:
           }
           else {
             Write-Error "Lupa folder not found at $lupaPath"
+          }
         shell: pwsh
 
       - name: Zip Standalone Version

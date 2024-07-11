@@ -3,6 +3,7 @@ return {
   codespace = "Ctrl+Shift+N",
   open = "Ctrl+O",
   save = "Ctrl+S",
+  save_as = "Ctrl+Shift+S",
   close_tab = "Ctrl+W",
   close_all_tabs = "Ctrl+Shift+W",
   toggle_file_tree = "Ctrl+F",

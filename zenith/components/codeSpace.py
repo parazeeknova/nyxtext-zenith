@@ -112,6 +112,7 @@ def Codespace(tabWidget, content=""):
         def on_text_changed():
             current_line, _ = C.getCursorPosition()
             C.markerAdd(current_line, UNSAVED_CHANGES_MARKER_NUM)
+            C.setModified(True)
 
         C.textChanged.connect(on_text_changed)
 

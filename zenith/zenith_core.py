@@ -1,8 +1,17 @@
 import os
 
+from PyQt6.Qsci import QsciScintilla
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import QFileDialog, QMainWindow, QSplitter, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import (
+    QFileDialog,
+    QMainWindow,
+    QMessageBox,
+    QSplitter,
+    QTextEdit,
+    QVBoxLayout,
+    QWidget,
+)
 
 from .components.codeSpace import Codespace
 from .components.rightSideBar import FileTreeWidget
@@ -68,6 +77,21 @@ class Zenith(QMainWindow):
 
     def closeTab(self, index):
         if self.tabWidget.count() > 1:
+            self.tabWidget.widget(index)
+            if self.isModified():
+                reply = QMessageBox.question(
+                    self,
+                    "Save Changes?",
+                    "Do you want to save changes before closing?",
+                    QMessageBox.StandardButton.Yes
+                    | QMessageBox.StandardButton.No
+                    | QMessageBox.StandardButton.Cancel,
+                )
+                if reply == QMessageBox.StandardButton.Yes:
+                    self.saveFile()
+                elif reply == QMessageBox.StandardButton.Cancel:
+                    return
+
             self.tabWidget.removeTab(index)
             if index in self.filePathDict:
                 del self.filePathDict[index]
@@ -169,3 +193,52 @@ class Zenith(QMainWindow):
                 if filePath:
                     newFilePathDict[tabIndex] = filePath
         self.filePathDict = newFilePathDict
+
+    def saveFile(self):
+        currentIndex = self.tabWidget.currentIndex()
+        filePath = self.retrieveFilePathForTab(currentIndex)
+        if filePath:
+            currentWidget = self.tabWidget.currentWidget()
+            if isinstance(currentWidget, QsciScintilla):
+                content = currentWidget.text()
+                with open(filePath, "w") as file:
+                    file.write(content)
+                self.removeUnsavedChangesMarker(currentWidget)
+            elif isinstance(currentWidget, QTextEdit):
+                content = currentWidget.toPlainText()
+                with open(filePath, "w") as file:
+                    file.write(content)
+            print(f"File saved: {filePath}")
+        else:
+            self.saveFileAs()
+
+    def saveFileAs(self):
+        filePath, _ = QFileDialog.getSaveFileName(
+            self, "Save File", "", "All Files (*)"
+        )
+        if filePath:
+            currentIndex = self.tabWidget.currentIndex()
+            currentWidget = self.tabWidget.currentWidget()
+            if isinstance(currentWidget, QsciScintilla):
+                content = currentWidget.text()
+            elif isinstance(currentWidget, QTextEdit):
+                content = currentWidget.toPlainText()
+            with open(filePath, "w") as file:
+                file.write(content)
+            self.filePathDict[currentIndex] = filePath
+            fileName = os.path.basename(filePath)
+            self.tabWidget.setTabText(currentIndex, fileName)
+            self.removeUnsavedChangesMarker(currentWidget)
+            print(f"File saved as: {filePath}")
+
+    def removeUnsavedChangesMarker(self, codespace):
+        UNSAVED_CHANGES_MARKER_NUM = 9
+        codespace.markerDeleteAll(UNSAVED_CHANGES_MARKER_NUM)
+
+    def isModified(self):
+        currentWidget = self.tabWidget.currentWidget()
+        if isinstance(currentWidget, QsciScintilla):
+            return currentWidget.isModified()
+        elif isinstance(currentWidget, QTextEdit):
+            return currentWidget.document().isModified()
+        return False
