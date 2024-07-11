@@ -28,6 +28,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install nuitka
+          pip install lupa
 
       - name: Build Standalone EXE
         run: echo Yes | python -m nuitka --standalone --include-data-dir=zenith/media=zenith/media --include-data-files=zenith/shortcuts.lua=zenith/shortcuts.lua --enable-plugin=pyqt6 --windows-console-mode=disable --windows-icon-from-ico=zenith/media/icon.ico Nyxtext.py
@@ -45,7 +46,6 @@ jobs:
           }
           else {
             Write-Error "Lupa folder not found at $lupaPath"
-          }
         shell: pwsh
 
       - name: Zip Standalone Version
