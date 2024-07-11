@@ -32,6 +32,11 @@ jobs:
       - name: Build Standalone EXE
         run: echo Yes | python -m nuitka --standalone --include-data-dir=zenith/media=zenith/media --include-data-files=zenith/shortcuts.lua=zenith/shortcuts.lua --enable-plugin=pyqt6 --windows-console-mode=disable --windows-icon-from-ico=zenith/media/icon.ico Nyxtext.py
 
+      - name: Copy lupa folder to Nyxtext.dist
+        run: |
+          Copy-Item -Path .venv\Lib\site-packages\lupa -Destination Nyxtext.dist\lupa -Recurse -Force
+        shell: pwsh
+
       - name: Zip Standalone Version
         run: | 
           Remove-Item -Path Zenith_Standalone.zip -ErrorAction Ignore
