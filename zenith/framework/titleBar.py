@@ -83,3 +83,11 @@ class CustomTitleBar(QWidget):
     def mouseReleaseEvent(self, event):
         if event.button() == Qt.MouseButton.LeftButton:
             self.isDragging = False
+
+    def updateTitle(self, folderName=None, fileName=None):
+        if folderName and fileName:
+            self.titleLabel.setText(f"{folderName} - {fileName} - Zenith")
+        elif fileName:
+            self.titleLabel.setText(f"{fileName} - Zenith")
+        else:
+            self.titleLabel.setText("Zenith")

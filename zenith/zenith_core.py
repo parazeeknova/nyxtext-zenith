@@ -19,6 +19,7 @@ class Zenith(QMainWindow):
         super().__init__()
 
         self.tabCounter = 0
+        self.filePathDict = {}
 
         self.setWindowFlag(Qt.WindowType.FramelessWindowHint)
         self.setWindowTitle("Zenith")
@@ -43,6 +44,7 @@ class Zenith(QMainWindow):
 
         self.fileTree.visibilityChanged.connect(self.adjustSplitter)
         self.fileTree.dockingChanged.connect(self.handleDockingChange)
+        self.tabWidget.currentChanged.connect(self.onTabChange)
 
         self.statusBar = ZenithStatusBar(self, self)  # Status bar or the bottom bar
         self.setStatusBar(self.statusBar)
@@ -65,6 +67,8 @@ class Zenith(QMainWindow):
     def closeTab(self, index):
         if self.tabWidget.count() > 1:
             self.tabWidget.removeTab(index)
+        if self.tabWidget.count() == 0:
+            self.titleBar.updateTitle(None)
 
     def removeCurrentCodespace(self):
         currentIndex = self.tabWidget.currentIndex()
@@ -89,13 +93,25 @@ class Zenith(QMainWindow):
         )
         if filePath:
             fileName = os.path.basename(filePath)
-            if filePath.endswith(".txt"):
-                with open(filePath, "r") as file:
-                    content = file.read()
-                    Workspace(self, content)
-                    self.tabWidget.setTabText(self.tabWidget.currentIndex(), fileName)
-            else:
-                with open(filePath, "r") as file:
-                    content = file.read()
-                Codespace(self.tabWidget, content)
-                self.tabWidget.setTabText(self.tabWidget.currentIndex(), fileName)
+            folderName = os.path.basename(os.path.dirname(filePath))
+            self.titleBar.updateTitle(folderName, fileName)
+            with open(filePath, "r") as file:
+                content = file.read()
+                if filePath.endswith(".txt"):
+                    tabIndex = self.tabWidget.addTab(Workspace(self, content), fileName)
+                else:
+                    tabIndex = self.tabWidget.addTab(
+                        Codespace(self.tabWidget, content), fileName
+                    )
+                self.tabWidget.setTabText(tabIndex, fileName)
+                self.filePathDict[tabIndex] = filePath
+
+    def onTabChange(self, index):
+        filePath = self.retrieveFilePathForTab(index)
+        if filePath:
+            folderName = os.path.basename(os.path.dirname(filePath))
+            fileName = os.path.basename(filePath)
+            self.titleBar.updateTitle(folderName, fileName)
+
+    def retrieveFilePathForTab(self, index):
+        return self.filePathDict.get(index, None)
