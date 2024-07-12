@@ -1,8 +1,9 @@
 import os
 
-from PyQt6.Qsci import QsciLexerPython, QsciScintilla
+from PyQt6.Qsci import QsciScintilla
 from PyQt6.QtGui import QColor
 
+from ..framework.lexer_manager import LexerManager
 from ..scripts.roman import toRoman
 
 codespace_counter = 0
@@ -13,15 +14,13 @@ class codeSpaceContextManager:
         self.codespace = codespace
 
     def __enter__(self):
-        lexer = QsciLexerPython()
-        self.codespace.setLexer(lexer)
         return self.codespace
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         pass  # Cleanup
 
 
-def Codespace(tabWidget, content=""):
+def Codespace(tabWidget, content="", file_path=None):
     global codespace_counter
     codespace_counter += 1
     codespace = QsciScintilla()
@@ -31,6 +30,18 @@ def Codespace(tabWidget, content=""):
         codespace.setText("")
 
     with codeSpaceContextManager(codespace) as C:
+        C.file_path = file_path
+        lexer_manager = LexerManager()
+
+        def setup_lexer():
+            if C.file_path:
+                file_extension = os.path.splitext(C.file_path)[1][1:]
+                lexer = lexer_manager.get_lexer(file_extension)
+                if lexer:
+                    C.setLexer(lexer)
+
+        setup_lexer()
+
         romanTitle = f"Codespace {toRoman(codespace_counter)}"
         tabIndex = tabWidget.addTab(C, romanTitle)
         tabWidget.setCurrentIndex(tabIndex)

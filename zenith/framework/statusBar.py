@@ -32,7 +32,7 @@ class ZenithStatusBar(QStatusBar):
         )
         self.lineLabel = QLabel("▼ Line:")
         self.lineValueLabel = QLabel("0")
-        self.columnLabel = QLabel("▶ Column:")
+        self.columnLabel = QLabel("▲ Column:")
         self.columnValueLabel = QLabel("0")
         self.totalLinesLabel = QLabel("∑ Total Lines:")
         self.totalLinesValueLabel = QLabel("0")

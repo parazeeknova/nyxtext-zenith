@@ -143,7 +143,7 @@ class Zenith(QMainWindow):
                 )
             else:
                 tabIndex = self.tabWidget.addTab(
-                    Codespace(self.tabWidget, content), fileName
+                    Codespace(self.tabWidget, content, file_path=filePath), fileName
                 )
             self.tabWidget.setTabText(tabIndex, fileName)
             self.filePathDict[tabIndex] = filePath
