@@ -17,6 +17,7 @@ from .components.codeSpace import Codespace
 from .components.rightSideBar import FileTreeWidget
 from .components.tabTopbar import tabRow
 from .components.workSpace import Workspace
+from .framework.lexer_manager import LexerManager
 from .framework.statusBar import ZenithStatusBar
 from .framework.titleBar import CustomTitleBar
 from .scripts.def_path import resource
@@ -28,6 +29,8 @@ class Zenith(QMainWindow):
 
     def __init__(self):
         super().__init__()
+
+        self.lexerManager = LexerManager()
 
         self.tabCounter = 0
         self.filePathDict = {}
@@ -158,9 +161,11 @@ class Zenith(QMainWindow):
 
     def openFileFromTree(self, filePath):
         self.centralizedOpenFile(filePath)
+        self.updateStatusBarWithLexer()
 
     def onTabChange(self, index):
         filePath = self.retrieveFilePathForTab(index)
+        self.updateStatusBarWithLexer()
         if filePath:
             folderName = os.path.basename(os.path.dirname(filePath))
             fileName = os.path.basename(filePath)
@@ -278,3 +283,20 @@ class Zenith(QMainWindow):
             return  # Unknown sender
 
         self.statusBar.updateStats(lineNumber, columnNumber, totalLines, words)
+
+    def updateStatusBarWithLexer(self):
+        currentWidget = self.tabWidget.currentWidget()
+        if currentWidget:
+            filePath = self.filePathDict.get(self.tabWidget.currentIndex())
+            if filePath:
+                fileExtension = filePath.split(".")[-1]
+                lexer = self.lexerManager.get_lexer(fileExtension)
+                if lexer:
+                    lexerName = type(lexer).__name__
+                    self.statusBar.updateLexer(lexerName)
+                else:
+                    self.statusBar.updateLexer("None")
+            else:
+                self.statusBar.updateLexer("None")
+        else:
+            self.statusBar.updateLexer("None")

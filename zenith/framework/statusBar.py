@@ -82,6 +82,12 @@ class ZenithStatusBar(QStatusBar):
         self.addPermanentWidget(rightWidget)
         self.addWidget(self.readyLabel)
 
+        self.lexerLabel = QLabel("Lexer: None")
+        self.lexerLabel.setFont(smallFont)
+        self.lexerLabel.setStyleSheet("color: #cad3f5;")
+        rightLayout.addWidget(self.lexerLabel)
+        rightLayout.addWidget(Separator())
+
     def showMessage(self, message, timeout=0):
         super().showMessage(message, timeout)
         self.readyLabel.setVisible(not bool(message))
@@ -91,3 +97,6 @@ class ZenithStatusBar(QStatusBar):
         self.columnValueLabel.setText(str(column))
         self.totalLinesValueLabel.setText(str(total_lines))
         self.wordsValueLabel.setText(str(words))
+
+    def updateLexer(self, lexerName):
+        self.lexerLabel.setText(f"Lexer: {lexerName}")
