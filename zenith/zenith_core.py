@@ -140,7 +140,7 @@ class Zenith(QMainWindow):
         folderName = os.path.basename(os.path.dirname(filePath))
         self.statusBar.showLexerLoadingMessage()
         self.titleBar.updateTitle(folderName, fileName)
-        with open(filePath, "r") as file:
+        with open(filePath, "r", encoding="utf-8") as file:
             content = file.read()
             if filePath.endswith(".txt"):
                 tabIndex = self.tabWidget.addTab(
