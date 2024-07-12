@@ -1,3 +1,4 @@
+from lupa import LuaRuntime  # type: ignore
 from PyQt6.Qsci import (
     QsciLexerAVS,
     QsciLexerBash,
@@ -39,22 +40,9 @@ from PyQt6.Qsci import (
     QsciLexerYAML,
 )
 from PyQt6.QtGui import QColor, QFont
+from PyQt6.QtWidgets import QMessageBox
 
-catppuccin_colors = {
-    "default": "#D9E0EE",
-    "keyword": "#7dc4e4",
-    "operator": "#F8BD96",
-    "brace": "#F5C2E7",
-    "defclass": "#F8BD96",
-    "string": "#ABE9B3",
-    "string2": "#F5E0DC",
-    "comment": "#89B4FA",
-    "self": "#F5E0DC",
-    "numbers": "#F5C2E7",
-    "class": "#c6a0f6",
-    "function": "#F28FAD",
-    "operators": "#8aadf4",
-}
+lua = LuaRuntime(unpack_returned_tuples=True)
 
 
 class LexerManager:
@@ -135,6 +123,17 @@ class LexerManager:
             "yaml": QsciLexerYAML(),
         }
 
+    scheme = r"zenith\color_schemes.lua"
+    try:
+        with open(scheme, "r") as file:
+            lua_code = file.read()
+        global color_schemes
+        color_schemes = lua.execute(lua_code)
+    except FileNotFoundError:
+        QMessageBox.warning(None, "Error", "Color schemes file not found.")
+    except Exception as e:
+        QMessageBox.warning(None, "Error", f"An unexpected error occurred: {e}")
+
     def get_lexer(self, file_extension):
         return self.lexers.get(file_extension.lower(), None)
 
@@ -159,18 +158,23 @@ class LexerManager:
         keyword_font.setBold(True)
         lexer.setFont(keyword_font, QsciLexerPython.Keyword)
 
-        lexer.setColor(QColor(catppuccin_colors["default"]), QsciLexerPython.Default)
-        lexer.setColor(QColor(catppuccin_colors["keyword"]), QsciLexerPython.Keyword)
-        lexer.setColor(QColor(catppuccin_colors["comment"]), QsciLexerPython.Comment)
+        number_font = QFont("JetBrainsMono Nerd Font", 10)
+        number_font.setBold(True)
+        lexer.setFont(number_font, QsciLexerPython.Number)
+
+        lexer.setColor(QColor(color_schemes["default"]), QsciLexerPython.Default)
+        lexer.setColor(QColor(color_schemes["keyword"]), QsciLexerPython.Keyword)
+        lexer.setColor(QColor(color_schemes["comment"]), QsciLexerPython.Comment)
         lexer.setColor(
-            QColor(catppuccin_colors["string"]), QsciLexerPython.DoubleQuotedString
+            QColor(color_schemes["string"]), QsciLexerPython.DoubleQuotedString
         )
         lexer.setColor(
-            QColor(catppuccin_colors["string2"]), QsciLexerPython.SingleQuotedString
+            QColor(color_schemes["string2"]), QsciLexerPython.SingleQuotedString
         )
-        lexer.setColor(QColor(catppuccin_colors["numbers"]), QsciLexerPython.Number)
-        lexer.setColor(QColor(catppuccin_colors["class"]), QsciLexerPython.ClassName)
+        lexer.setColor(QColor(color_schemes["numbers"]), QsciLexerPython.Number)
+        lexer.setColor(QColor(color_schemes["class"]), QsciLexerPython.ClassName)
         lexer.setColor(
-            QColor(catppuccin_colors["function"]), QsciLexerPython.FunctionMethodName
+            QColor(color_schemes["func"]), QsciLexerPython.FunctionMethodName
         )
-        lexer.setColor(QColor(catppuccin_colors["operators"]), QsciLexerPython.Operator)
+        lexer.setColor(QColor(color_schemes["operators"]), QsciLexerPython.Operator)
+        lexer.setColor(QColor(color_schemes["brace"]), QsciLexerPython.Operator)
