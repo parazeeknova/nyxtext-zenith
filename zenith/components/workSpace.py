@@ -15,3 +15,5 @@ def Workspace(self, content="", fileName=None):
     tabTitle = fileName if fileName else f"Workspace {toRoman(self.tabCounter)}"
     tabIndex = self.tabWidget.addTab(newTab, tabTitle)
     self.tabWidget.setCurrentIndex(tabIndex)
+
+    newTab.cursorPositionChanged.connect(self.updateStatusBar)

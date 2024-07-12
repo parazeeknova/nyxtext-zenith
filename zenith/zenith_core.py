@@ -59,7 +59,7 @@ class Zenith(QMainWindow):
         self.fileTree.fileTree.fileSelected.connect(self.openFileFromTree)
         self.tabWidget.tabCloseRequested.connect(self.handleTabClose)
 
-        self.statusBar = ZenithStatusBar(self, self)  # Status bar or the bottom bar
+        self.statusBar = ZenithStatusBar(self)  # Status bar or the bottom bar
         self.setStatusBar(self.statusBar)
 
         key_shortcuts(self)  # Keyboard shortcuts defined in shortcuts.json
@@ -71,8 +71,13 @@ class Zenith(QMainWindow):
             | QMainWindow.DockOption.AllowNestedDocks
         )
 
-        Codespace(self.tabWidget)
+        self.codespace = Codespace(self.tabWidget)
         Workspace(self)
+
+        self.codespace.cursorPositionChanged.connect(self.handleCursorPositionChanged)
+
+    def handleCursorPositionChanged(self):
+        self.updateStatusBar()
 
     def addNewTab(self):
         Workspace(self)
@@ -149,6 +154,7 @@ class Zenith(QMainWindow):
         )
         if filePath:
             self.centralizedOpenFile(filePath)
+            self.statusBar.showMessage(f"Opened file: {filePath}", 4000)
 
     def openFileFromTree(self, filePath):
         self.centralizedOpenFile(filePath)
@@ -211,6 +217,9 @@ class Zenith(QMainWindow):
                 with open(filePath, "w") as file:
                     file.write(content)
             print(f"File saved: {filePath}")
+            self.statusBar.showMessage(
+                f"File saved in {os.path.dirname(filePath)}", 4000
+            )
         else:
             self.saveFileAs()
 
@@ -250,3 +259,22 @@ class Zenith(QMainWindow):
         if folderPath:
             self.fileTree.setRootFolder(folderPath)
             self.folderOpened.emit(folderPath)
+
+    def updateStatusBar(self):
+        sender = self.sender()
+        if isinstance(sender, QTextEdit):
+            cursor = sender.textCursor()
+            lineNumber = cursor.blockNumber() + 1
+            columnNumber = cursor.columnNumber() + 1
+            totalLines = sender.document().blockCount()
+            words = len(sender.toPlainText().split())
+        elif isinstance(sender, QsciScintilla):
+            lineNumber, columnNumber = sender.getCursorPosition()
+            lineNumber += 1
+            columnNumber += 1
+            totalLines = sender.lines()
+            words = len(sender.text().split())
+        else:
+            return  # Unknown sender
+
+        self.statusBar.updateStats(lineNumber, columnNumber, totalLines, words)
