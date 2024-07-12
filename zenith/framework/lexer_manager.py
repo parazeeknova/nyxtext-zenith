@@ -39,8 +39,11 @@ from PyQt6.Qsci import (
     QsciLexerXML,
     QsciLexerYAML,
 )
-from PyQt6.QtGui import QColor, QFont
 from PyQt6.QtWidgets import QMessageBox
+
+from ..lexers.cpp_lexer import customize_cpp_lexer
+from ..lexers.javascript_lexer import customize_javascript_lexer
+from ..lexers.python_lexer import customize_python_lexer
 
 lua = LuaRuntime(unpack_returned_tuples=True)
 
@@ -122,17 +125,29 @@ class LexerManager:
             "yml": QsciLexerYAML(),
             "yaml": QsciLexerYAML(),
         }
+        self.color_schemes = self.load_color_schemes()
 
-    scheme = r"zenith\color_schemes.lua"
-    try:
-        with open(scheme, "r") as file:
-            lua_code = file.read()
-        global color_schemes
-        color_schemes = lua.execute(lua_code)
-    except FileNotFoundError:
-        QMessageBox.warning(None, "Error", "Color schemes file not found.")
-    except Exception as e:
-        QMessageBox.warning(None, "Error", f"An unexpected error occurred: {e}")
+        self.customize_python_lexer = lambda lexer: customize_python_lexer(
+            lexer, self.color_schemes
+        )
+        self.customize_javascript_lexer = lambda lexer: customize_javascript_lexer(
+            lexer, self.color_schemes
+        )
+        self.customize_cpp_lexer = lambda lexer: customize_cpp_lexer(
+            lexer, self.color_schemes
+        )
+
+    def load_color_schemes(self):
+        scheme = r"zenith\color_schemes.lua"
+        try:
+            with open(scheme, "r") as file:
+                lua_code = file.read()
+            return lua.execute(lua_code)
+        except FileNotFoundError:
+            QMessageBox.warning(None, "Error", "Color schemes file not found.")
+        except Exception as e:
+            QMessageBox.warning(None, "Error", f"An unexpected error occurred: {e}")
+        return {}
 
     def get_lexer(self, file_extension):
         return self.lexers.get(file_extension.lower(), None)
@@ -145,36 +160,3 @@ class LexerManager:
             if lexer.__class__.__name__ == lexer_name:
                 return lexer
         return None
-
-    def customize_python_lexer(lexer):
-        default_font = QFont("JetBrainsMono Nerd Font", 10)
-        lexer.setFont(default_font)
-
-        comment_font = QFont("JetBrainsMono Nerd Font", 10)
-        comment_font.setItalic(True)
-        lexer.setFont(comment_font, QsciLexerPython.Comment)
-
-        keyword_font = QFont("JetBrainsMono Nerd Font", 10)
-        keyword_font.setBold(True)
-        lexer.setFont(keyword_font, QsciLexerPython.Keyword)
-
-        number_font = QFont("JetBrainsMono Nerd Font", 10)
-        number_font.setBold(True)
-        lexer.setFont(number_font, QsciLexerPython.Number)
-
-        lexer.setColor(QColor(color_schemes["default"]), QsciLexerPython.Default)
-        lexer.setColor(QColor(color_schemes["keyword"]), QsciLexerPython.Keyword)
-        lexer.setColor(QColor(color_schemes["comment"]), QsciLexerPython.Comment)
-        lexer.setColor(
-            QColor(color_schemes["string"]), QsciLexerPython.DoubleQuotedString
-        )
-        lexer.setColor(
-            QColor(color_schemes["string2"]), QsciLexerPython.SingleQuotedString
-        )
-        lexer.setColor(QColor(color_schemes["numbers"]), QsciLexerPython.Number)
-        lexer.setColor(QColor(color_schemes["class"]), QsciLexerPython.ClassName)
-        lexer.setColor(
-            QColor(color_schemes["func"]), QsciLexerPython.FunctionMethodName
-        )
-        lexer.setColor(QColor(color_schemes["operators"]), QsciLexerPython.Operator)
-        lexer.setColor(QColor(color_schemes["brace"]), QsciLexerPython.Operator)

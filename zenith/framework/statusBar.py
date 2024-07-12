@@ -100,3 +100,6 @@ class ZenithStatusBar(QStatusBar):
 
     def updateLexer(self, lexerName):
         self.lexerLabel.setText(f"Lexer: {lexerName}")
+
+    def showLexerLoadingMessage(self):
+        self.showMessage("Lexers are loading, please wait...", 5000)

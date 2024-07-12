@@ -16,6 +16,7 @@ return {
   matched_brace_fg = "	#a5adcb",
   unmatched_brace_bg = "#ed8796",
   unmatched_brace_fg = "	#a5adcb",
+  regex = "#F8BD96",
 
   -- Codespace color scheme
   caret = "#b8c0e0",

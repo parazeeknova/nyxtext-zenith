@@ -75,9 +75,10 @@ class Zenith(QMainWindow):
         )
 
         self.codespace = Codespace(self.tabWidget)
-        Workspace(self)
 
         self.codespace.cursorPositionChanged.connect(self.handleCursorPositionChanged)
+
+        self.lexerManager = LexerManager()
 
     def handleCursorPositionChanged(self):
         self.updateStatusBar()
@@ -137,6 +138,7 @@ class Zenith(QMainWindow):
     def actualOpenFile(self, filePath):
         fileName = os.path.basename(filePath)
         folderName = os.path.basename(os.path.dirname(filePath))
+        self.statusBar.showLexerLoadingMessage()
         self.titleBar.updateTitle(folderName, fileName)
         with open(filePath, "r") as file:
             content = file.read()
