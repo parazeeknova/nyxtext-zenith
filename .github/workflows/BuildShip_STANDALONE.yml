@@ -30,7 +30,7 @@ jobs:
           pip install nuitka
 
       - name: Build Standalone EXE
-        run: echo Yes | python -m nuitka --standalone --include-data-dir=zenith/media=zenith/media --include-data-files=zenith/shortcuts.lua=zenith/shortcuts.lua --enable-plugin=pyqt6 --windows-console-mode=disable --windows-icon-from-ico=zenith/media/icon.ico Nyxtext.py
+        run: echo Yes | python -m nuitka --standalone --include-data-dir=zenith/media=zenith/media --include-data-files=zenith/shortcuts.lua=zenith/shortcuts.lua --include-data-files=zenith/color_schemes.lua=zenith/color_schemes.lua --enable-plugin=pyqt6 --windows-console-mode=disable --windows-icon-from-ico=zenith/media/icon.ico Nyxtext.py
 
       - name: Zip Standalone Version
         run: | 
