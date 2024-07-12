@@ -1,6 +1,6 @@
 import os
 
-from PyQt6.Qsci import QsciScintilla
+from PyQt6.Qsci import QsciLexerPython, QsciScintilla
 from PyQt6.QtGui import QColor
 
 from ..framework.lexer_manager import LexerManager
@@ -38,6 +38,8 @@ def Codespace(tabWidget, content="", file_path=None):
                 file_extension = os.path.splitext(C.file_path)[1][1:]
                 lexer = lexer_manager.get_lexer(file_extension)
                 if lexer:
+                    if isinstance(lexer, QsciLexerPython):
+                        LexerManager.customize_python_lexer(lexer)
                     C.setLexer(lexer)
 
         setup_lexer()

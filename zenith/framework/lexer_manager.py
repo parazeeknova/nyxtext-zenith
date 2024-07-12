@@ -38,6 +38,23 @@ from PyQt6.Qsci import (
     QsciLexerXML,
     QsciLexerYAML,
 )
+from PyQt6.QtGui import QColor, QFont
+
+catppuccin_colors = {
+    "default": "#D9E0EE",
+    "keyword": "#7dc4e4",
+    "operator": "#F8BD96",
+    "brace": "#F5C2E7",
+    "defclass": "#F8BD96",
+    "string": "#ABE9B3",
+    "string2": "#F5E0DC",
+    "comment": "#89B4FA",
+    "self": "#F5E0DC",
+    "numbers": "#F5C2E7",
+    "class": "#c6a0f6",
+    "function": "#F28FAD",
+    "operators": "#8aadf4",
+}
 
 
 class LexerManager:
@@ -129,3 +146,31 @@ class LexerManager:
             if lexer.__class__.__name__ == lexer_name:
                 return lexer
         return None
+
+    def customize_python_lexer(lexer):
+        default_font = QFont("JetBrainsMono Nerd Font", 10)
+        lexer.setFont(default_font)
+
+        comment_font = QFont("JetBrainsMono Nerd Font", 10)
+        comment_font.setItalic(True)
+        lexer.setFont(comment_font, QsciLexerPython.Comment)
+
+        keyword_font = QFont("JetBrainsMono Nerd Font", 10)
+        keyword_font.setBold(True)
+        lexer.setFont(keyword_font, QsciLexerPython.Keyword)
+
+        lexer.setColor(QColor(catppuccin_colors["default"]), QsciLexerPython.Default)
+        lexer.setColor(QColor(catppuccin_colors["keyword"]), QsciLexerPython.Keyword)
+        lexer.setColor(QColor(catppuccin_colors["comment"]), QsciLexerPython.Comment)
+        lexer.setColor(
+            QColor(catppuccin_colors["string"]), QsciLexerPython.DoubleQuotedString
+        )
+        lexer.setColor(
+            QColor(catppuccin_colors["string2"]), QsciLexerPython.SingleQuotedString
+        )
+        lexer.setColor(QColor(catppuccin_colors["numbers"]), QsciLexerPython.Number)
+        lexer.setColor(QColor(catppuccin_colors["class"]), QsciLexerPython.ClassName)
+        lexer.setColor(
+            QColor(catppuccin_colors["function"]), QsciLexerPython.FunctionMethodName
+        )
+        lexer.setColor(QColor(catppuccin_colors["operators"]), QsciLexerPython.Operator)

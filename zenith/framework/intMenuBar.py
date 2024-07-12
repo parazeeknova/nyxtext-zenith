@@ -1,6 +1,6 @@
 from lupa import LuaError, LuaRuntime  # type: ignore
 from PyQt6.QtGui import QAction
-from PyQt6.QtWidgets import QApplication, QFileDialog, QMenuBar, QMessageBox
+from PyQt6.QtWidgets import QApplication, QMenuBar, QMessageBox
 
 from ..components.codeSpace import Codespace
 
