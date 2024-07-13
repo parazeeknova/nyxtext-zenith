@@ -12,18 +12,35 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Run Windows Build Script
-        run: .\windows-build.bat
-        shell: cmd
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
 
-      - name: Zip Standalone Version
-        run: | 
-          Remove-Item -Path Zenith_Standalone.zip -ErrorAction Ignore
-          Compress-Archive -Path Nyxtext.dist\* -DestinationPath Zenith_Standalone.zip -Force
+      - name: Create and activate virtual environment
+        run: |
+          python -m venv .venv
+          .\.venv\Scripts\activate
+
+      - name: Install dependencies
+        run: |
+          python -c "import yourmodule" 2>NUL || pip install -r requirements.txt
+
+      - name: Run Nuitka build
+        run: |
+          python -m nuitka --standalone --include-data-dir=zenith/media=zenith/media --include-data-files=zenith/shortcuts.lua=zenith/shortcuts.lua --include-data-files=zenith/color_schemes.lua=zenith/color_schemes.lua --enable-plugin=pyqt6 --include-module=PyQt6.Qsci --windows-console-mode=disable --windows-icon-from-ico=zenith/media/icon.ico Nyxtext.py
+
+      - name: Copy lupa package
+        run: |
+          xcopy /E /I .venv\Lib\site-packages\lupa Nyxtext.dist\lupa\
 
       - name: List contents of Nyxtext.dist
         run: |
           Get-ChildItem -Path Nyxtext.dist -Recurse
+
+      - name: Zip Standalone Version
+        run: |
+          Compress-Archive -Path Nyxtext.dist\* -DestinationPath Zenith_Standalone.zip -Force
 
       - name: Upload Standalone ZIP as Artifact
         uses: actions/upload-artifact@v4

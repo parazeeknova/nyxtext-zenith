@@ -36,23 +36,6 @@
 </div>
 
 <details>
-<summary>Table of Contents</summary>
-
-- [Introduction](.github/README.md#introduction)
-- [Features](.github/README.md#-features-)
-- [Shortcut Keys](.github/README.md#⌨️-shortcut-keys)
-- [Future Plans](.github/README.md#💡future-plans-)
-- [Development](.github/README.md#🛹-development)
-- [Installing Nyxtext](.github/README.md#-installing-nyxtext)
-- [Showcase](.github/README.md#-screenshots)
-- [Contribution](.github/CONTRIBUTING.md)
-- [Code of Conduct](.github/CODE_OF_CONDUCT.md)
-- [Security](.github/SECURITY.md)
-- [About](.github/ABOUT.md)
-- [License](LICENSE)
-</details>
-
-<details>
 <summary>Project Structure</summary>
 
 - [zenith](zenith/) - Main application directory
