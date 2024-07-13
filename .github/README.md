@@ -6,15 +6,13 @@
 </h3>
 
 <h6 align="center">
-  <a href="https://github.com/parazeeknova/nyxtext-zenith#note-">Info</a>
-  ·
   <a href="https://github.com//parazeeknova/nyxtext-zenith#-installing-nyxtext">Install</a>
   ·
   <a href="https://github.com//parazeeknova/nyxtext-zenith#-early-editor-screenshots">Showcase</a>
   ·
-  <a href="https://github.com/parazeeknova/nyxtext-zenith#-contributing">Contribution</a>
+  <a href="https://github.com/parazeeknova/nyxtext-zenith/blob/main/.github/CONTRIBUTING.md">Contribution</a>
   ·
-  <a href="https://github.com/parazeeknova/nyxtext-zenith/.github/ABOUT.md">About</a>
+  <a href="https://github.com/parazeeknova/nyxtext-zenith/blob/main/.github/ABOUT.md">About</a>
 
 </h6>
 
@@ -177,6 +175,26 @@ Nyxtext and letting me know how well it works.
 
 </details>
 
+### 🎨 Features :
+- Edit Text files ~ duh.
+- Basic funcaionality of a text editor like save, open, close, etc.
+- **Syntax Highlighting** for _**35+**_ languages.
+- Catppuccin Macciatto theme by default for Python, C++, Javascript, HTML, CSS, JSON, Markdown, and more.
+- **Code Folding** for better code readability.
+- **Filetree** for easy navigation. (Toggle with `Ctrl + F`)
+- **Customizable** shortcuts using Lua, edit `zenith/shortcuts.lua`.
+- **Highly Customizable** themes using Lua, edit `zenith/color_themes.lua`.
+- Workspace and Codespace tabs for better organization.
+- **Tab** switching using `Ctrl + Tab` and `Ctrl + Shift + Tab`.
+- Unsaved changes indicator.
+- **Auto-indentation** for Python, C++, Java, and more.
+- Files can be opened from CLI using `Nyxtext.exe -o <filename>` or `Nyxtext.exe --open <filename>`.
+- Custom titlebar with inbuild menubar.
+- Statusbar with line and column number.
+- Dynamic **statusbar** that displays operations performed.
+
+_More features coming soon._
+
 ### ⌨️ Shortcut Keys
 
 > [!TIP]
@@ -199,6 +217,22 @@ Nyxtext and letting me know how well it works.
 | `...` | More soon |
 
 
+### 💡Future Plans : 
+- [x] ~~Build `exe` for windows~~ - ✅ Done in alphav0.0.1
+- [ ] Complete Menu bar options.
+- [ ] Add more themes.
+- [ ] Add more languages for syntax highlighting.
+- [ ] Terminal integration.
+- [ ] Add more shortcuts. (VIM MOTIONS)
+- [ ] Autocompletions for Python, C++, Javascript, and more.
+- [ ] Linux and MacOS support.
+- [ ] Grammer check for Workspace.
+- [x] ~~Code folding for Codespace.~~ - ✅ Done in alphav0.0.2
+- [ ] Git support
+- [ ] Hyperlinks, Markdown support
+- [ ] Split view for Codespace
+- [ ] AI Integration for code suggestions
+- [ ] More to come...
 &nbsp;
 
 ### 🛹 Development

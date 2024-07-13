@@ -12,12 +12,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install nuitka
-
       - name: Run Windows Build Script
         run: .\windows-build.bat
         shell: cmd
