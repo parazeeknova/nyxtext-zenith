@@ -21,9 +21,18 @@ jobs:
           Remove-Item -Path Zenith_Standalone.zip -ErrorAction Ignore
           Compress-Archive -Path Nyxtext.dist\* -DestinationPath Zenith_Standalone.zip -Force
 
+      - name: List contents of Nyxtext.dist
+        run: |
+          Get-ChildItem -Path Nyxtext.dist -Recurse
+
       - name: Upload Standalone ZIP as Artifact
         uses: actions/upload-artifact@v4
         with:
           name: Zenith-Standalone
           path: Zenith_Standalone.zip
 
+      - name: Upload Full Nyxtext.dist as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Zenith-Full-Dist
+          path: Nyxtext.dist

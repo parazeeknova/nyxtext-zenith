@@ -1,8 +1,5 @@
 <h3 align="center">
-	<img src="assets/Zenith-logo.png" width="300" alt="Logo"/><br/>
-    <img src="assets/misc/transparent.png" height="30" width="0px"/>
-    Nyxtext Zenith
-	<img src="assets/misc/transparent.png" height="30" width="0px"/>
+	<img src="assets/Zenith-banner.png" alt="Logo"/><br/>
 </h3>
 
 <h6 align="center">
@@ -19,8 +16,6 @@
 <p align="center">
   <img src="assets/misc/macchiato.png" width="400" />
 </p>
-
-&nbsp;
 
 <p align="center">
 	<a href="https://github.com/parazeeknova/nyxtext-zenith/stargazers">
@@ -85,6 +80,15 @@
 > [!IMPORTANT]
 > Because the application is not signed by Microsoft, Windows Defender blocks it; add an exclusion in Defender to run the application. Its a false positive, the application is safe to use. or build it yourself from the source code.
 
+
+### 🖼️ Screenshots
+
+| Default Look | Python Lexer | Docked FileTree | Menu Bar (File) |
+|--------------|--------------|--------------|--------------|
+| ![Default Look](assets/screenshots/Home.png) | ![Python Lexer ](assets/screenshots/Pythonlexer.png) | ![Docked Filetree](assets/screenshots/Dockedfiletree.png) | ![Menu](assets/screenshots/Menubar.png) |
+
+
+
 ### ✨ Installing Nyxtext
 
 <details>
@@ -99,12 +103,16 @@ There are multiple ways to run NyxText on Windows. Here are some common methods:
     - Run the `Nyxtext.exe` file
 
 2. Using development release (recommended for testers):
+  
+    > [!CAUTION]
+    > Currently action builds are not working due to some issues, please use the standalone executable from releases .
+
     - Download the latest development release from the [Action Build](https://github.com/parazeeknova/nyxtext-zenith/actions)
     - Extract the downloaded ZIP file
     - Add an exclusion in Windows Defender to run the application
     - Run the `Nyxtext.exe` file
  
-3. Using development environment (recommended for developers):
+1. Using development environment (recommended for developers):
     - Open a terminal and run the following commands:
       ```bash
       git clone --depth 1 https://github.com/parazeeknova/nyxtext-zenith.git
@@ -115,7 +123,7 @@ There are multiple ways to run NyxText on Windows. Here are some common methods:
       python -m zenith 
       OR run Nyxtext.py in the root directory
       ```
-4. Using Build script (recommended for developers):
+2. Using Build script (recommended for developers):
     - Open a terminal and run the following commands:
       ```bash
       git clone --depth 1 https://github.com/parazeeknova/nyxtext-zenith.git
@@ -182,6 +190,8 @@ Nyxtext and letting me know how well it works.
 - Catppuccin Macciatto theme by default for Python, C++, Javascript, HTML, CSS, JSON, Markdown, and more.
 - **Code Folding** for better code readability.
 - **Filetree** for easy navigation. (Toggle with `Ctrl + F`)
+- **Dockable Filetree** panes.
+- Adjustable panes for Filetree, Workspace, and Codespace.
 - **Customizable** shortcuts using Lua, edit `zenith/shortcuts.lua`.
 - **Highly Customizable** themes using Lua, edit `zenith/color_themes.lua`.
 - Workspace and Codespace tabs for better organization.
@@ -216,6 +226,8 @@ _More features coming soon._
 | `Ctrl + Shift + Q` | Exit |
 | `...` | More soon |
 
+> [!TIP]
+> Files can be opened by CLI using `Nyxtext.exe -o <filename>` or `Nyxtext.exe --open <filename>`.
 
 ### 💡Future Plans : 
 - [x] ~~Build `exe` for windows~~ - ✅ Done in alphav0.0.1
