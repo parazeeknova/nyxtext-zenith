@@ -22,6 +22,7 @@ from .framework.lexer_manager import LexerManager
 from .framework.statusBar import ZenithStatusBar
 from .framework.titleBar import CustomTitleBar
 from .scripts.def_path import resource
+from .scripts.file_cache import FileCache
 from .scripts.shortcuts import key_shortcuts
 
 
@@ -59,6 +60,7 @@ class Zenith(QMainWindow):
         self.threadPool = QThreadPool()
         self.lexerManager = LexerManager()
         self.filePathDict = {}
+        self.fileCache = FileCache()
 
         self.setupUI()
         self.setupConnections()
@@ -108,6 +110,7 @@ class Zenith(QMainWindow):
 
     def closeApplication(self):
         self.closeAllTabs()
+        self.fileCache.clear()
         QApplication.quit()
 
     def closeEvent(self, event):
@@ -163,12 +166,17 @@ class Zenith(QMainWindow):
                 self.tabWidget.setCurrentIndex(tabIndex)
                 return
 
-        worker = FileWorker(filePath)
-        worker.signals.finished.connect(self.onFileOpenFinished)
-        worker.signals.error.connect(
-            lambda e: self.showErrorMessage("Error opening file", e)
-        )
-        self.threadPool.start(worker)
+        # Check if file is in cache
+        cached_content = self.fileCache.get(filePath)
+        if cached_content is not None:
+            self.onFileOpenFinished(filePath, cached_content)
+        else:
+            worker = FileWorker(filePath)
+            worker.signals.finished.connect(self.onFileOpenFinished)
+            worker.signals.error.connect(
+                lambda e: self.showErrorMessage("Error opening file", e)
+            )
+            self.threadPool.start(worker)
 
     def onFileOpenFinished(self, filePath, content):
         try:
@@ -187,6 +195,9 @@ class Zenith(QMainWindow):
             self.filePathDict[tabIndex] = filePath
             self.tabWidget.setCurrentIndex(tabIndex)
             self.statusBar.showMessage(f"Opened file: {filePath}", 4000)
+
+            # Add file content to cache
+            self.fileCache.set(filePath, content)
         except Exception as e:
             self.showErrorMessage("Error processing opened file", str(e))
 
@@ -231,7 +242,10 @@ class Zenith(QMainWindow):
 
     def handleTabClose(self, index):
         if index in self.filePathDict:
+            filePath = self.filePathDict[index]
             del self.filePathDict[index]
+            # Remove file from cache when tab is closed
+            self.fileCache.remove(filePath)
         self.tabWidget.removeTab(index)
         self.updateFilePathDict()
 
@@ -252,6 +266,9 @@ class Zenith(QMainWindow):
                 lambda e: self.showErrorMessage("Error saving file", e)
             )
             self.threadPool.start(worker)
+
+            # Update cache with new content
+            self.fileCache.set(filePath, content)
         else:
             self.saveFileAs()
 
