@@ -1,3 +1,4 @@
+import argparse
 import sys
 
 from PyQt6.QtWidgets import QApplication
@@ -6,14 +7,19 @@ from .zenith_core import Zenith
 
 
 def main():
-    try:
-        app = QApplication(sys.argv)
-        window = Zenith()
-        window.show()
-        sys.exit(app.exec())
-    except Exception as e:
-        print(f"An error occurred: {e}")
-        sys.exit(1)
+    parser = argparse.ArgumentParser(description="Zenith Text Editor")
+    parser.add_argument("-o", "--open", help="Open a specified file", metavar="FILE")
+
+    args = parser.parse_args()
+
+    app = QApplication(sys.argv)
+    mainWindow = Zenith()
+
+    if args.open:
+        mainWindow.openFileFromTree(args.open)
+
+    mainWindow.show()
+    sys.exit(app.exec())
 
 
 if __name__ == "__main__":

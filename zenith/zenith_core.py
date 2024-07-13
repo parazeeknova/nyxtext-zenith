@@ -61,6 +61,7 @@ class Zenith(QMainWindow):
         self.lexerManager = LexerManager()
         self.filePathDict = {}
         self.fileCache = FileCache()
+        self.tabCounter = 0
 
         self.setupUI()
         self.setupConnections()

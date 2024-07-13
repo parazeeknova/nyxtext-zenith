@@ -14,18 +14,13 @@
   ·
   <a href="https://github.com/parazeeknova/nyxtext-zenith#-contributing">Contribution</a>
   ·
-  <a href="https://github.com/parazeeknova/nyxtext-zenith#-support">Support</a>
+  <a href="https://github.com/parazeeknova/nyxtext-zenith/.github/ABOUT.md">About</a>
 
 </h6>
 
 <p align="center">
   <img src="assets/misc/macchiato.png" width="400" />
 </p>
-
-&nbsp;
-
-> [!NOTE] 
-> Nyxtext zenith is a work in progress. We appreciate any contributions, understanding that the project may have bugs, instability, and limited features during the time of active development. We are working hard to make it better every day.
 
 &nbsp;
 
@@ -99,7 +94,6 @@
 
 There are multiple ways to run NyxText on Windows. Here are some common methods:
 
-**There are two versions (Standalone & OneFile) for steps 1 & 2**
 1. Using the standalone executable (recommended for users):
     - Download the latest stable release from the [Releases](https://github.com/parazeeknova/nyxtext-zenith/releases)
     - Extract the downloaded ZIP file
@@ -122,6 +116,13 @@ There are multiple ways to run NyxText on Windows. Here are some common methods:
       pip install -r requirements.txt
       python -m zenith 
       OR run Nyxtext.py in the root directory
+      ```
+4. Using Build script (recommended for developers):
+    - Open a terminal and run the following commands:
+      ```bash
+      git clone --depth 1 https://github.com/parazeeknova/nyxtext-zenith.git
+      cd nyxtext-zenith
+      run windows-build.bat
       ```
 
 </details>
@@ -198,69 +199,11 @@ Nyxtext and letting me know how well it works.
 | `...` | More soon |
 
 
-### 🧠 Design Philosophy
-
-- **Simplicity**: Keep the user interface clean and intuitive. Avoid cluttering the interface with unnecessary features or options. Focus on providing essential functionality in an easy-to-use manner.
-- **Customizability**: Provide users with options to customize the editor to suit their preferences.
-- **Modularity**: Design the codebase to be modular and extensible.
-- **Maintainability**: Keep the codebase maintainable and readable.
-- **Community Engagement**: Foster a vibrant and inclusive community around the editor. Encourage users to provide feedback, report bugs, and contribute code.
-- **Feature Rich**: Have all the basic features for a text editor
-- **User-centric:** Prioritize the developer's experience.
-- **Keyboard-driven:** Minimize reliance on the mouse for efficiency.
-- **Simplicity over Complexity:** Strive for an intuitive interface despite advanced features.
-
 &nbsp;
 
 ### 🛹 Development
 
 ![Alt](https://repobeats.axiom.co/api/embed/5230d7fbefe5348128ff699761be93de2b030176.svg "Repobeats analytics image")
-
-## ❓ FAQs:
-
-### What's new in the latest NyxText release?
-
-See [Releases](https://github.com/parazeeknova/nyxtext-zenith/releases).
-
-<!-- ### Does NyxText support programming language X?
-You will likely get syntax highlighting without any configuring
-and autocompletions with a few lines of configuration file editing. -->
-
-### Help! NyxtText Zenith doesn't work.
-
-Install all the python pip packages from requirements.txt.
-If it still doesn't work, [let me know by creating an issue on
-GitHub](http://github.com/parazeeknova/nyxtext-zenith/issues/new).
-
-### Is NyxText Zenith written in NyxText?
-
-Not at the moment. We are writing the very first version in `Neovim`, but will use it when we are done with basic features.
-
-### Why is it named NyxText Zenith?
-
-1. **Mythological Inspiration:** `NyxText` draws upon the Greek goddess `Nyx`, associated with night, creation, and beginnings. This resonates with writers and programmers who often find inspiration during the quiet hours. The name subtly reflects this theme through its potential use of darker design elements.
-
-2. **Euphony and Distinction:** `NyxText` possesses a pleasant sound with `Nyx` adding a touch of mystique. This name stands out from common text editors, making it both memorable and unique.
-
-3. **Symbolic Alignment:**  `Nyx` can also symbolize the blank canvas or the void before creation. This perfectly aligns with the core function of a text editor - providing a blank slate for writers and programmers to bring their ideas to life.
-
-4. **Zenith:** The term `Zenith` signifies the highest point or peak of development. By appending `Zenith` to `NyxText`, we emphasize the editor's evolution and growth beyond its predecessor. This name conveys a sense of progress, improvement, and ambition.
-
-5. **Aesthetic Appeal:** The combination of `Nyx` and `Zenith` creates a harmonious and visually appealing name. The juxtaposition of the ancient and the modern, the night and the peak, adds depth and intrigue to the editor's identity.
-
-### What is the difference between NyxText and NyxText Zenith?
-NyxtText Zenith is a complete rewrite of NyxText, using PyQt6 and QScintilla. It aims to provide a more robust, intelligent, and versatile text editing experience. NyxText Zenith builds upon the foundation laid by its predecessor, NyxText, with an expanded feature set and improved performance.
-
-### I want an editor that does X, but X is not in the feature list above. Does NyxText do X?
-You can run NyxText and find out,
-or [create an issue on GitHub](https://github.com/parazeeknova/nyxtext-zenith/issues/new) and ask.
-If you manage to make us excited about X, We might implement it.
-
-### Why did you create a new editor?
-Because I can.
-
-### Why not use editor X?
-Because Nyxtext Zenith is better.
 
 ---
 
@@ -271,22 +214,13 @@ Because Nyxtext Zenith is better.
 
 See [CONTRIBUTING.md](https://github.com/parazeeknova/nyxtext-zenith/blob/main/.github/CONTRIBUTING.md)
 
-&nbsp;
-
 ### 📜 License
 
 NyxText Zenith is released under the MIT license:
 For more convoluted language, see the [LICENSE](https://github.com/parazeeknova/nyxtext-zenith/blob/main/LICENSE).
 
-&nbsp;
-
 <p align="center"><img src="assets/misc/catppuccin_cat.svg" /></p>
-<div align="center">
 
-![Dev](http://ForTheBadge.com/images/badges/built-by-developers.svg)
-![Python](http://ForTheBadge.com/images/badges/made-with-python.svg)
-![Love](http://ForTheBadge.com/images/badges/built-with-love.svg)
-</div>
 <p align="center">Copyright &copy; 2024-present <a href="https://github.com/parazeeknova/nyxtext-zenith" target="_blank">NyxText Zenith</a>
 <p align="center"><a href="https://github.com/parazeeknova/nyxtext-zenith/blob/main/LICENSE"><img src="https://img.shields.io/static/v1.svg?style=for-the-badge&label=License&message=MIT&logoColor=d9e0ee&colorA=302d41&colorB=b7bdf8"/></a></p>
 

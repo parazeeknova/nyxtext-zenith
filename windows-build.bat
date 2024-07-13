@@ -8,17 +8,26 @@ if %errorlevel% neq 0 (
     exit /b 1
 )
 
-:: Create virtual environment
-echo Creating virtual environment...
-python -m venv .venv
+:: Check if virtual environment exists
+if not exist .venv (
+    echo Creating virtual environment...
+    python -m venv .venv
+) else (
+    echo Virtual environment already exists.
+)
 
 :: Activate virtual environment
 echo Activating virtual environment...
 CALL .venv\Scripts\activate.bat
 
-:: Install dependencies from requirements.txt
-echo Installing dependencies...
-pip install -r requirements.txt
+:: Check if a key dependency from requirements.txt is installed, replace 'yourmodule' with a real module name
+python -c "import yourmodule" > nul 2>&1
+if %errorlevel% neq 0 (
+    echo Installing dependencies...
+    pip install -r requirements.txt
+) else (
+    echo Dependencies already installed.
+)
 
 :: Run Nuitka build command
 echo Running Nuitka build...
