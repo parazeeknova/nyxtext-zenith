@@ -42,7 +42,12 @@ from PyQt6.Qsci import (
 from PyQt6.QtWidgets import QMessageBox
 
 from ..lexers.cpp_lexer import customize_cpp_lexer
+from ..lexers.css_lexer import customize_css_lexer
+from ..lexers.html_lexer import customize_html_lexer
 from ..lexers.javascript_lexer import customize_javascript_lexer
+from ..lexers.json_lexer import customize_json_lexer
+from ..lexers.lua_lexer import customize_lua_lexer
+from ..lexers.md_lexer import customize_md_lexer
 from ..lexers.python_lexer import customize_python_lexer
 
 lua = LuaRuntime(unpack_returned_tuples=True)
@@ -134,6 +139,21 @@ class LexerManager:
             lexer, self.color_schemes
         )
         self.customize_cpp_lexer = lambda lexer: customize_cpp_lexer(
+            lexer, self.color_schemes
+        )
+        self.customize_css_lexer = lambda lexer: customize_css_lexer(
+            lexer, self.color_schemes
+        )
+        self.customize_html_lexer = lambda lexer: customize_html_lexer(
+            lexer, self.color_schemes
+        )
+        self.customize_json_lexer = lambda lexer: customize_json_lexer(
+            lexer, self.color_schemes
+        )
+        self.customize_lua_lexer = lambda lexer: customize_lua_lexer(
+            lexer, self.color_schemes
+        )
+        self.customize_md_lexer = lambda lexer: customize_md_lexer(
             lexer, self.color_schemes
         )
 

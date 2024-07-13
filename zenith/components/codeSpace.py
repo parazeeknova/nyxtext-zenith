@@ -4,7 +4,17 @@ from queue import Queue
 from threading import Thread
 
 from lupa import LuaRuntime  # type: ignore
-from PyQt6.Qsci import QsciLexerCPP, QsciLexerJavaScript, QsciLexerPython, QsciScintilla
+from PyQt6.Qsci import (
+    QsciLexerCPP,
+    QsciLexerCSS,
+    QsciLexerHTML,
+    QsciLexerJavaScript,
+    QsciLexerJSON,
+    QsciLexerLua,
+    QsciLexerMarkdown,
+    QsciLexerPython,
+    QsciScintilla,
+)
 from PyQt6.QtGui import QColor
 from PyQt6.QtWidgets import QMessageBox
 
@@ -74,6 +84,16 @@ def Codespace(tabWidget, content="", file_path=None):
                         customize_func = lexer_manager.customize_javascript_lexer
                     elif isinstance(lexer, QsciLexerCPP):
                         customize_func = lexer_manager.customize_cpp_lexer
+                    elif isinstance(lexer, QsciLexerCSS):
+                        customize_func = lexer_manager.customize_css_lexer
+                    elif isinstance(lexer, QsciLexerHTML):
+                        customize_func = lexer_manager.customize_html_lexer
+                    elif isinstance(lexer, QsciLexerJSON):
+                        customize_func = lexer_manager.customize_json_lexer
+                    elif isinstance(lexer, QsciLexerLua):
+                        customize_func = lexer_manager.customize_lua_lexer
+                    elif isinstance(lexer, QsciLexerMarkdown):
+                        customize_func = lexer_manager.customize_md_lexer
 
                     if customize_func:
                         thread_pool.submit(customize_func, lexer)
