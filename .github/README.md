@@ -5,7 +5,7 @@
 <h6 align="center">
   <a href="https://github.com//parazeeknova/nyxtext-zenith#-installing-nyxtext">Install</a>
   ·
-  <a href="https://github.com//parazeeknova/nyxtext-zenith#-early-editor-screenshots">Showcase</a>
+  <a href="https://github.com//parazeeknova/nyxtext-zenith#-screenshots">Showcase</a>
   ·
   <a href="https://github.com/parazeeknova/nyxtext-zenith/blob/main/.github/CONTRIBUTING.md">Contribution</a>
   ·
@@ -34,6 +34,39 @@
 ![QScintilla](https://img.shields.io/badge/QScintilla-Text%20Editor%20Component-8bd5ca?style=for-the-badge&logoColor=D9E0EE&labelColor=302D41)
 
 </div>
+
+<details>
+<summary>Table of Contents</summary>
+
+- [Introduction](.github/README.md#introduction)
+- [Features](.github/README.md#-features-)
+- [Shortcut Keys](.github/README.md#⌨️-shortcut-keys)
+- [Future Plans](.github/README.md#💡future-plans-)
+- [Development](.github/README.md#🛹-development)
+- [Installing Nyxtext](.github/README.md#-installing-nyxtext)
+- [Showcase](.github/README.md#-screenshots)
+- [Contribution](.github/CONTRIBUTING.md)
+- [Code of Conduct](.github/CODE_OF_CONDUCT.md)
+- [Security](.github/SECURITY.md)
+- [About](.github/ABOUT.md)
+- [License](LICENSE)
+</details>
+
+<details>
+<summary>Project Structure</summary>
+
+- [zenith](zenith/) - Main application directory
+  - [Components](zenith/components/) - Components for the application
+  - [Framework](zenith/framework/) - Framework for the application
+  - [Lexers](zenith/lexers/) - Lexers for syntax highlighting
+  - [Media](zenith/media/) - Media files
+  - [Scripts](zenith/scripts/) - Scripts
+  - [`__init__.py`](zenith/__init__.py) - Initialization
+  - [`__main__.py`](zenith/__main__.py) - Entry point
+  - [`color_schemes.lua`](zenith/color_schemes.lua) - Customizable color schemes
+  - [`shortcuts.lua`](zenith/shortcuts.lua) - Customizable shortcuts
+  - [`zenith_core.py`](zenith/zenith_core.py) - Core functionality
+</details>
 
 &nbsp;
 
