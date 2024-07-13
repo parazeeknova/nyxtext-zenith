@@ -1,9 +1,10 @@
 import os
 
 from PyQt6.Qsci import QsciScintilla
-from PyQt6.QtCore import Qt, pyqtSignal
+from PyQt6.QtCore import QObject, QRunnable, Qt, QThreadPool, pyqtSignal
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import (
+    QApplication,
     QFileDialog,
     QMainWindow,
     QMessageBox,
@@ -24,24 +25,51 @@ from .scripts.def_path import resource
 from .scripts.shortcuts import key_shortcuts
 
 
+class FileWorker(QRunnable):
+    class Signals(QObject):
+        finished = pyqtSignal(str, str)
+        error = pyqtSignal(str)
+
+    def __init__(self, file_path, content=None, mode="r"):
+        super().__init__()
+        self.file_path = file_path
+        self.content = content
+        self.mode = mode
+        self.signals = self.Signals()
+
+    def run(self):
+        try:
+            if self.mode == "r":
+                with open(self.file_path, "r", encoding="utf-8") as file:
+                    content = file.read()
+                self.signals.finished.emit(self.file_path, content)
+            elif self.mode == "w":
+                with open(self.file_path, "w", encoding="utf-8") as file:
+                    file.write(self.content)
+                self.signals.finished.emit(self.file_path, "")
+        except Exception as e:
+            self.signals.error.emit(str(e))
+
+
 class Zenith(QMainWindow):
     folderOpened = pyqtSignal(str)
 
     def __init__(self):
         super().__init__()
-
+        self.threadPool = QThreadPool()
         self.lexerManager = LexerManager()
-
-        self.tabCounter = 0
         self.filePathDict = {}
 
+        self.setupUI()
+        self.setupConnections()
+
+    def setupUI(self):
         self.setWindowFlag(Qt.WindowType.FramelessWindowHint)
         self.setWindowTitle("Zenith")
         self.setGeometry(100, 100, 800, 600)
-
         self.setWindowIcon(QIcon(resource(r"../media/icon.ico")))
 
-        self.titleBar = CustomTitleBar(self, self)  # Title bar or the top bar
+        self.titleBar = CustomTitleBar(self, self)
         self.setMenuWidget(self.titleBar)
 
         centralWidget = QWidget(self)
@@ -51,22 +79,16 @@ class Zenith(QMainWindow):
         self.splitter = QSplitter(Qt.Orientation.Horizontal)
         layout.addWidget(self.splitter)
 
-        tabRow(self, self.splitter)  # Tab row or the top bar
+        tabRow(self, self.splitter)
 
         self.fileTree = FileTreeWidget(self, self)
         self.splitter.addWidget(self.fileTree)
 
-        self.fileTree.visibilityChanged.connect(self.adjustSplitter)
-        self.fileTree.dockingChanged.connect(self.handleDockingChange)
-        self.tabWidget.currentChanged.connect(self.onTabChange)
-        self.fileTree.fileTree.fileSelected.connect(self.openFileFromTree)
-        self.tabWidget.tabCloseRequested.connect(self.handleTabClose)
-
-        self.statusBar = ZenithStatusBar(self)  # Status bar or the bottom bar
+        self.statusBar = ZenithStatusBar(self)
         self.setStatusBar(self.statusBar)
 
-        key_shortcuts(self)  # Keyboard shortcuts defined in shortcuts.json
-        self.splitter.setSizes([600, 150])  # Set the initial size of the splitter panes
+        key_shortcuts(self)
+        self.splitter.setSizes([600, 150])
 
         self.setDockNestingEnabled(True)
         self.setDockOptions(
@@ -76,9 +98,21 @@ class Zenith(QMainWindow):
 
         self.codespace = Codespace(self.tabWidget)
 
+    def setupConnections(self):
+        self.fileTree.visibilityChanged.connect(self.adjustSplitter)
+        self.fileTree.dockingChanged.connect(self.handleDockingChange)
+        self.tabWidget.currentChanged.connect(self.onTabChange)
+        self.fileTree.fileTree.fileSelected.connect(self.openFileFromTree)
+        self.tabWidget.tabCloseRequested.connect(self.handleTabClose)
         self.codespace.cursorPositionChanged.connect(self.handleCursorPositionChanged)
 
-        self.lexerManager = LexerManager()
+    def closeApplication(self):
+        self.closeAllTabs()
+        QApplication.quit()
+
+    def closeEvent(self, event):
+        self.closeApplication()
+        event.accept()
 
     def handleCursorPositionChanged(self):
         self.updateStatusBar()
@@ -88,7 +122,6 @@ class Zenith(QMainWindow):
 
     def closeTab(self, index):
         if self.tabWidget.count() > 1:
-            self.tabWidget.widget(index)
             if self.isModified():
                 reply = QMessageBox.question(
                     self,
@@ -106,52 +139,59 @@ class Zenith(QMainWindow):
             self.tabWidget.removeTab(index)
             if index in self.filePathDict:
                 del self.filePathDict[index]
-            updatedFilePathDict = {}
-            for tabIndex, filePath in self.filePathDict.items():
-                if tabIndex > index:
-                    updatedFilePathDict[tabIndex - 1] = filePath
-                else:
-                    updatedFilePathDict[tabIndex] = filePath
-            self.filePathDict = updatedFilePathDict
+            self.updateFilePathDict()
+
         if self.tabWidget.count() == 0:
             self.titleBar.updateTitle(None)
 
+    def updateFilePathDict(self):
+        updatedFilePathDict = {}
+        for tabIndex in range(self.tabWidget.count()):
+            if tabIndex in self.filePathDict:
+                updatedFilePathDict[tabIndex] = self.filePathDict[tabIndex]
+        self.filePathDict = updatedFilePathDict
+
     def adjustSplitter(self, isVisible):
-        if isVisible:
-            self.splitter.setSizes([600, 150])
-        else:
-            self.splitter.setSizes([750, 0])
+        self.splitter.setSizes([600, 150] if isVisible else [750, 0])
 
     def handleDockingChange(self, isDocked):
-        if isDocked:
-            self.splitter.setSizes([750, 0])
-        else:
-            self.splitter.setSizes([600, 150])
+        self.splitter.setSizes([750, 0] if isDocked else [600, 150])
 
     def centralizedOpenFile(self, filePath):
         for tabIndex, openFilePath in self.filePathDict.items():
             if openFilePath == filePath:
                 self.tabWidget.setCurrentIndex(tabIndex)
                 return
-        self.actualOpenFile(filePath)
 
-    def actualOpenFile(self, filePath):
-        fileName = os.path.basename(filePath)
-        folderName = os.path.basename(os.path.dirname(filePath))
-        self.statusBar.showLexerLoadingMessage()
-        self.titleBar.updateTitle(folderName, fileName)
-        with open(filePath, "r", encoding="utf-8") as file:
-            content = file.read()
-            if filePath.endswith(".txt"):
-                tabIndex = self.tabWidget.addTab(
-                    Workspace(self, content, fileName=fileName), fileName
-                )
-            else:
-                tabIndex = self.tabWidget.addTab(
-                    Codespace(self.tabWidget, content, file_path=filePath), fileName
-                )
-            self.tabWidget.setTabText(tabIndex, fileName)
+        worker = FileWorker(filePath)
+        worker.signals.finished.connect(self.onFileOpenFinished)
+        worker.signals.error.connect(
+            lambda e: self.showErrorMessage("Error opening file", e)
+        )
+        self.threadPool.start(worker)
+
+    def onFileOpenFinished(self, filePath, content):
+        try:
+            fileName = os.path.basename(filePath)
+            folderName = os.path.basename(os.path.dirname(filePath))
+            self.statusBar.showLexerLoadingMessage()
+            self.titleBar.updateTitle(folderName, fileName)
+
+            tab = (
+                Workspace(self, content, fileName=fileName)
+                if filePath.endswith(".txt")
+                else Codespace(self.tabWidget, content, file_path=filePath)
+            )
+
+            tabIndex = self.tabWidget.addTab(tab, fileName)
             self.filePathDict[tabIndex] = filePath
+            self.tabWidget.setCurrentIndex(tabIndex)
+            self.statusBar.showMessage(f"Opened file: {filePath}", 4000)
+        except Exception as e:
+            self.showErrorMessage("Error processing opened file", str(e))
+
+    def showErrorMessage(self, title, message):
+        QMessageBox.critical(self, title, message)
 
     def openFile(self):
         filePath, _ = QFileDialog.getOpenFileName(
@@ -159,7 +199,6 @@ class Zenith(QMainWindow):
         )
         if filePath:
             self.centralizedOpenFile(filePath)
-            self.statusBar.showMessage(f"Opened file: {filePath}", 4000)
 
     def openFileFromTree(self, filePath):
         self.centralizedOpenFile(filePath)
@@ -180,17 +219,11 @@ class Zenith(QMainWindow):
 
     def nextTab(self):
         currentIndex = self.tabWidget.currentIndex()
-        if currentIndex < self.tabWidget.count() - 1:
-            self.tabWidget.setCurrentIndex(currentIndex + 1)
-        else:
-            self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex((currentIndex + 1) % self.tabWidget.count())
 
     def prevTab(self):
         currentIndex = self.tabWidget.currentIndex()
-        if currentIndex > 0:
-            self.tabWidget.setCurrentIndex(currentIndex - 1)
-        else:
-            self.tabWidget.setCurrentIndex(self.tabWidget.count() - 1)
+        self.tabWidget.setCurrentIndex((currentIndex - 1) % self.tabWidget.count())
 
     def closeAllTabs(self):
         for index in range(self.tabWidget.count() - 1, -1, -1):
@@ -200,35 +233,31 @@ class Zenith(QMainWindow):
         if index in self.filePathDict:
             del self.filePathDict[index]
         self.tabWidget.removeTab(index)
-        newFilePathDict = {}
-        for tabIndex in range(self.tabWidget.count()):
-            widget = self.tabWidget.widget(tabIndex)
-            if hasattr(widget, "fileName"):
-                filePath = self.filePathDict.get(tabIndex)
-                if filePath:
-                    newFilePathDict[tabIndex] = filePath
-        self.filePathDict = newFilePathDict
+        self.updateFilePathDict()
 
     def saveFile(self):
         currentIndex = self.tabWidget.currentIndex()
         filePath = self.retrieveFilePathForTab(currentIndex)
         if filePath:
             currentWidget = self.tabWidget.currentWidget()
-            if isinstance(currentWidget, QsciScintilla):
-                content = currentWidget.text()
-                with open(filePath, "w") as file:
-                    file.write(content)
-                self.removeUnsavedChangesMarker(currentWidget)
-            elif isinstance(currentWidget, QTextEdit):
-                content = currentWidget.toPlainText()
-                with open(filePath, "w") as file:
-                    file.write(content)
-            print(f"File saved: {filePath}")
-            self.statusBar.showMessage(
-                f"File saved in {os.path.dirname(filePath)}", 4000
+            content = (
+                currentWidget.text()
+                if isinstance(currentWidget, QsciScintilla)
+                else currentWidget.toPlainText()
             )
+
+            worker = FileWorker(filePath, content, mode="w")
+            worker.signals.finished.connect(self.onFileSaveFinished)
+            worker.signals.error.connect(
+                lambda e: self.showErrorMessage("Error saving file", e)
+            )
+            self.threadPool.start(worker)
         else:
             self.saveFileAs()
+
+    def onFileSaveFinished(self, filePath, _):
+        self.removeUnsavedChangesMarker(self.tabWidget.currentWidget())
+        self.statusBar.showMessage(f"File saved in {os.path.dirname(filePath)}", 4000)
 
     def saveFileAs(self):
         filePath, _ = QFileDialog.getSaveFileName(
@@ -237,17 +266,27 @@ class Zenith(QMainWindow):
         if filePath:
             currentIndex = self.tabWidget.currentIndex()
             currentWidget = self.tabWidget.currentWidget()
-            if isinstance(currentWidget, QsciScintilla):
-                content = currentWidget.text()
-            elif isinstance(currentWidget, QTextEdit):
-                content = currentWidget.toPlainText()
-            with open(filePath, "w") as file:
-                file.write(content)
-            self.filePathDict[currentIndex] = filePath
-            fileName = os.path.basename(filePath)
-            self.tabWidget.setTabText(currentIndex, fileName)
-            self.removeUnsavedChangesMarker(currentWidget)
-            print(f"File saved as: {filePath}")
+            content = (
+                currentWidget.text()
+                if isinstance(currentWidget, QsciScintilla)
+                else currentWidget.toPlainText()
+            )
+
+            worker = FileWorker(filePath, content, mode="w")
+            worker.signals.finished.connect(
+                lambda fp, _: self.onFileSaveAsFinished(fp, currentIndex)
+            )
+            worker.signals.error.connect(
+                lambda e: self.showErrorMessage("Error saving file", e)
+            )
+            self.threadPool.start(worker)
+
+    def onFileSaveAsFinished(self, filePath, currentIndex):
+        self.filePathDict[currentIndex] = filePath
+        fileName = os.path.basename(filePath)
+        self.tabWidget.setTabText(currentIndex, fileName)
+        self.removeUnsavedChangesMarker(self.tabWidget.currentWidget())
+        self.statusBar.showMessage(f"File saved as: {filePath}", 4000)
 
     def removeUnsavedChangesMarker(self, codespace):
         UNSAVED_CHANGES_MARKER_NUM = 9
@@ -255,11 +294,11 @@ class Zenith(QMainWindow):
 
     def isModified(self):
         currentWidget = self.tabWidget.currentWidget()
-        if isinstance(currentWidget, QsciScintilla):
-            return currentWidget.isModified()
-        elif isinstance(currentWidget, QTextEdit):
-            return currentWidget.document().isModified()
-        return False
+        return (
+            currentWidget.isModified()
+            if isinstance(currentWidget, QsciScintilla)
+            else currentWidget.document().isModified()
+        )
 
     def openFolder(self):
         folderPath = QFileDialog.getExistingDirectory(self, "Select Folder")
@@ -269,22 +308,27 @@ class Zenith(QMainWindow):
 
     def updateStatusBar(self):
         sender = self.sender()
-        if isinstance(sender, QTextEdit):
-            cursor = sender.textCursor()
-            lineNumber = cursor.blockNumber() + 1
-            columnNumber = cursor.columnNumber() + 1
-            totalLines = sender.document().blockCount()
-            words = len(sender.toPlainText().split())
-        elif isinstance(sender, QsciScintilla):
-            lineNumber, columnNumber = sender.getCursorPosition()
-            lineNumber += 1
-            columnNumber += 1
-            totalLines = sender.lines()
-            words = len(sender.text().split())
-        else:
-            return  # Unknown sender
+        if isinstance(sender, (QTextEdit, QsciScintilla)):
+            lineNumber, columnNumber, totalLines, words = self.getTextStats(sender)
+            self.statusBar.updateStats(lineNumber, columnNumber, totalLines, words)
 
-        self.statusBar.updateStats(lineNumber, columnNumber, totalLines, words)
+    def getTextStats(self, widget):
+        if isinstance(widget, QTextEdit):
+            cursor = widget.textCursor()
+            return (
+                cursor.blockNumber() + 1,
+                cursor.columnNumber() + 1,
+                widget.document().blockCount(),
+                len(widget.toPlainText().split()),
+            )
+        elif isinstance(widget, QsciScintilla):
+            lineNumber, columnNumber = widget.getCursorPosition()
+            return (
+                lineNumber + 1,
+                columnNumber + 1,
+                widget.lines(),
+                len(widget.text().split()),
+            )
 
     def updateStatusBarWithLexer(self):
         currentWidget = self.tabWidget.currentWidget()
@@ -293,12 +337,9 @@ class Zenith(QMainWindow):
             if filePath:
                 fileExtension = filePath.split(".")[-1]
                 lexer = self.lexerManager.get_lexer(fileExtension)
-                if lexer:
-                    lexerName = type(lexer).__name__
-                    self.statusBar.updateLexer(lexerName)
-                else:
-                    self.statusBar.updateLexer("None")
+                lexerName = type(lexer).__name__ if lexer else "None"
             else:
-                self.statusBar.updateLexer("None")
+                lexerName = "None"
         else:
-            self.statusBar.updateLexer("None")
+            lexerName = "None"
+        self.statusBar.updateLexer(lexerName)
