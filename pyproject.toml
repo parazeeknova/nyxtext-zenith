@@ -40,5 +40,6 @@ classifiers = [
 keywords = ["nyxtext", "zenith", "IDE", "text-editor", "nyxtext-zenith"]
 dependencies = [
     "PyQt6",
+    "PyQt6-QScintilla",
     "lupa",
 ]

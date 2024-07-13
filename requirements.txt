@@ -1,2 +1,4 @@
 PyQt6
+PyQt6-QScintilla
 lupa
+nuitka
