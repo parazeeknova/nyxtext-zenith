@@ -39,6 +39,10 @@ class ZenithStatusBar(QStatusBar):
         self.wordsLabel = QLabel("⌁ Words:")
         self.wordsValueLabel = QLabel("0")
 
+        self.encodingLabel = QLabel("UTF-8")
+        self.lineEndingLabel = QLabel("LF")
+        self.fileSizeLabel = QLabel("0 KB")
+
         smallFont = QFont()
         smallFont.setPointSize(8)
 
@@ -47,6 +51,9 @@ class ZenithStatusBar(QStatusBar):
             self.columnLabel,
             self.totalLinesLabel,
             self.wordsLabel,
+            self.encodingLabel,
+            self.lineEndingLabel,
+            self.fileSizeLabel,
         ]:
             label.setFont(smallFont)
             label.setStyleSheet("color: #cad3f5;")
@@ -79,6 +86,12 @@ class ZenithStatusBar(QStatusBar):
         rightLayout.addWidget(self.wordsValueLabel)
         rightLayout.addWidget(Separator())
 
+        rightLayout.addWidget(self.encodingLabel)
+        rightLayout.addWidget(Separator())
+        rightLayout.addWidget(self.lineEndingLabel)
+        rightLayout.addWidget(Separator())
+        rightLayout.addWidget(self.fileSizeLabel)
+
         self.addPermanentWidget(rightWidget)
         self.addWidget(self.readyLabel)
 
@@ -103,3 +116,12 @@ class ZenithStatusBar(QStatusBar):
 
     def showLexerLoadingMessage(self):
         self.showMessage("Lexers are loading, please wait...", 5000)
+
+    def updateEncoding(self, encoding):
+        self.encodingLabel.setText(encoding)
+
+    def updateLineEnding(self, lineEnding):
+        self.lineEndingLabel.setText(lineEnding)
+
+    def updateFileSize(self, size):
+        self.fileSizeLabel.setText(f"{size:.2f} KB")

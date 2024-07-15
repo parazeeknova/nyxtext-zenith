@@ -16,4 +16,16 @@ def Workspace(self, content="", fileName=None):
     tabIndex = self.tabWidget.addTab(newTab, tabTitle)
     self.tabWidget.setCurrentIndex(tabIndex)
 
-    newTab.cursorPositionChanged.connect(self.updateStatusBar)
+    def update_status_bar():
+        parent = self.tabWidget.parent()
+        while parent is not None:
+            if hasattr(parent, "updateStatusBar"):
+                parent.updateStatusBar()
+                break
+            parent = parent.parent()
+
+    newTab.textChanged.connect(update_status_bar)
+    newTab.cursorPositionChanged.connect(update_status_bar)
+
+    # Update status bar immediately after creating the workspace
+    update_status_bar()

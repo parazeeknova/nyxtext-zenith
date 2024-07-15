@@ -203,8 +203,18 @@ def Codespace(tabWidget, content="", file_path=None):
             current_line, _ = C.getCursorPosition()
             C.markerAdd(current_line, UNSAVED_CHANGES_MARKER_NUM)
             C.setModified(True)
+            update_status_bar()
+
+        def update_status_bar():
+            parent = tabWidget.parent()
+            while parent is not None:
+                if hasattr(parent, "updateStatusBar"):
+                    parent.updateStatusBar()
+                    break
+                parent = parent.parent()
 
         C.textChanged.connect(on_text_changed)
+        C.cursorPositionChanged.connect(update_status_bar)
         text_change_queue = Queue()
 
         def text_change_worker():

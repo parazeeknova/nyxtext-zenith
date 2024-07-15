@@ -1,5 +1,6 @@
 import os
 
+import chardet
 from PyQt6.Qsci import QsciScintilla
 from PyQt6.QtCore import QObject, QRunnable, Qt, QThreadPool, pyqtSignal
 from PyQt6.QtGui import QIcon
@@ -197,6 +198,8 @@ class Zenith(QMainWindow):
             self.tabWidget.setCurrentIndex(tabIndex)
             self.statusBar.showMessage(f"Opened file: {filePath}", 4000)
 
+            self.updateStatusBar()
+
             # Add file content to cache
             self.fileCache.set(filePath, content)
         except Exception as e:
@@ -324,28 +327,24 @@ class Zenith(QMainWindow):
             self.fileTree.setRootFolder(folderPath)
             self.folderOpened.emit(folderPath)
 
-    def updateStatusBar(self):
-        sender = self.sender()
-        if isinstance(sender, (QTextEdit, QsciScintilla)):
-            lineNumber, columnNumber, totalLines, words = self.getTextStats(sender)
-            self.statusBar.updateStats(lineNumber, columnNumber, totalLines, words)
-
     def getTextStats(self, widget):
         if isinstance(widget, QTextEdit):
             cursor = widget.textCursor()
+            text = widget.toPlainText()
             return (
                 cursor.blockNumber() + 1,
                 cursor.columnNumber() + 1,
                 widget.document().blockCount(),
-                len(widget.toPlainText().split()),
+                len(text.split()),
             )
         elif isinstance(widget, QsciScintilla):
             lineNumber, columnNumber = widget.getCursorPosition()
+            text = widget.text()
             return (
                 lineNumber + 1,
                 columnNumber + 1,
                 widget.lines(),
-                len(widget.text().split()),
+                len(text.split()),
             )
 
     def updateStatusBarWithLexer(self):
@@ -361,3 +360,55 @@ class Zenith(QMainWindow):
         else:
             lexerName = "None"
         self.statusBar.updateLexer(lexerName)
+
+    def updateStatusBar(self):
+        currentWidget = self.tabWidget.currentWidget()
+        if isinstance(currentWidget, (QTextEdit, QsciScintilla)):
+            lineNumber, columnNumber, totalLines, words = self.getTextStats(
+                currentWidget
+            )
+            self.statusBar.updateStats(lineNumber, columnNumber, totalLines, words)
+
+            filePath = self.filePathDict.get(self.tabWidget.currentIndex())
+            if filePath:
+                encoding = self.getFileEncoding(filePath)
+                lineEnding = self.getLineEnding(currentWidget)
+                fileSize = self.getFileSize(filePath)
+
+                self.statusBar.updateEncoding(encoding)
+                self.statusBar.updateLineEnding(lineEnding)
+                self.statusBar.updateFileSize(fileSize)
+
+    def getFileEncoding(self, filePath):
+        try:
+            with open(filePath, "rb") as file:
+                raw = file.read(4096)
+            result = chardet.detect(raw)
+            return result["encoding"] or "Unknown"
+        except Exception:
+            return "Unknown"
+
+    def getLineEnding(self, widget):
+        if isinstance(widget, QsciScintilla):
+            eol_mode = widget.eolMode()
+            if eol_mode == QsciScintilla.EolMode.EolWindows:
+                return "CRLF"
+            elif eol_mode == QsciScintilla.EolMode.EolUnix:
+                return "LF"
+            elif eol_mode == QsciScintilla.EolMode.EolMac:
+                return "CR"
+        elif isinstance(widget, QTextEdit):
+            text = widget.toPlainText()
+            if "\r\n" in text:
+                return "CRLF"
+            elif "\n" in text:
+                return "LF"
+            elif "\r" in text:
+                return "CR"
+        return "Unknown"
+
+    def getFileSize(self, filePath):
+        try:
+            return os.path.getsize(filePath) / 1024  # Size in KB
+        except Exception:
+            return 0
