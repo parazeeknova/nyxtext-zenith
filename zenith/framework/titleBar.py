@@ -53,7 +53,7 @@ class CustomTitleBar(QWidget):
         self.closeButton = QPushButton(self)
         self.closeButton.setIcon(QIcon(closeIcon))
         self.closeButton.setIconSize(QSize(12, 12))
-        self.closeButton.clicked.connect(parent.close)
+        self.closeButton.clicked.connect(parent.closeApplication)
         self.layout.addWidget(self.closeButton)
         self.closeButton.setStyleSheet(
             "QPushButton {background-color: transparent; border: none;padding: 5px;}"
@@ -96,3 +96,6 @@ class CustomTitleBar(QWidget):
     def setup_minimal_titlebar(self):
         self.menuBar = menu_bar(self, self.zenithInstance)
         self.layout.addWidget(self.menuBar)
+
+    def closeApplication(self):
+        self.parent().close()

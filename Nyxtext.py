@@ -23,4 +23,4 @@ def Nyxtext():
 
 
 if __name__ == "__main__":
-    Nyxtext()
+    Nyxtext()
