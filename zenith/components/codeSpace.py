@@ -181,12 +181,12 @@ def Codespace(tabWidget, content="", file_path=None):
             QColor(color_schemes["breakpoint"]), BREAKPOINT_MARKER_NUM
         )
 
-        def on_margin_clicked(nmargin, nline):
-            if nmargin == 1:
-                if C.markersAtLine(nline) & (1 << BREAKPOINT_MARKER_NUM):
-                    C.markerDelete(nline, BREAKPOINT_MARKER_NUM)
+        def on_margin_clicked(margin, line, state):
+            if margin == 1:  # Assuming 1 is the margin number for breakpoints
+                if C.markersAtLine(line) & (1 << BREAKPOINT_MARKER_NUM):
+                    C.markerDelete(line, BREAKPOINT_MARKER_NUM)
                 else:
-                    C.markerAdd(nline, BREAKPOINT_MARKER_NUM)
+                    C.markerAdd(line, BREAKPOINT_MARKER_NUM)
 
         C.marginClicked.connect(on_margin_clicked)
         C.setMarginSensitivity(1, True)
@@ -216,6 +216,51 @@ def Codespace(tabWidget, content="", file_path=None):
         C.textChanged.connect(on_text_changed)
         C.cursorPositionChanged.connect(update_status_bar)
         text_change_queue = Queue()
+
+        READONLY_MARKER_NUM = 10
+        EDIT_MARKER_NUM = 11
+        C.markerDefine(QsciScintilla.MarkerSymbol.RightTriangle, READONLY_MARKER_NUM)
+        C.markerDefine(QsciScintilla.MarkerSymbol.Circle, EDIT_MARKER_NUM)
+        C.setMarkerBackgroundColor(
+            QColor("#a6da95"), READONLY_MARKER_NUM
+        )  # Green for readonly
+        C.setMarkerBackgroundColor(
+            QColor("#ee99a0"), EDIT_MARKER_NUM
+        )  # Red for edit mode
+
+        C.setReadOnly(True)  # Set initial readonly state
+        C.markerAdd(0, READONLY_MARKER_NUM)
+
+        def toggle_edit_mode(prompt=True):
+            is_readonly = C.isReadOnly()
+            if is_readonly and prompt:
+                reply = QMessageBox.question(
+                    C,
+                    "Read-only Mode",
+                    "The file is in read-only mode. "
+                    "Do you want to switch to edit mode?",
+                    QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+                    QMessageBox.StandardButton.No,
+                )
+                if reply == QMessageBox.StandardButton.No:
+                    return
+
+            C.setReadOnly(not is_readonly)
+            C.markerDeleteAll(READONLY_MARKER_NUM)
+            C.markerDeleteAll(EDIT_MARKER_NUM)
+            C.markerAdd(0, EDIT_MARKER_NUM if not is_readonly else READONLY_MARKER_NUM)
+            update_status_bar()
+
+        C.toggle_edit_mode = toggle_edit_mode
+
+        def handle_key_press(event):
+            if C.isReadOnly():
+                toggle_edit_mode()
+                if C.isReadOnly():  # If still readonly after prompt
+                    return  # Don't process the key press
+            QsciScintilla.keyPressEvent(C, event)
+
+        C.keyPressEvent = handle_key_press
 
         def text_change_worker():
             while True:

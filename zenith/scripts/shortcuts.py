@@ -26,6 +26,11 @@ def key_shortcuts(main_window):
         prev_tab_shortcut = QShortcut(QKeySequence(shortcuts["prev_tab"]), main_window)
         prev_tab_shortcut.activated.connect(main_window.prevTab)
 
+        toggle_edit_mode_shortcut = QShortcut(
+            QKeySequence(shortcuts["edit_mode"]), main_window
+        )
+        toggle_edit_mode_shortcut.activated.connect(main_window.toggleEditMode)
+
     except LuaError as e:
         QMessageBox.warning(main_window, "Error", f"Error executing Lua script: {e}")
     except FileNotFoundError:

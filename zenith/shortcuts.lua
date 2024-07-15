@@ -10,5 +10,6 @@ return {
   toggle_file_tree = "Ctrl+F",
   next_tab = "Ctrl+Tab",
   prev_tab = "Ctrl+Shift+Tab",
-  exit = "Ctrl+Shift+Q"
+  exit = "Ctrl+Shift+Q",
+  edit_mode = "Ctrl+E",
 }

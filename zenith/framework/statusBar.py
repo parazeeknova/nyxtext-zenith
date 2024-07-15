@@ -26,10 +26,6 @@ class ZenithStatusBar(QStatusBar):
         """
         )
 
-        self.readyLabel = QLabel("READY")
-        self.readyLabel.setStyleSheet(
-            "color: #a6da95; font-weight: bold; margin-bottom: 5px;"
-        )
         self.lineLabel = QLabel("▼ Line:")
         self.lineValueLabel = QLabel("0")
         self.columnLabel = QLabel("▲ Column:")
@@ -93,7 +89,6 @@ class ZenithStatusBar(QStatusBar):
         rightLayout.addWidget(self.fileSizeLabel)
 
         self.addPermanentWidget(rightWidget)
-        self.addWidget(self.readyLabel)
 
         self.lexerLabel = QLabel("Lexer: None")
         self.lexerLabel.setFont(smallFont)
@@ -101,9 +96,13 @@ class ZenithStatusBar(QStatusBar):
         rightLayout.addWidget(self.lexerLabel)
         rightLayout.addWidget(Separator())
 
-    def showMessage(self, message, timeout=0):
-        super().showMessage(message, timeout)
-        self.readyLabel.setVisible(not bool(message))
+        self.editModeLabel = QLabel("ReadOnly")
+        self.editModeLabel.setFont(smallFont)
+        self.editModeLabel.setStyleSheet(
+            "color: #cad3f5; font-weight: bold; margin-bottom: 5px;"
+        )
+
+        self.addWidget(self.editModeLabel)
 
     def updateStats(self, line, column, total_lines, words):
         self.lineValueLabel.setText(str(line))
@@ -125,3 +124,10 @@ class ZenithStatusBar(QStatusBar):
 
     def updateFileSize(self, size):
         self.fileSizeLabel.setText(f"{size:.2f} KB")
+
+    def updateEditMode(self, mode):
+        self.editModeLabel.setText(mode)
+        if mode == "ReadOnly":
+            self.editModeLabel.setStyleSheet("color: #a6da95;")
+        else:
+            self.editModeLabel.setStyleSheet("color: #ee99a0;")

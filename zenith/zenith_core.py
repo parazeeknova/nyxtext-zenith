@@ -217,7 +217,15 @@ class Zenith(QMainWindow):
 
     def openFileFromTree(self, filePath):
         self.centralizedOpenFile(filePath)
+        currentWidget = self.tabWidget.currentWidget()
+        if isinstance(currentWidget, QsciScintilla) and hasattr(
+            currentWidget, "toggle_edit_mode"
+        ):
+            currentWidget.setReadOnly(True)
+            currentWidget.markerDeleteAll(11)  # Delete edit mode marker
+            currentWidget.markerAdd(0, 10)  # Add readonly marker
         self.updateStatusBarWithLexer()
+        self.updateStatusBar()
 
     def onTabChange(self, index):
         filePath = self.retrieveFilePathForTab(index)
@@ -378,6 +386,8 @@ class Zenith(QMainWindow):
                 self.statusBar.updateEncoding(encoding)
                 self.statusBar.updateLineEnding(lineEnding)
                 self.statusBar.updateFileSize(fileSize)
+            editMode = "Edit" if not currentWidget.isReadOnly() else "ReadOnly"
+            self.statusBar.updateEditMode(editMode)
 
     def getFileEncoding(self, filePath):
         try:
@@ -412,3 +422,13 @@ class Zenith(QMainWindow):
             return os.path.getsize(filePath) / 1024  # Size in KB
         except Exception:
             return 0
+
+    def toggleEditMode(self):
+        currentWidget = self.tabWidget.currentWidget()
+        if isinstance(currentWidget, QsciScintilla) and hasattr(
+            currentWidget, "toggle_edit_mode"
+        ):
+            currentWidget.toggle_edit_mode(
+                prompt=False
+            )  # Don't prompt when using shortcut
+        self.updateStatusBar()
