@@ -92,3 +92,7 @@ class CustomTitleBar(QWidget):
             self.titleLabel.setText(f"{fileName} - Zenith")
         else:
             self.titleLabel.setText("Zenith")
+
+    def setup_minimal_titlebar(self):
+        self.menuBar = menu_bar(self, self.zenithInstance)
+        self.layout.addWidget(self.menuBar)

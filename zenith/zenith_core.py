@@ -1,6 +1,7 @@
 import os
 
 import chardet
+from lupa import LuaRuntime
 from PyQt6.Qsci import QsciScintilla
 from PyQt6.QtCore import QObject, QRunnable, Qt, QThreadPool, pyqtSignal
 from PyQt6.QtGui import QIcon
@@ -58,6 +59,12 @@ class Zenith(QMainWindow):
 
     def __init__(self):
         super().__init__()
+        self.lua = LuaRuntime(unpack_returned_tuples=True)
+        self.preferences = self.load_preferences()
+
+        if self.preferences.get('hide_default_titlebar', False):
+            self.setWindowFlag(Qt.WindowType.FramelessWindowHint)
+
         self.threadPool = QThreadPool()
         self.lexerManager = LexerManager()
         self.filePathDict = {}
@@ -68,13 +75,16 @@ class Zenith(QMainWindow):
         self.setupConnections()
 
     def setupUI(self):
-        self.setWindowFlag(Qt.WindowType.FramelessWindowHint)
         self.setWindowTitle("Zenith")
         self.setGeometry(100, 100, 800, 600)
         self.setWindowIcon(QIcon(resource(r"../media/icon.ico")))
 
         self.titleBar = CustomTitleBar(self, self)
-        self.setMenuWidget(self.titleBar)
+        if self.preferences.get('hide_default_titlebar', False):
+            self.setMenuWidget(self.titleBar)
+        else:
+            # If using default title bar, add the menu bar to the main window
+            self.setMenuBar(self.titleBar.menuBar)
 
         centralWidget = QWidget(self)
         self.setCentralWidget(centralWidget)
@@ -432,3 +442,19 @@ class Zenith(QMainWindow):
                 prompt=False
             )  # Don't prompt when using shortcut
         self.updateStatusBar()
+
+    def load_preferences(self):
+        try:
+            with open("zenith/config.lua", "r") as file:
+                lua_code = file.read()
+            preferences = self.lua.execute(lua_code)
+            if preferences is None:
+                raise ValueError("Lua script did not return a table")
+            return dict(preferences)
+        except FileNotFoundError:
+            QMessageBox.warning(self, "Error", "Preferences file not found.")
+        except ValueError as e:
+            QMessageBox.warning(self, "Error", f"Invalid preferences file: {e}")
+        except Exception as e:
+            QMessageBox.warning(self, "Error", f"An unexpected error occurred: {e}")
+        return {}
