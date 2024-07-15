@@ -156,9 +156,9 @@ class Zenith(QMainWindow):
             dialog.setWindowTitle("Unsaved Changes")
             dialog.setText("There are unsaved changes. What would you like to do?")
             dialog.setStandardButtons(
-                QMessageBox.StandardButton.SaveAll |
-                QMessageBox.StandardButton.Discard |
-                QMessageBox.StandardButton.Cancel
+                QMessageBox.StandardButton.SaveAll
+                | QMessageBox.StandardButton.Discard
+                | QMessageBox.StandardButton.Cancel
             )
             dialog.setDefaultButton(QMessageBox.StandardButton.SaveAll)
 
@@ -506,11 +506,13 @@ class Zenith(QMainWindow):
             self.tabWidget.setCurrentIndex(index)
             dialog = QMessageBox(self)
             dialog.setWindowTitle("Unsaved Changes")
-            dialog.setText(f"The file in tab {index + 1} has unsaved changes. Do you want to save before closing?")
+            dialog.setText(
+                f"The file in tab {index + 1} has unsaved changes. Do you want to save before closing?"
+            )
             dialog.setStandardButtons(
-                QMessageBox.StandardButton.Save |
-                QMessageBox.StandardButton.Discard |
-                QMessageBox.StandardButton.Cancel
+                QMessageBox.StandardButton.Save
+                | QMessageBox.StandardButton.Discard
+                | QMessageBox.StandardButton.Cancel
             )
             dialog.setDefaultButton(QMessageBox.StandardButton.Save)
 
