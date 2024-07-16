@@ -1,9 +1,9 @@
 import os
 
 from PyQt6.QtCore import QDir, pyqtSignal
-from PyQt6.QtGui import QFileSystemModel
 from PyQt6.QtWidgets import QTreeView
 
+from ..core.customFileSystemModel import CustomFileSystemModel
 from ..scripts.color_scheme_loader import color_schemes
 
 
@@ -14,7 +14,7 @@ class FileTree(QTreeView):
         super().__init__(parent)
 
         self.doubleClicked.connect(self.onFileSelected)
-        self.model = QFileSystemModel()
+        self.model = CustomFileSystemModel(self)
         self.model.setFilter(
             QDir.Filter.Files | QDir.Filter.Dirs | QDir.Filter.NoDotAndDotDot
         )
