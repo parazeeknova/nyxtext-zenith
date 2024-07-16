@@ -218,6 +218,7 @@ Nyxtext and letting me know how well it works.
 - Custom titlebar with inbuild menubar.
 - Statusbar with line and column number.
 - Dynamic **statusbar** that displays operations performed.
+- Read-only mode for files by default to enter edit mode press `Ctrl + E`.
 
 _More features coming soon._
 
@@ -240,6 +241,7 @@ _More features coming soon._
 | `Ctrl + W` | Close Tab |
 | `Ctrl + Shift + W` | Close All Tabs |
 | `Ctrl + Shift + Q` | Exit |
+| `Ctrl + E` | Toggle Edit mode |
 | `...` | More soon |
 
 > [!TIP]

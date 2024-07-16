@@ -3,7 +3,7 @@ import sys
 
 from PyQt6.QtWidgets import QApplication
 
-from zenith.zenith_core import Zenith
+from zenith.core.zenith_core import Zenith
 
 
 def Nyxtext():

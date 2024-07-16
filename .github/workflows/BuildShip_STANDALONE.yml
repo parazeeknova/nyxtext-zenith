@@ -30,14 +30,6 @@ jobs:
         run: |
           echo Yes | python -m nuitka --standalone --include-data-dir=zenith/media=zenith/media --include-data-files=zenith/shortcuts.lua=zenith/shortcuts.lua --include-data-files=zenith/color_schemes.lua=zenith/color_schemes.lua --enable-plugin=pyqt6 --include-module=PyQt6.Qsci --windows-console-mode=disable --windows-icon-from-ico=zenith/media/icon.ico Nyxtext.py
 
-      - name: Copy lupa package
-        run: |
-          xcopy /E /I .venv\Lib\site-packages\lupa Nyxtext.dist\lupa\
-
-      - name: List contents of Nyxtext.dist
-        run: |
-          Get-ChildItem -Path Nyxtext.dist -Recurse
-
       - name: Zip Standalone Version
         run: |
           Compress-Archive -Path Nyxtext.dist\* -DestinationPath Zenith_Standalone.zip -Force

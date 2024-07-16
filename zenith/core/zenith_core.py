@@ -24,17 +24,17 @@ from PyQt6.QtWidgets import (
     QWidget,
 )
 
-from .components.codeSpace import Codespace
-from .components.rightSideBar import FileTreeWidget
-from .components.tabTopbar import tabRow
-from .components.workSpace import Workspace
-from .framework.lexer_manager import LexerManager
-from .framework.statusBar import ZenithStatusBar
-from .framework.titleBar import CustomTitleBar
-from .scripts.color_scheme_loader import color_schemes
-from .scripts.def_path import resource
-from .scripts.file_cache import FileCache
-from .scripts.shortcuts import key_shortcuts
+from ..components.codeSpace import Codespace
+from ..components.rightSideBar import FileTreeWidget
+from ..components.tabTopbar import tabRow
+from ..components.workSpace import Workspace
+from ..framework.lexer_manager import LexerManager
+from ..framework.statusBar import ZenithStatusBar
+from ..framework.titleBar import CustomTitleBar
+from ..scripts.color_scheme_loader import color_schemes
+from ..scripts.def_path import resource
+from ..scripts.file_cache import FileCache
+from ..scripts.shortcuts import key_shortcuts
 
 
 class FileWorker(QRunnable):
