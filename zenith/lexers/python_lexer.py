@@ -19,12 +19,17 @@ def customize_python_lexer(lexer, color_schemes):
     for style, color_key in [
         (QsciLexerPython.Default, "default"),
         (QsciLexerPython.Keyword, "keyword"),
-        (QsciLexerPython.Comment, "comment"),
+        (QsciLexerPython.Number, "numbers"),
         (QsciLexerPython.DoubleQuotedString, "string"),
         (QsciLexerPython.SingleQuotedString, "string2"),
-        (QsciLexerPython.Number, "numbers"),
-        (QsciLexerPython.ClassName, "class"),
-        (QsciLexerPython.FunctionMethodName, "func"),
+        (QsciLexerPython.TripleSingleQuotedString, "string"),
+        (QsciLexerPython.TripleDoubleQuotedString, "string2"),
+        (QsciLexerPython.Comment, "comment"),
+        (QsciLexerPython.CommentBlock, "comment"),
+        (QsciLexerPython.Identifier, "default"),
         (QsciLexerPython.Operator, "operators"),
+        (QsciLexerPython.FunctionMethodName, "func"),
+        (QsciLexerPython.ClassName, "class"),
+        (QsciLexerPython.Decorator, "keyword"),
     ]:
         lexer.setColor(QColor(color_schemes[color_key]), style)

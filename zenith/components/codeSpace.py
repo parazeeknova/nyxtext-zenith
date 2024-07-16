@@ -5,14 +5,24 @@ from threading import Thread
 
 from lupa import LuaRuntime  # type: ignore
 from PyQt6.Qsci import (
+    QsciLexerBash,
+    QsciLexerBatch,
+    QsciLexerCMake,
     QsciLexerCPP,
     QsciLexerCSS,
     QsciLexerHTML,
+    QsciLexerJava,
     QsciLexerJavaScript,
     QsciLexerJSON,
     QsciLexerLua,
     QsciLexerMarkdown,
+    QsciLexerPerl,
+    QsciLexerProperties,
     QsciLexerPython,
+    QsciLexerRuby,
+    QsciLexerSQL,
+    QsciLexerXML,
+    QsciLexerYAML,
     QsciScintilla,
 )
 from PyQt6.QtGui import QColor
@@ -92,12 +102,33 @@ def Codespace(tabWidget, content="", file_path=None):
                         customize_func = lexer_manager.customize_json_lexer
                     elif isinstance(lexer, QsciLexerLua):
                         customize_func = lexer_manager.customize_lua_lexer
+                    elif isinstance(lexer, QsciLexerPerl):
+                        customize_func = lexer_manager.customize_perl_lexer
+                    elif isinstance(lexer, QsciLexerRuby):
+                        customize_func = lexer_manager.customize_ruby_lexer
+                    elif isinstance(lexer, QsciLexerSQL):
+                        customize_func = lexer_manager.customize_sql_lexer
+                    elif isinstance(lexer, QsciLexerXML):
+                        customize_func = lexer_manager.customize_xml_lexer
+                    elif isinstance(lexer, QsciLexerYAML):
+                        customize_func = lexer_manager.customize_yaml_lexer
+                    elif isinstance(lexer, QsciLexerBash):
+                        customize_func = lexer_manager.customize_bash_lexer
+                    elif isinstance(lexer, QsciLexerBatch):
+                        customize_func = lexer_manager.customize_batch_lexer
+                    elif isinstance(lexer, QsciLexerCMake):
+                        customize_func = lexer_manager.customize_cmake_lexer
+                    elif isinstance(lexer, QsciLexerJava):
+                        customize_func = lexer_manager.customize_java_lexer
+                    elif isinstance(lexer, QsciLexerProperties):
+                        customize_func = lexer_manager.customize_properties_lexer
                     elif isinstance(lexer, QsciLexerMarkdown):
                         customize_func = lexer_manager.customize_md_lexer
 
                     if customize_func:
                         thread_pool.submit(customize_func, lexer)
                     C.setLexer(lexer)
+                    C.recolor()
 
         color_schemes = color_schemes_future.result()  # Wait for color schemes to load
         C.setPaper(QColor(color_schemes["background_codespace"]))

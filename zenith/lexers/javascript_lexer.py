@@ -15,12 +15,17 @@ def customize_javascript_lexer(lexer, color_schemes):
     for style, color_key in [
         (QsciLexerJavaScript.Default, "default"),
         (QsciLexerJavaScript.Keyword, "keyword"),
-        (QsciLexerJavaScript.Comment, "comment"),
+        (QsciLexerJavaScript.Number, "numbers"),
         (QsciLexerJavaScript.DoubleQuotedString, "string"),
         (QsciLexerJavaScript.SingleQuotedString, "string2"),
-        (QsciLexerJavaScript.Number, "numbers"),
+        (QsciLexerJavaScript.Comment, "comment"),
+        (QsciLexerJavaScript.CommentLine, "comment"),
+        (QsciLexerJavaScript.CommentDoc, "comment"),
         (QsciLexerJavaScript.Identifier, "default"),
         (QsciLexerJavaScript.Operator, "operators"),
-        (QsciLexerJavaScript.Regex, "regex"),
+        (QsciLexerJavaScript.UnclosedString, "string"),
+        (QsciLexerJavaScript.RegEx, "regex"),
+        (QsciLexerJavaScript.CommentLineDoc, "comment"),
+        (QsciLexerJavaScript.TemplateString, "string"),
     ]:
         lexer.setColor(QColor(color_schemes[color_key]), style)

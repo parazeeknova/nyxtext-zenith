@@ -41,14 +41,24 @@ from PyQt6.Qsci import (
 )
 from PyQt6.QtWidgets import QMessageBox
 
+from ..lexers.bash_lexer import customize_bash_lexer
+from ..lexers.batch_lexer import customize_batch_lexer
+from ..lexers.cmake_lexer import customize_cmake_lexer
 from ..lexers.cpp_lexer import customize_cpp_lexer
 from ..lexers.css_lexer import customize_css_lexer
 from ..lexers.html_lexer import customize_html_lexer
+from ..lexers.java_lexer import customize_java_lexer
 from ..lexers.javascript_lexer import customize_javascript_lexer
 from ..lexers.json_lexer import customize_json_lexer
 from ..lexers.lua_lexer import customize_lua_lexer
-from ..lexers.md_lexer import customize_md_lexer
+from ..lexers.markdown_lexer import customize_md_lexer
+from ..lexers.perl_lexer import customize_perl_lexer
+from ..lexers.properties_lexer import customize_properties_lexer
 from ..lexers.python_lexer import customize_python_lexer
+from ..lexers.ruby_lexer import customize_ruby_lexer
+from ..lexers.sql_lexer import customize_sql_lexer
+from ..lexers.xml_lexer import customize_xml_lexer
+from ..lexers.yaml_lexer import customize_yaml_lexer
 
 lua = LuaRuntime(unpack_returned_tuples=True)
 
@@ -132,30 +142,33 @@ class LexerManager:
         }
         self.color_schemes = self.load_color_schemes()
 
-        self.customize_python_lexer = lambda lexer: customize_python_lexer(
-            lexer, self.color_schemes
-        )
-        self.customize_javascript_lexer = lambda lexer: customize_javascript_lexer(
-            lexer, self.color_schemes
-        )
-        self.customize_cpp_lexer = lambda lexer: customize_cpp_lexer(
-            lexer, self.color_schemes
-        )
-        self.customize_css_lexer = lambda lexer: customize_css_lexer(
-            lexer, self.color_schemes
-        )
-        self.customize_html_lexer = lambda lexer: customize_html_lexer(
-            lexer, self.color_schemes
-        )
-        self.customize_json_lexer = lambda lexer: customize_json_lexer(
-            lexer, self.color_schemes
-        )
-        self.customize_lua_lexer = lambda lexer: customize_lua_lexer(
-            lexer, self.color_schemes
-        )
-        self.customize_md_lexer = lambda lexer: customize_md_lexer(
-            lexer, self.color_schemes
-        )
+        lexer_customizations = {
+            "python": customize_python_lexer,
+            "javascript": customize_javascript_lexer,
+            "cpp": customize_cpp_lexer,
+            "css": customize_css_lexer,
+            "html": customize_html_lexer,
+            "json": customize_json_lexer,
+            "lua": customize_lua_lexer,
+            "md": customize_md_lexer,
+            "perl": customize_perl_lexer,
+            "ruby": customize_ruby_lexer,
+            "sql": customize_sql_lexer,
+            "xml": customize_xml_lexer,
+            "yaml": customize_yaml_lexer,
+            "bash": customize_bash_lexer,
+            "batch": customize_batch_lexer,
+            "cmake": customize_cmake_lexer,
+            "java": customize_java_lexer,
+            "properties": customize_properties_lexer,
+        }
+
+        for lexer_name, customization_func in lexer_customizations.items():
+            setattr(
+                self,
+                f"customize_{lexer_name}_lexer",
+                lambda lexer, func=customization_func: func(lexer, self.color_schemes),
+            )
 
     def load_color_schemes(self):
         scheme = r"zenith\color_schemes.lua"
