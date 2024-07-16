@@ -1,7 +1,9 @@
 import os
+
 from PyQt6.QtCore import QDir, pyqtSignal
 from PyQt6.QtGui import QFileSystemModel
 from PyQt6.QtWidgets import QTreeView
+
 from ..scripts.color_scheme_loader import color_schemes
 
 

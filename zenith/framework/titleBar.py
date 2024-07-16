@@ -2,9 +2,9 @@ from PyQt6.QtCore import QPoint, QSize, Qt
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QHBoxLayout, QLabel, QPushButton, QWidget
 
+from ..scripts.color_scheme_loader import color_schemes
 from ..scripts.def_path import resource
 from .intMenuBar import menu_bar
-from ..scripts.color_scheme_loader import color_schemes
 
 titleIcon = resource(r"../media/icon.ico")
 minimiseIcon = resource(r"../media/titlebar/minimise.svg")

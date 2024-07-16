@@ -1,11 +1,6 @@
 from PyQt6.QtGui import QFont
-from PyQt6.QtWidgets import (
-    QFrame,
-    QHBoxLayout,
-    QLabel,
-    QStatusBar,
-    QWidget,
-)
+from PyQt6.QtWidgets import QFrame, QHBoxLayout, QLabel, QStatusBar, QWidget
+
 from ..scripts.color_scheme_loader import color_schemes
 
 
