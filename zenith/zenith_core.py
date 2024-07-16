@@ -31,10 +31,10 @@ from .components.workSpace import Workspace
 from .framework.lexer_manager import LexerManager
 from .framework.statusBar import ZenithStatusBar
 from .framework.titleBar import CustomTitleBar
+from .scripts.color_scheme_loader import color_schemes
 from .scripts.def_path import resource
 from .scripts.file_cache import FileCache
 from .scripts.shortcuts import key_shortcuts
-from .scripts.color_scheme_loader import color_schemes
 
 
 class FileWorker(QRunnable):
@@ -142,9 +142,7 @@ class Zenith(QMainWindow):
 
     def setApplicationPalette(self):
         palette = QPalette()
-        palette.setColor(
-            QPalette.ColorRole.Window, QColor(color_schemes["background"])
-        )
+        palette.setColor(QPalette.ColorRole.Window, QColor(color_schemes["background"]))
         palette.setColor(
             QPalette.ColorRole.WindowText, QColor(color_schemes["foreground"])
         )
@@ -160,18 +158,12 @@ class Zenith(QMainWindow):
         palette.setColor(
             QPalette.ColorRole.ToolTipText, QColor(color_schemes["foreground"])
         )
-        palette.setColor(
-            QPalette.ColorRole.Text, QColor(color_schemes["foreground"])
-        )
-        palette.setColor(
-            QPalette.ColorRole.Button, QColor(color_schemes["surface1"])
-        )
+        palette.setColor(QPalette.ColorRole.Text, QColor(color_schemes["foreground"]))
+        palette.setColor(QPalette.ColorRole.Button, QColor(color_schemes["surface1"]))
         palette.setColor(
             QPalette.ColorRole.ButtonText, QColor(color_schemes["foreground"])
         )
-        palette.setColor(
-            QPalette.ColorRole.BrightText, QColor(color_schemes["red"])
-        )
+        palette.setColor(QPalette.ColorRole.BrightText, QColor(color_schemes["red"]))
         palette.setColor(QPalette.ColorRole.Link, QColor(color_schemes["blue"]))
         palette.setColor(
             QPalette.ColorRole.Highlight, QColor(color_schemes["selection_bg"])

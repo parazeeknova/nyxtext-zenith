@@ -1,6 +1,6 @@
+from lupa import LuaError, LuaRuntime
 from PyQt6.QtGui import QAction
 from PyQt6.QtWidgets import QApplication, QMenuBar, QMessageBox
-from lupa import LuaError, LuaRuntime
 
 from ..components.codeSpace import Codespace
 from ..scripts.color_scheme_loader import color_schemes

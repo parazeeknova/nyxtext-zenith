@@ -1,4 +1,5 @@
 from PyQt6.QtWidgets import QTabWidget
+
 from ..scripts.color_scheme_loader import color_schemes
 
 
