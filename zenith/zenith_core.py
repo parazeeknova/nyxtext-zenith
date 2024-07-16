@@ -12,7 +12,7 @@ from PyQt6.QtCore import (
     QThreadPool,
     pyqtSignal,
 )
-from PyQt6.QtGui import QIcon
+from PyQt6.QtGui import QColor, QIcon, QPalette
 from PyQt6.QtWidgets import (
     QApplication,
     QFileDialog,
@@ -34,6 +34,7 @@ from .framework.titleBar import CustomTitleBar
 from .scripts.def_path import resource
 from .scripts.file_cache import FileCache
 from .scripts.shortcuts import key_shortcuts
+from .scripts.color_scheme_loader import color_schemes
 
 
 class FileWorker(QRunnable):
@@ -105,6 +106,8 @@ class Zenith(QMainWindow):
         self.setGeometry(100, 100, 800, 600)
         self.setWindowIcon(QIcon(resource(r"../media/icon.ico")))
 
+        self.setApplicationPalette()
+
         self.titleBar = CustomTitleBar(self, self)
         if self.preferences.get("hide_default_titlebar", False):
             self.setMenuWidget(self.titleBar)
@@ -136,6 +139,50 @@ class Zenith(QMainWindow):
         )
 
         self.codespace = Codespace(self.tabWidget)
+
+    def setApplicationPalette(self):
+        palette = QPalette()
+        palette.setColor(
+            QPalette.ColorRole.Window, QColor(color_schemes["background"])
+        )
+        palette.setColor(
+            QPalette.ColorRole.WindowText, QColor(color_schemes["foreground"])
+        )
+        palette.setColor(
+            QPalette.ColorRole.Base, QColor(color_schemes["background_codespace"])
+        )
+        palette.setColor(
+            QPalette.ColorRole.AlternateBase, QColor(color_schemes["surface0"])
+        )
+        palette.setColor(
+            QPalette.ColorRole.ToolTipBase, QColor(color_schemes["background"])
+        )
+        palette.setColor(
+            QPalette.ColorRole.ToolTipText, QColor(color_schemes["foreground"])
+        )
+        palette.setColor(
+            QPalette.ColorRole.Text, QColor(color_schemes["foreground"])
+        )
+        palette.setColor(
+            QPalette.ColorRole.Button, QColor(color_schemes["surface1"])
+        )
+        palette.setColor(
+            QPalette.ColorRole.ButtonText, QColor(color_schemes["foreground"])
+        )
+        palette.setColor(
+            QPalette.ColorRole.BrightText, QColor(color_schemes["red"])
+        )
+        palette.setColor(QPalette.ColorRole.Link, QColor(color_schemes["blue"]))
+        palette.setColor(
+            QPalette.ColorRole.Highlight, QColor(color_schemes["selection_bg"])
+        )
+        palette.setColor(
+            QPalette.ColorRole.HighlightedText,
+            QColor(color_schemes["selection_fg"]),
+        )
+
+        self.setPalette(palette)
+        QApplication.setPalette(palette)
 
     def setupConnections(self):
         self.fileTree.visibilityChanged.connect(self.adjustSplitter)
@@ -507,7 +554,8 @@ class Zenith(QMainWindow):
             dialog = QMessageBox(self)
             dialog.setWindowTitle("Unsaved Changes")
             dialog.setText(
-                f"The file in tab {index + 1} has unsaved changes. Do you want to save before closing?"
+                f"The file in tab {index + 1} has unsaved changes. "
+                "Do you want to save before closing?"
             )
             dialog.setStandardButtons(
                 QMessageBox.StandardButton.Save

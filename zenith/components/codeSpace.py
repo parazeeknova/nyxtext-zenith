@@ -100,6 +100,7 @@ def Codespace(tabWidget, content="", file_path=None):
                     C.setLexer(lexer)
 
         color_schemes = color_schemes_future.result()  # Wait for color schemes to load
+        C.setPaper(QColor(color_schemes["background_codespace"]))
 
         C.setBraceMatching(QsciScintilla.BraceMatch.SloppyBraceMatch)
         C.setMatchedBraceBackgroundColor(QColor(color_schemes["matched_brace_bg"]))

@@ -1,22 +1,8 @@
-from lupa import LuaRuntime  # type: ignore
-from PyQt6.QtWidgets import QMessageBox, QTabWidget
-
-lua = LuaRuntime(unpack_returned_tuples=True)
+from PyQt6.QtWidgets import QTabWidget
+from ..scripts.color_scheme_loader import color_schemes
 
 
 def tabRow(self, splitter):
-
-    scheme = r"zenith\color_schemes.lua"
-    try:
-        with open(scheme, "r") as file:
-            lua_code = file.read()
-        color_schemes = lua.execute(lua_code)
-    except FileNotFoundError:
-        QMessageBox.warning(None, "Error", "Color schemes file not found.")
-        return
-    except Exception as e:
-        QMessageBox.warning(None, "Error", f"An unexpected error occurred: {e}")
-        return
 
     tabline_bg = color_schemes["tab_bg"]
     tabselect = color_schemes["tabselect"]

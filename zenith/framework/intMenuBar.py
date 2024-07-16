@@ -1,8 +1,9 @@
-from lupa import LuaError, LuaRuntime  # type: ignore
 from PyQt6.QtGui import QAction
 from PyQt6.QtWidgets import QApplication, QMenuBar, QMessageBox
+from lupa import LuaError, LuaRuntime
 
 from ..components.codeSpace import Codespace
+from ..scripts.color_scheme_loader import color_schemes
 
 lua = LuaRuntime(unpack_returned_tuples=True)
 
@@ -19,42 +20,42 @@ def menu_bar(self, zenithInstance=None):
     helpMenu = menuBar.addMenu("Help")
 
     menuBar.setStyleSheet(
-        """
-        QMenuBar {
-            background-color: #1e1e1e;
-            color: #cad3f5;
+        f"""
+        QMenuBar {{
+            background-color: {color_schemes['menubar_bg']};
+            color: {color_schemes['menubar_fg']};
             font-size: 12px;
             spacing: 0px;
-        }
-        QMenuBar::item {
+        }}
+        QMenuBar::item {{
             background-color: transparent;
             padding: 5px;
-        }
-        QMenuBar::item:selected {
-            background-color: #2d2d2d;
-        }
-        QMenu {
-            background-color: #1e1e1e;
-            color: #cad3f5;
+        }}
+        QMenuBar::item:selected {{
+            background-color: {color_schemes['menubar_selected']};
+        }}
+        QMenu {{
+            background-color: {color_schemes['menu_bg']};
+            color: {color_schemes['menu_fg']};
             font-size: 12px;
             font-weight: bold;
             spacing: 0px;
-        }
-        QMenu::item {
+        }}
+        QMenu::item {{
             background-color: transparent;
             padding: 2px 15px 2px 15px;
             margin: 2px 5px 5px 5px;
-        }
-        QMenu::item:selected {
-            background-color: #2d2d2d;
-        }
-        QMenu::separator {
-        height: 1px;
-        background: 	#5b6078;
-        margin-left: 10px;
-        margin-right: 10px;
-        }
-    """
+        }}
+        QMenu::item:selected {{
+            background-color: {color_schemes['menu_selected']};
+        }}
+        QMenu::separator {{
+            height: 1px;
+            background: {color_schemes['menu_separator']};
+            margin-left: 10px;
+            margin-right: 10px;
+        }}
+        """
     )
 
     try:

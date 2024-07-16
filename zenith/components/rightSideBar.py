@@ -11,6 +11,7 @@ from PyQt6.QtWidgets import (
 )
 
 from ..framework.fileTree import FileTree
+from ..scripts.color_scheme_loader import color_schemes
 
 
 class DockedFileTreeWidget(QWidget):
@@ -60,31 +61,27 @@ class FileTreeWidget(QWidget):
         self.explorerLabel = QLabel("EXPLORER")
         fileTreeLayout.addWidget(self.explorerLabel)
         self.explorerLabel.setStyleSheet(
-            """
-            QLabel {
-                background-color: #333;
-                color: #fff;
+            f"""
+            QLabel {{
+                background-color: {color_schemes['sidebar_bg']};
+                color: {color_schemes['sidebar_fg']};
                 padding: 2px;
                 border-top-left-radius: 4px;
-            }
+            }}
+            """
+        )
+        button_style = f"""
+            background-color: {color_schemes['sidebar_button']};
+            color: {color_schemes['sidebar_fg']};
+            border: none;
         """
-        )
-
         self.hideButton = QPushButton("🗙")
-        self.hideButton.setStyleSheet(
-            """
-            background-color: #333;
-            color: #fff; border: none;
-            border-top-right-radius: 4px;
-            """
-        )
+        self.hideButton.setStyleSheet(button_style + "border-top-right-radius: 4px;")
         self.hideButton.setFixedSize(20, 20)
         self.hideButton.clicked.connect(self.toggleFileTreeVisibility)
 
         self.floatButton = QPushButton("🗗")
-        self.floatButton.setStyleSheet(
-            "background-color: #333; color: #fff; border: none;"
-        )
+        self.floatButton.setStyleSheet(button_style + "border-bottom-left-radius: 4px;")
         self.floatButton.setFixedSize(20, 20)
         self.floatButton.clicked.connect(self.makeFileTreeFloat)
 
@@ -94,42 +91,20 @@ class FileTreeWidget(QWidget):
         headerLayout.addWidget(self.hideButton)
         fileTreeLayout.addLayout(headerLayout)
 
-        self.currentDirLabel = QLabel(os.path.basename(os.getcwd()))
-
-        self.currentDirLabel.setStyleSheet(
-            """
-            QLabel {
-                background-color: #333;
-                color: #aaa; padding: 2px;
-                font-weight: bold;
-                margin-bottom: 0px;
-                border-bottom-left-radius: 0px;
-                border-bottom-right-radius: 0px;
-                padding: 2px;
-            }
+        label_style = f"""
+            background-color: {color_schemes['sidebar_bg']};
+            color: {color_schemes['sidebar_fg']};
+            padding: 2px;
         """
-        )
+
+        self.currentDirLabel = QLabel(os.path.basename(os.getcwd()))
+        self.currentDirLabel.setStyleSheet(label_style + "font-weight: bold;")
 
         self.fileTree = FileTree(self)
         fileTreeLayout.addWidget(self.currentDirLabel)
         fileTreeLayout.addWidget(self.fileTree)
         self.fullPathLabel = QLabel(os.getcwd())
-
-        self.fullPathLabel.setStyleSheet(
-            """
-            QLabel {
-                background-color: #333;
-                color: #fff;
-                padding: 4px;
-                margin-top: 0px;
-                font-style: italic;
-                border-top-left-radius: 0px;
-                border-top-right-radius: 0px;
-                border-bottom-left-radius: 4px;
-                border-bottom-right-radius: 4px;
-            }
-        """
-        )
+        self.fullPathLabel.setStyleSheet(label_style + "font-style: italic;")
         fileTreeLayout.addWidget(self.fullPathLabel)
         fileTreeLayout.setContentsMargins(0, 0, 0, 0)
         fileTreeLayout.setSpacing(0)

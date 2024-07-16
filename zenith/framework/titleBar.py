@@ -4,6 +4,7 @@ from PyQt6.QtWidgets import QHBoxLayout, QLabel, QPushButton, QWidget
 
 from ..scripts.def_path import resource
 from .intMenuBar import menu_bar
+from ..scripts.color_scheme_loader import color_schemes
 
 titleIcon = resource(r"../media/icon.ico")
 minimiseIcon = resource(r"../media/titlebar/minimise.svg")
@@ -18,6 +19,8 @@ class CustomTitleBar(QWidget):
         self.layout = QHBoxLayout()
         self.layout.setContentsMargins(0, 0, 0, 0)
 
+        self.setStyleSheet(f"background-color: {color_schemes['titlebar_bg']};")
+
         self.iconLabel = QLabel(self)
         self.iconLabel.setPixmap(QIcon(titleIcon).pixmap(15, 15))
         self.iconLabel.setStyleSheet("padding-left: 5px;")
@@ -29,35 +32,44 @@ class CustomTitleBar(QWidget):
         self.titleLabel = QLabel("Nyxtext Zenith", self)
         self.layout.addWidget(self.titleLabel, 1, Qt.AlignmentFlag.AlignCenter)
         self.titleLabel.setStyleSheet(
-            "color: #cad3f5; font-style: italic; font-size: 12px;"
+            f"""
+            color: {color_schemes['titlebar_fg']};
+            font-style: italic;
+            font-size: 12px;
+            """
         )
+
+        button_style = f"""
+            QPushButton {{
+                background-color: transparent;
+                border: none;
+                padding: 5px;
+            }}
+            QPushButton:hover {{
+                background-color: {color_schemes['titlebar_button_hover']};
+            }}
+        """
 
         self.minimizeButton = QPushButton(self)
         self.minimizeButton.setIcon(QIcon(minimiseIcon))
         self.minimizeButton.setIconSize(QSize(12, 12))
         self.minimizeButton.clicked.connect(parent.showMinimized)
         self.layout.addWidget(self.minimizeButton)
-        self.minimizeButton.setStyleSheet(
-            "QPushButton {background-color: transparent; border: none;padding: 5px;}"
-        )
+        self.minimizeButton.setStyleSheet(button_style)
 
         self.maximizeButton = QPushButton(self)
         self.maximizeButton.setIcon(QIcon(maximiseIcon))
         self.maximizeButton.setIconSize(QSize(12, 12))
         self.maximizeButton.clicked.connect(self.toggleMaximize)
         self.layout.addWidget(self.maximizeButton)
-        self.maximizeButton.setStyleSheet(
-            "QPushButton {background-color: transparent; border: none;padding: 5px;}"
-        )
+        self.maximizeButton.setStyleSheet(button_style)
 
         self.closeButton = QPushButton(self)
         self.closeButton.setIcon(QIcon(closeIcon))
         self.closeButton.setIconSize(QSize(12, 12))
         self.closeButton.clicked.connect(parent.closeApplication)
         self.layout.addWidget(self.closeButton)
-        self.closeButton.setStyleSheet(
-            "QPushButton {background-color: transparent; border: none;padding: 5px;}"
-        )
+        self.closeButton.setStyleSheet(button_style)
 
         self.setLayout(self.layout)
         self.isDragging = False

@@ -1,5 +1,12 @@
 from PyQt6.QtGui import QFont
-from PyQt6.QtWidgets import QFrame, QHBoxLayout, QLabel, QStatusBar, QWidget
+from PyQt6.QtWidgets import (
+    QFrame,
+    QHBoxLayout,
+    QLabel,
+    QStatusBar,
+    QWidget,
+)
+from ..scripts.color_scheme_loader import color_schemes
 
 
 class Separator(QFrame):
@@ -13,17 +20,20 @@ class ZenithStatusBar(QStatusBar):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setStyleSheet(
-            """
-            QStatusBar {
+            f"""
+            QStatusBar {{
+                background-color: {color_schemes['statusbar_bg']};
+                color: {color_schemes['statusbar_fg']};
                 padding-bottom: 2px;
-            }
-            QStatusBar::item {
+            }}
+            QStatusBar::item {{
                 border: none;
-            }
-            QLabel {
+            }}
+            QLabel {{
                 padding: 0 2px;
-            }
-        """
+                color: {color_schemes['statusbar_fg']};
+            }}
+            """
         )
 
         self.lineLabel = QLabel("▼ Line:")
@@ -52,7 +62,7 @@ class ZenithStatusBar(QStatusBar):
             self.fileSizeLabel,
         ]:
             label.setFont(smallFont)
-            label.setStyleSheet("color: #cad3f5;")
+            label.setStyleSheet(f"color: {color_schemes['statusbar_fg']};")
 
         for label in [
             self.lineValueLabel,
@@ -61,7 +71,7 @@ class ZenithStatusBar(QStatusBar):
             self.wordsValueLabel,
         ]:
             label.setFont(smallFont)
-            label.setStyleSheet("color: #cad3f5;")
+            label.setStyleSheet(f"color: {color_schemes['statusbar_fg']};")
 
         rightWidget = QWidget()
         rightLayout = QHBoxLayout(rightWidget)
@@ -92,14 +102,18 @@ class ZenithStatusBar(QStatusBar):
 
         self.lexerLabel = QLabel("Lexer: None")
         self.lexerLabel.setFont(smallFont)
-        self.lexerLabel.setStyleSheet("color: #cad3f5;")
+        self.lexerLabel.setStyleSheet(f"color: {color_schemes['statusbar_fg']};")
         rightLayout.addWidget(self.lexerLabel)
         rightLayout.addWidget(Separator())
 
         self.editModeLabel = QLabel("ReadOnly")
         self.editModeLabel.setFont(smallFont)
         self.editModeLabel.setStyleSheet(
-            "color: #cad3f5; font-weight: bold; margin-bottom: 5px;"
+            f"""
+            color: {color_schemes['statusbar_fg']};
+            font-weight: bold;
+            margin-bottom: 5px;
+            """
         )
 
         self.addWidget(self.editModeLabel)
@@ -128,6 +142,10 @@ class ZenithStatusBar(QStatusBar):
     def updateEditMode(self, mode):
         self.editModeLabel.setText(mode)
         if mode == "ReadOnly":
-            self.editModeLabel.setStyleSheet("color: #a6da95;")
+            self.editModeLabel.setStyleSheet(
+                f"color: {color_schemes['editmode_readonly']};"
+            )
         else:
-            self.editModeLabel.setStyleSheet("color: #ee99a0;")
+            self.editModeLabel.setStyleSheet(
+                f"color: {color_schemes['editmode_edit']};"
+            )

@@ -1,8 +1,8 @@
 import os
-
 from PyQt6.QtCore import QDir, pyqtSignal
 from PyQt6.QtGui import QFileSystemModel
 from PyQt6.QtWidgets import QTreeView
+from ..scripts.color_scheme_loader import color_schemes
 
 
 class FileTree(QTreeView):
@@ -25,11 +25,19 @@ class FileTree(QTreeView):
             self.hideColumn(column)
 
         self.setStyleSheet(
-            """
-            QTreeView {
+            f"""
+            QTreeView {{
+                background-color: {color_schemes['filetree_bg']};
+                color: {color_schemes['filetree_fg']};
                 border-radius: 0px;
-            }
-        """
+            }}
+            QTreeView::item:selected {{
+                background-color: {color_schemes['filetree_selected']};
+            }}
+            QTreeView::item:hover {{
+                background-color: {color_schemes['filetree_hover']};
+            }}
+            """
         )
 
     def onFileSelected(self, index):

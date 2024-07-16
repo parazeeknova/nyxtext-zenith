@@ -1,5 +1,40 @@
 return {
-  -- Catppuccino color scheme (mixed macchiato)
+  -- Catppuccin Macchiato colors
+  rosewater = "#f4dbd6",
+  flamingo = "#f0c6c6",
+  pink = "#f5bde6",
+  mauve = "#c6a0f6",
+  red = "#ed8796",
+  maroon = "#ee99a0",
+  peach = "#f5a97f",
+  yellow = "#eed49f",
+  green = "#a6da95",
+  teal = "#8bd5ca",
+  sky = "#91d7e3",
+  sapphire = "#7dc4e4",
+  blue = "#8aadf4",
+  lavender = "#b7bdf8",
+  text = "#cad3f5",
+  subtext1 = "#b8c0e0",
+  subtext0 = "#a5adcb",
+  overlay2 = "#939ab7",
+  overlay1 = "#8087a2",
+  overlay0 = "#6e738d",
+  surface2 = "#5b6078",
+  surface1 = "#494d64",
+  surface0 = "#363a4f",
+  base = "#24273a",
+  mantle = "#1e2030",
+  crust = "#181926",
+
+  -- Application color scheme
+  background = "#24273a",
+  foreground = "#cad3f5",
+  cursor = "#f4dbd6",
+  selection_bg = "#5b6078",
+  selection_fg = "#cad3f5",
+
+  -- Lexer color scheme (mixed macchiato)
   default = "#D9E0EE",
   keyword = "#7dc4e4",
   operator = "#F8BD96",
@@ -21,25 +56,55 @@ return {
   -- Codespace color scheme
   caret = "#b8c0e0",
   margin_fg = "#a5adcb",
-  margin_bg = "#444",
-  folding_bg = "#444",
-  folding_fg = "#333",
+  margin_bg = "#1a1b26",
+  folding_bg = "#1a1b26",
+  folding_fg = "#181926",
   breakpoint = "#ed8796",
   unsaved = "#a6da95",
   intend = "#939ab7",
   marker = "#8087a2",
   marker_text = "#363a4f",
+  background_codespace = "#16161e",
 
   -- Tabline color scheme
-  tab_bg = "#333",
+  tab_bg = "#16161e",
   tabselect = "#8087a2",
-  tab_bg_hover = "#444",
+  tab_bg_hover = "#1f2335",
 
   -- Statusline color scheme
+  statusbar_bg = "#24273a",
+  statusbar_fg = "#cad3f5",
+  statusbar_separator = "#494d64",
+  editmode_readonly = "#a6da95",
+  editmode_edit = "#ee99a0",
 
   -- Filetree color scheme
+  filetree_bg = "#1e2030",
+  filetree_fg = "#cad3f5",
+  filetree_selected = "#494d64",
+  filetree_hover = "#363a4f",
+
+  -- Right Sidebar
+  sidebar_bg = "#1e2030",
+  sidebar_fg = "#cad3f5",
+  sidebar_button = "#494d64",
+  sidebar_button_hover = "#5b6078",
 
   -- Menubar color scheme
+  menubar_bg = "#24273a",
+  menubar_fg = "#cad3f5",
+  menubar_selected = "#494d64",
+  menu_bg = "#1e2030",
+  menu_fg = "#cad3f5",
+  menu_selected = "#494d64",
+  menu_separator = "#5b6078",
+
+  -- Title Bar
+  titlebar_bg = "#24273a",
+  titlebar_fg = "#cad3f5",
+  titlebar_button = "#494d64",
+  titlebar_button_hover = "#5b6078",
+
 
   -- HTML specific colors
   html_tag = "#F28FAD",
