@@ -40,6 +40,7 @@
 
 - [zenith](zenith/) - Main application directory
   - [Components](zenith/components/) - Components for the application
+  - [core](zenith/core/) - Core components for the application (Subclasses, threading, core functions)
   - [Framework](zenith/framework/) - Framework for the application
   - [Lexers](zenith/lexers/) - Lexers for syntax highlighting
   - [Media](zenith/media/) - Media files
@@ -48,7 +49,7 @@
   - [`__main__.py`](zenith/__main__.py) - Entry point
   - [`color_schemes.lua`](zenith/color_schemes.lua) - Customizable color schemes
   - [`shortcuts.lua`](zenith/shortcuts.lua) - Customizable shortcuts
-  - [`zenith_core.py`](zenith/zenith_core.py) - Core functionality
+  - [`config.lua`](zenith/config.lua) - Configuration for the application
 </details>
 
 &nbsp;
@@ -99,9 +100,9 @@
 
 ### 🖼️ Screenshots
 
-| Default Look | Python Lexer | Docked FileTree | Menu Bar (File) |
+| Default Look | Compared to VSCode | Docked FileTree | Menu Bar (File) |
 |--------------|--------------|--------------|--------------|
-| ![Default Look](assets/screenshots/Home.png) | ![Python Lexer ](assets/screenshots/Pythonlexer.png) | ![Docked Filetree](assets/screenshots/Dockedfiletree.png) | ![Menu](assets/screenshots/Menubar.png) |
+| ![Default Look](assets/screenshots/Home.png) | ![Python Lexer ](assets/screenshots/Compare.png) | ![Docked Filetree](assets/screenshots/Dockedfiletree.png) | ![Menu](assets/screenshots/Menubar.png) |
 
 
 
@@ -203,12 +204,14 @@ Nyxtext and letting me know how well it works.
 - Edit Text files ~ duh.
 - Basic funcaionality of a text editor like save, open, close, etc.
 - **Syntax Highlighting** for _**35+**_ languages.
-- Catppuccin Macciatto theme by default for Python, C++, Javascript, HTML, CSS, JSON, Markdown, and more.
+- Catppuccin Macciatto theme by default for Python, C++, Javascript, HTML, CSS, JSON, Markdown, and more. (check `zenith/lexers` folder)
 - **Code Folding** for better code readability.
 - **Filetree** for easy navigation. (Toggle with `Ctrl + F`)
 - **Dockable Filetree** panes.
 - Adjustable panes for Filetree, Workspace, and Codespace.
 - **Customizable** shortcuts using Lua, edit `zenith/shortcuts.lua`.
+- **Fully Customizable theme** using Lua, edit `zenith/color_schemes.lua` can edit every corner of the app.
+- Ability to toggle between custom titlebar and default titlebar (windows default).
 - **Highly Customizable** themes using Lua, edit `zenith/color_themes.lua`.
 - Workspace and Codespace tabs for better organization.
 - **Tab** switching using `Ctrl + Tab` and `Ctrl + Shift + Tab`.
@@ -270,6 +273,8 @@ _More features coming soon._
 ![Alt](https://repobeats.axiom.co/api/embed/5230d7fbefe5348128ff699761be93de2b030176.svg "Repobeats analytics image")
 
 ---
+
+#### For _FAQ_ ❓, _Info_ 📝 : visit [ABOUT](https://github.com/parazeeknova/nyxtext-zenith/blob/main/.github/ABOUT.md)
 
 ### 👐 Contributing
 
