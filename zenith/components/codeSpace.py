@@ -318,4 +318,14 @@ def Codespace(tabWidget, content="", file_path=None):
 
         C.destroyed.connect(cleanup)
 
+        def run_file(self):
+            if self.file_path:
+                file_type = os.path.splitext(self.file_path)[1]
+                if file_type == ".py":
+                    return ["python", self.file_path]
+                elif file_type == ".js":
+                    return ["node", self.file_path]
+                # Add more file types as needed
+            return None
+
     return C

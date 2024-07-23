@@ -18,6 +18,7 @@ from PyQt6.QtWidgets import (
     QFileDialog,
     QMainWindow,
     QMessageBox,
+    QPushButton,
     QSplitter,
     QTextEdit,
     QVBoxLayout,
@@ -27,6 +28,7 @@ from PyQt6.QtWidgets import (
 from ..components.codeSpace import Codespace
 from ..components.rightSideBar import FileTreeWidget
 from ..components.tabTopbar import tabRow
+from ..components.terminal import TerminalEmulator
 from ..components.workSpace import Workspace
 from ..framework.lexer_manager import LexerManager
 from ..framework.statusBar import ZenithStatusBar
@@ -100,6 +102,7 @@ class Zenith(QMainWindow):
 
         self.setupUI()
         self.setupConnections()
+        self.setupTerminal()
 
     def setupUI(self):
         self.setWindowTitle("Zenith")
@@ -139,6 +142,30 @@ class Zenith(QMainWindow):
         )
 
         self.codespace = Codespace(self.tabWidget)
+
+        self.verticalSplitter = QSplitter(Qt.Orientation.Vertical)
+        self.verticalSplitter.addWidget(self.splitter)
+
+        self.terminal = TerminalEmulator()
+        self.terminal.hide()
+        self.verticalSplitter.addWidget(self.terminal)
+
+        self.terminal.setStyleSheet(
+            """
+            QPlainTextEdit {
+                background-color: #1E1E1E;
+                color: white;
+                font-family: Consolas, Courier, monospace;
+            }
+            """
+        )
+
+        layout.addWidget(self.verticalSplitter)
+
+        self.runButton = QPushButton("Run")
+        self.terminalButton = QPushButton("Terminal")
+        self.tabWidget.setCornerWidget(self.runButton, Qt.Corner.TopRightCorner)
+        self.tabWidget.setCornerWidget(self.terminalButton, Qt.Corner.TopRightCorner)
 
     def setApplicationPalette(self):
         palette = QPalette()
@@ -183,6 +210,8 @@ class Zenith(QMainWindow):
         self.fileTree.fileTree.fileSelected.connect(self.openFileFromTree)
         self.tabWidget.tabCloseRequested.connect(self.handleTabClose)
         self.codespace.cursorPositionChanged.connect(self.handleCursorPositionChanged)
+        self.runButton.clicked.connect(self.runCurrentFile)
+        self.terminalButton.clicked.connect(self.toggleTerminal)
 
     def closeApplication(self):
         self.closeAllTabs()
@@ -303,6 +332,7 @@ class Zenith(QMainWindow):
         )
         if filePath:
             self.centralizedOpenFile(filePath)
+            self.terminal.change_directory(os.path.dirname(filePath))
 
     def openFileFromTree(self, filePath):
         self.centralizedOpenFile(filePath)
@@ -425,6 +455,7 @@ class Zenith(QMainWindow):
         if folderPath:
             self.fileTree.setRootFolder(folderPath)
             self.folderOpened.emit(folderPath)
+            self.terminal.change_directory(folderPath)
 
     def getTextStats(self, widget):
         if isinstance(widget, QTextEdit):
@@ -581,3 +612,22 @@ class Zenith(QMainWindow):
             event.accept()
         else:
             event.ignore()
+
+    def setupTerminal(self):
+        self.terminal = TerminalEmulator()
+        self.terminal.setMinimumHeight(100)
+        self.verticalSplitter.addWidget(self.terminal)
+        self.terminal.hide()
+
+    def toggleTerminal(self):
+        if self.terminal.isVisible():
+            self.terminal.hide()
+        else:
+            self.terminal.show()
+
+    def runCurrentFile(self):
+        currentIndex = self.tabWidget.currentIndex()
+        filePath = self.filePathDict.get(currentIndex)
+        if filePath:
+            self.terminal.show()
+            self.terminal.run_file(filePath)

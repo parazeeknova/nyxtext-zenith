@@ -20,6 +20,8 @@ class ZenithStatusBar(QStatusBar):
                 background-color: {color_schemes['statusbar_bg']};
                 color: {color_schemes['statusbar_fg']};
                 padding-bottom: 2px;
+                position: absolute;
+                bottom: 0;
             }}
             QStatusBar::item {{
                 border: none;

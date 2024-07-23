@@ -42,3 +42,5 @@ def tabRow(self, splitter):
     self.tabWidget.setTabsClosable(True)
     self.tabWidget.tabCloseRequested.connect(self.closeTab)
     splitter.addWidget(self.tabWidget)
+
+    return self.tabWidget
