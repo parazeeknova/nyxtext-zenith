@@ -3,7 +3,7 @@ import re
 import subprocess
 
 from PyQt6.QtCore import QProcess, Qt, pyqtSignal
-from PyQt6.QtGui import QColor, QIcon, QKeyEvent, QTextCursor
+from PyQt6.QtGui import QColor, QKeyEvent, QTextCursor
 from PyQt6.QtWidgets import (
     QComboBox,
     QHBoxLayout,
@@ -51,16 +51,42 @@ class TerminalEmulator(QWidget):
         toolbar_layout = QHBoxLayout(toolbar)
         toolbar_layout.setContentsMargins(5, 0, 5, 0)
 
+        toolbar_layout.addStretch(1)
+
         self.terminal_selector = QComboBox()
         self.terminal_selector.setStyleSheet("QComboBox { min-width: 150px; }")
         self.terminal_selector.currentIndexChanged.connect(self.switchTab)
 
-        new_terminal_button = QPushButton(QIcon("path/to/new_icon.png"), "")
+        new_terminal_button = QPushButton("+")
+        new_terminal_button.setStyleSheet(
+            """
+            QPushButton {
+                font-size: 16px;
+                font-weight: bold;
+                background-color: transparent;
+                color: white;
+                border: none;
+                padding: 0;
+            }
+        """
+        )
         new_terminal_button.setToolTip("New Terminal")
         new_terminal_button.clicked.connect(self.addNewTab)
 
-        kill_terminal_button = QPushButton(QIcon("path/to/kill_icon.png"), "")
+        kill_terminal_button = QPushButton("x")
         kill_terminal_button.setToolTip("Kill Terminal")
+        kill_terminal_button.setStyleSheet(
+            """
+            QPushButton {
+                font-size: 16px;
+                font-weight: bold;
+                background-color: transparent;
+                color: white;
+                border: none;
+                padding: 0;
+            }
+        """
+        )
         kill_terminal_button.clicked.connect(self.killCurrentTerminal)
 
         toolbar_layout.addWidget(self.terminal_selector)
@@ -104,18 +130,18 @@ class TerminalEmulator(QWidget):
                 self.current_process_index = self.tabBar.currentIndex()
 
     def start_powershell(self, index):
-        powershell_path = self.find_powershell_core()
-        if powershell_path:
-            self.processes[index].start(powershell_path)
-            self.terminal.appendPlainText(
-                f"""PowerShell Core started at {powershell_path}.
-                Type your commands below.\n"""
-            )
-        else:
-            self.terminal.appendPlainText(
-                "PowerShell Core not found. Using default PowerShell.\n"
-            )
-            self.processes[index].start("powershell.exe")
+        # powershell_path = self.find_powershell_core()
+        # if powershell_path:
+        #     self.processes[index].start(powershell_path)
+        #     self.terminal.appendPlainText(
+        #         f"""PowerShell Core started at {powershell_path}.
+        #         Type your commands below.\n"""
+        #     )
+        # else:
+        #     self.terminal.appendPlainText(
+        #         "PowerShell Core not found. Using default PowerShell.\n"
+        #     )
+        self.processes[index].start("powershell.exe")
 
         self.terminal.appendPlainText("> ")
 

@@ -8,6 +8,7 @@ from PyQt6.QtCore import (
     QMetaObject,
     QObject,
     QRunnable,
+    QSize,
     Qt,
     QThreadPool,
     pyqtSignal,
@@ -37,6 +38,8 @@ from ..scripts.color_scheme_loader import color_schemes
 from ..scripts.def_path import resource
 from ..scripts.file_cache import FileCache
 from ..scripts.shortcuts import key_shortcuts
+
+powershellIcon = resource(r"../media/filetree/powershell.svg")
 
 
 class FileWorker(QRunnable):
@@ -162,9 +165,21 @@ class Zenith(QMainWindow):
 
         layout.addWidget(self.verticalSplitter)
 
-        self.runButton = QPushButton("Run")
-        self.terminalButton = QPushButton("Terminal")
-        self.tabWidget.setCornerWidget(self.runButton, Qt.Corner.TopRightCorner)
+        self.terminalButton = QPushButton(self)
+        self.terminalButton.setIcon(QIcon(powershellIcon))
+        self.terminalButton.setIconSize(QSize(16, 16))
+        self.terminalButton.setStyleSheet(
+            f"""
+            QPushButton {{
+                background-color: transparent;
+                border: none;
+                padding: 5px;
+            }}
+            QPushButton:hover {{
+                background-color: {color_schemes['selection_bg']};
+            }}
+            """
+        )
         self.tabWidget.setCornerWidget(self.terminalButton, Qt.Corner.TopRightCorner)
 
     def setApplicationPalette(self):
@@ -210,7 +225,6 @@ class Zenith(QMainWindow):
         self.fileTree.fileTree.fileSelected.connect(self.openFileFromTree)
         self.tabWidget.tabCloseRequested.connect(self.handleTabClose)
         self.codespace.cursorPositionChanged.connect(self.handleCursorPositionChanged)
-        self.runButton.clicked.connect(self.runCurrentFile)
         self.terminalButton.clicked.connect(self.toggleTerminal)
 
     def closeApplication(self):
