@@ -1,6 +1,8 @@
 import logging
+
 from PyQt6.Qsci import QsciLexerPython
 from PyQt6.QtGui import QColor, QFont
+
 
 def customize_python_lexer(lexer, color_schemes):
     try:
@@ -33,7 +35,7 @@ def customize_python_lexer(lexer, color_schemes):
             (QsciLexerPython.Decorator, "keyword"),
         ]:
             lexer.setColor(QColor(color_schemes[color_key]), style)
-        
+
         logging.info("Python lexer customized successfully")
     except Exception as e:
         logging.exception(f"Error customizing Python lexer: {e}")
