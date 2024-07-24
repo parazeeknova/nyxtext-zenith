@@ -5,8 +5,10 @@ from lupa import LuaRuntime  # type: ignore
 from PyQt6.Qsci import QsciScintilla
 from PyQt6.QtCore import (
     Q_ARG,
+    QEasingCurve,
     QMetaObject,
     QObject,
+    QPropertyAnimation,
     QRunnable,
     QSize,
     Qt,
@@ -107,6 +109,33 @@ class Zenith(QMainWindow):
         self.setupConnections()
         self.setupTerminal()
 
+        self.maximizeAnimation = QPropertyAnimation(self, b"geometry")
+        self.maximizeAnimation.setDuration(300)
+        self.maximizeAnimation.setEasingCurve(QEasingCurve.Type.InOutQuad)
+
+    def animatedMaximize(self):
+        if not self.isMaximized():
+            self.maximizeAnimation.setStartValue(self.geometry())
+            self.maximizeAnimation.setEndValue(self.screen().availableGeometry())
+            self.maximizeAnimation.start()
+        else:
+            self.showNormal()
+
+    def animatedMinimize(self):
+        self.maximizeAnimation.setStartValue(self.geometry())
+        end_rect = self.geometry()
+        end_rect.setHeight(0)
+        self.maximizeAnimation.setEndValue(end_rect)
+        self.maximizeAnimation.finished.connect(self.hide)
+        self.maximizeAnimation.start()
+
+    # Override these methods
+    def showMaximized(self):
+        self.animatedMaximize()
+
+    def showMinimized(self):
+        self.animatedMinimize()
+
     def setupUI(self):
         self.setWindowTitle("Zenith")
         self.setGeometry(100, 100, 800, 600)
@@ -181,6 +210,15 @@ class Zenith(QMainWindow):
             """
         )
         self.tabWidget.setCornerWidget(self.terminalButton, Qt.Corner.TopRightCorner)
+
+        self.setStyleSheet(
+            """
+            QMainWindow {
+                border-radius: 10px;
+                background-color: #24273a;
+            }
+        """
+        )
 
     def setApplicationPalette(self):
         palette = QPalette()
