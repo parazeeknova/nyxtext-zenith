@@ -29,9 +29,9 @@ from PyQt6.Qsci import (
 from PyQt6.QtGui import QColor
 from PyQt6.QtWidgets import QMessageBox
 
+from ..core.langFeatures.python_features import PythonFeatures
 from ..framework.lexer_manager import LexerManager
 from ..scripts.roman import toRoman
-from .python_features import PythonFeatures
 
 codespace_counter = 0
 lua = LuaRuntime(unpack_returned_tuples=True)
@@ -138,7 +138,6 @@ def Codespace(tabWidget, content="", file_path=None):
 
                     if customize_func:
                         thread_pool.submit(customize_func, lexer)
-                    C.setLexer(lexer)
                     C.recolor()
 
         color_schemes = color_schemes_future.result()  # Wait for color schemes to load

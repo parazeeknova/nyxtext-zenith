@@ -30,7 +30,6 @@ from PyQt6.QtWidgets import (
 )
 
 from ..components.codeSpace import Codespace
-from ..components.python_features import PythonFeatures
 from ..components.rightSideBar import FileTreeWidget
 from ..components.tabTopbar import tabRow
 from ..components.terminal import TerminalEmulator
@@ -42,6 +41,7 @@ from ..scripts.color_scheme_loader import color_schemes
 from ..scripts.def_path import resource
 from ..scripts.file_cache import FileCache
 from ..scripts.shortcuts import key_shortcuts
+from .langFeatures.python_features import PythonFeatures
 
 logging.basicConfig(
     level=logging.DEBUG,
