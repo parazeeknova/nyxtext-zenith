@@ -1,6 +1,6 @@
 import os
 
-from PyQt6.QtCore import QDir, QPropertyAnimation, pyqtSignal, QEasingCurve
+from PyQt6.QtCore import QDir, QEasingCurve, QPropertyAnimation, pyqtSignal
 from PyQt6.QtWidgets import QGraphicsOpacityEffect, QTreeView
 
 from ..core.customFileSystemModel import CustomFileSystemModel
