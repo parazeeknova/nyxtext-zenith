@@ -1,3 +1,4 @@
+import logging
 import os
 from concurrent.futures import ThreadPoolExecutor
 from queue import Queue
@@ -30,6 +31,7 @@ from PyQt6.QtWidgets import QMessageBox
 
 from ..framework.lexer_manager import LexerManager
 from ..scripts.roman import toRoman
+from .python_features import PythonFeatures
 
 codespace_counter = 0
 lua = LuaRuntime(unpack_returned_tuples=True)
@@ -87,9 +89,18 @@ def Codespace(tabWidget, content="", file_path=None):
                 file_extension = os.path.splitext(C.file_path)[1][1:]
                 lexer = lexer_manager.get_lexer(file_extension)
                 if lexer:
+                    C.setLexer(lexer)
                     customize_func = None
                     if isinstance(lexer, QsciLexerPython):
-                        customize_func = lexer_manager.customize_python_lexer
+                        try:
+                            customize_func = lexer_manager.customize_python_lexer
+                            python_features = PythonFeatures(C)
+                            python_features.updateRequired.connect(C.recolor)
+                            logging.info(
+                                "PythonFeatures initialized for file: %s", file_path
+                            )
+                        except Exception as e:
+                            logging.exception(f"Error initializing PythonFeatures: {e}")
                     elif isinstance(lexer, QsciLexerJavaScript):
                         customize_func = lexer_manager.customize_javascript_lexer
                     elif isinstance(lexer, QsciLexerCPP):

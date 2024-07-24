@@ -31,6 +31,14 @@ def key_shortcuts(main_window):
         )
         toggle_edit_mode_shortcut.activated.connect(main_window.toggleEditMode)
 
+        show_calltip_shortcut = QShortcut(QKeySequence("Ctrl+Shift+Space"), main_window)
+        show_calltip_shortcut.activated.connect(main_window.show_calltip)
+
+        show_autocompletion_shortcut = QShortcut(
+            QKeySequence("Ctrl+Space"), main_window
+        )
+        show_autocompletion_shortcut.activated.connect(main_window.show_autocompletion)
+
     except LuaError as e:
         QMessageBox.warning(main_window, "Error", f"Error executing Lua script: {e}")
     except FileNotFoundError:

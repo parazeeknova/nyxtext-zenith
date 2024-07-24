@@ -1,3 +1,4 @@
+import logging
 import os
 
 import chardet
@@ -29,6 +30,7 @@ from PyQt6.QtWidgets import (
 )
 
 from ..components.codeSpace import Codespace
+from ..components.python_features import PythonFeatures
 from ..components.rightSideBar import FileTreeWidget
 from ..components.tabTopbar import tabRow
 from ..components.terminal import TerminalEmulator
@@ -40,6 +42,13 @@ from ..scripts.color_scheme_loader import color_schemes
 from ..scripts.def_path import resource
 from ..scripts.file_cache import FileCache
 from ..scripts.shortcuts import key_shortcuts
+
+logging.basicConfig(
+    level=logging.DEBUG,
+    filename="zenith_debug.log",
+    filemode="w",
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+)
 
 powershellIcon = resource(r"../media/filetree/powershell.svg")
 
@@ -387,16 +396,31 @@ class Zenith(QMainWindow):
             self.terminal.change_directory(os.path.dirname(filePath))
 
     def openFileFromTree(self, filePath):
-        self.centralizedOpenFile(filePath)
-        currentWidget = self.tabWidget.currentWidget()
-        if isinstance(currentWidget, QsciScintilla) and hasattr(
-            currentWidget, "toggle_edit_mode"
-        ):
-            currentWidget.setReadOnly(True)
-            currentWidget.markerDeleteAll(11)  # Delete edit mode marker
-            currentWidget.markerAdd(0, 10)  # Add readonly marker
-        self.updateStatusBarWithLexer()
-        self.updateStatusBar()
+        try:
+            self.centralizedOpenFile(filePath)
+            currentWidget = self.tabWidget.currentWidget()
+            if isinstance(currentWidget, QsciScintilla) and hasattr(
+                currentWidget, "toggle_edit_mode"
+            ):
+                currentWidget.setReadOnly(True)
+                currentWidget.markerDeleteAll(11)  # Delete edit mode marker
+                currentWidget.markerAdd(0, 10)  # Add readonly marker
+
+            if filePath.endswith(".py"):
+                try:
+                    lexer = self.lexerManager.get_lexer("py")
+                    if lexer:
+                        currentWidget.setLexer(lexer)
+                        python_features = PythonFeatures(currentWidget)
+                        python_features.updateRequired.connect(currentWidget.recolor)
+                    else:
+                        logging.error("Python lexer not found")
+                except Exception as e:
+                    logging.exception(f"Error initializing PythonFeatures: {e}")
+            self.updateStatusBarWithLexer()
+            self.updateStatusBar()
+        except Exception as e:
+            logging.exception(f"Error in openFileFromTree: {e}")
 
     def onTabChange(self, index):
         filePath = self.retrieveFilePathForTab(index)
@@ -683,3 +707,19 @@ class Zenith(QMainWindow):
         if filePath:
             self.terminal.show()
             self.terminal.run_file(filePath)
+
+    def show_autocompletion(self):
+        current_widget = self.tabWidget.currentWidget()
+        if isinstance(current_widget, QsciScintilla) and hasattr(
+            current_widget, "python_features"
+        ):
+            current_widget.autoCompleteFromAll()
+            logging.debug("Manual autocompletion triggered")
+
+    def show_calltip(self):
+        current_widget = self.tabWidget.currentWidget()
+        if isinstance(current_widget, QsciScintilla) and hasattr(
+            current_widget, "python_features"
+        ):
+            current_widget.python_features.show_calltip()
+            logging.debug("Manual calltip triggered")

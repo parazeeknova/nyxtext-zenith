@@ -44,4 +44,5 @@ dependencies = [
     "lupa",
     "chardet",
     "nuitka",
+    "jedi",
 ]

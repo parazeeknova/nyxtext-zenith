@@ -3,3 +3,4 @@ PyQt6-QScintilla
 lupa
 nuitka
 chardet
+jedi
