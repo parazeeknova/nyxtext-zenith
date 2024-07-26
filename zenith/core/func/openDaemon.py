@@ -45,6 +45,15 @@ class OpenDaemon:
             else:
                 tab = Codespace(self.main_window.tabWidget, content, file_path=filePath)
 
+            # Detect and set the correct line ending
+            if isinstance(tab, QsciScintilla):
+                if '\r\n' in content:
+                    tab.setEolMode(QsciScintilla.EolMode.EolWindows)
+                elif '\r' in content:
+                    tab.setEolMode(QsciScintilla.EolMode.EolMac)
+                else:
+                    tab.setEolMode(QsciScintilla.EolMode.EolUnix)
+
             tabIndex = self.main_window.tabWidget.addTab(tab, fileName)
             self.main_window.filePathDict[tabIndex] = filePath
             self.main_window.tabWidget.setCurrentIndex(tabIndex)
@@ -60,6 +69,9 @@ class OpenDaemon:
             # Connect the cursorPositionChanged signal for the new tab
             if isinstance(tab, QsciScintilla):
                 tab.cursorPositionChanged.connect(self.main_window.updateStatusBar)
+
+        except Exception as e:
+            self.main_window.showErrorMessage("Error processing opened file", str(e))
 
         except Exception as e:
             self.main_window.showErrorMessage("Error processing opened file", str(e))
