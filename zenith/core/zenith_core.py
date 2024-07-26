@@ -1,16 +1,11 @@
 import logging
 import os
 
-import chardet
 from lupa import LuaRuntime  # type: ignore
 from PyQt6.Qsci import QsciScintilla
 from PyQt6.QtCore import (
-    Q_ARG,
     QEasingCurve,
-    QMetaObject,
-    QObject,
     QPropertyAnimation,
-    QRunnable,
     QSize,
     Qt,
     QThreadPool,
@@ -41,7 +36,8 @@ from ..scripts.color_scheme_loader import color_schemes
 from ..scripts.def_path import resource
 from ..scripts.file_cache import FileCache
 from ..scripts.shortcuts import key_shortcuts
-from .langFeatures.python_features import PythonFeatures
+from .func.fileWorker import FileWorker
+from .func.openDaemon import OpenDaemon
 
 logging.basicConfig(
     level=logging.DEBUG,
@@ -51,49 +47,6 @@ logging.basicConfig(
 )
 
 powershellIcon = resource(r"../media/filetree/powershell.svg")
-
-
-class FileWorker(QRunnable):
-    class Signals(QObject):
-        finished = pyqtSignal(str, str)
-        error = pyqtSignal(str)
-
-    def __init__(self, file_path, content=None, mode="r"):
-        super().__init__()
-        self.file_path = file_path
-        self.content = content
-        self.mode = mode
-        self.signals = self.Signals()
-
-    def run(self):
-        try:
-            if self.mode == "r":
-                with open(self.file_path, "r", encoding="utf-8") as file:
-                    content = file.read()
-                QMetaObject.invokeMethod(
-                    self.signals,
-                    "finished",
-                    Qt.ConnectionType.QueuedConnection,
-                    Q_ARG(str, self.file_path),
-                    Q_ARG(str, content),
-                )
-            elif self.mode == "w":
-                with open(self.file_path, "w", encoding="utf-8") as file:
-                    file.write(self.content)
-                QMetaObject.invokeMethod(
-                    self.signals,
-                    "finished",
-                    Qt.ConnectionType.QueuedConnection,
-                    Q_ARG(str, self.file_path),
-                    Q_ARG(str, ""),
-                )
-        except Exception as e:
-            QMetaObject.invokeMethod(
-                self.signals,
-                "error",
-                Qt.ConnectionType.QueuedConnection,
-                Q_ARG(str, str(e)),
-            )
 
 
 class Zenith(QMainWindow):
@@ -114,6 +67,7 @@ class Zenith(QMainWindow):
         self.fileCache = FileCache()
         self.tabCounter = 0
 
+        self.openDaemon = OpenDaemon(self)
         self.setupUI()
         self.setupConnections()
         self.setupTerminal()
@@ -156,7 +110,7 @@ class Zenith(QMainWindow):
         if self.preferences.get("hide_default_titlebar", False):
             self.setMenuWidget(self.titleBar)
         else:
-            self.setMenuBar(self.titleBar.menuBar)
+            self.setMenuBar(self.titleBar.menuBar(self))
 
         centralWidget = QWidget(self)
         self.setCentralWidget(centralWidget)
@@ -165,7 +119,7 @@ class Zenith(QMainWindow):
         self.splitter = QSplitter(Qt.Orientation.Horizontal)
         layout.addWidget(self.splitter)
 
-        tabRow(self, self.splitter)
+        self.tabWidget = tabRow(self, self.splitter)
 
         self.fileTree = FileTreeWidget(self, self)
         self.splitter.addWidget(self.fileTree)
@@ -265,13 +219,15 @@ class Zenith(QMainWindow):
         self.setPalette(palette)
         QApplication.setPalette(palette)
 
+    def openFile(self):
+        self.openDaemon.openFile()
+
     def setupConnections(self):
         self.fileTree.visibilityChanged.connect(self.adjustSplitter)
         self.fileTree.dockingChanged.connect(self.handleDockingChange)
         self.tabWidget.currentChanged.connect(self.onTabChange)
-        self.fileTree.fileTree.fileSelected.connect(self.openFileFromTree)
+        self.fileTree.fileTree.fileSelected.connect(self.openDaemon.openFileFromTree)
         self.tabWidget.tabCloseRequested.connect(self.handleTabClose)
-        self.codespace.cursorPositionChanged.connect(self.handleCursorPositionChanged)
         self.terminalButton.clicked.connect(self.toggleTerminal)
 
     def closeApplication(self):
@@ -317,9 +273,6 @@ class Zenith(QMainWindow):
             return widget.document().isModified()
         return False
 
-    def handleCursorPositionChanged(self):
-        self.updateStatusBar()
-
     def hasUnsavedChanges(self):
         return any(self.isModified(i) for i in range(self.tabWidget.count()))
 
@@ -339,88 +292,8 @@ class Zenith(QMainWindow):
     def handleDockingChange(self, isDocked):
         self.splitter.setSizes([750, 0] if isDocked else [600, 150])
 
-    def centralizedOpenFile(self, filePath):
-        for tabIndex, openFilePath in self.filePathDict.items():
-            if openFilePath == filePath:
-                self.tabWidget.setCurrentIndex(tabIndex)
-                return
-
-        # Check if file is in cache
-        cached_content = self.fileCache.get(filePath)
-        if cached_content is not None:
-            self.onFileOpenFinished(filePath, cached_content)
-        else:
-            worker = FileWorker(filePath)
-            worker.signals.finished.connect(self.onFileOpenFinished)
-            worker.signals.error.connect(
-                lambda e: self.showErrorMessage("Error opening file", e)
-            )
-            self.workers.append(worker)
-            self.threadPool.start(worker)
-
-    def onFileOpenFinished(self, filePath, content):
-        try:
-            fileName = os.path.basename(filePath)
-            folderName = os.path.basename(os.path.dirname(filePath))
-            self.statusBar.showLexerLoadingMessage()
-            self.titleBar.updateTitle(folderName, fileName)
-
-            tab = (
-                Workspace(self, content, fileName=fileName)
-                if filePath.endswith(".txt")
-                else Codespace(self.tabWidget, content, file_path=filePath)
-            )
-
-            tabIndex = self.tabWidget.addTab(tab, fileName)
-            self.filePathDict[tabIndex] = filePath
-            self.tabWidget.setCurrentIndex(tabIndex)
-            self.statusBar.showMessage(f"Opened file: {filePath}", 4000)
-
-            self.updateStatusBar()
-
-            # Add file content to cache
-            self.workers = [w for w in self.workers if w.file_path != filePath]
-            self.fileCache.set(filePath, content)
-        except Exception as e:
-            self.showErrorMessage("Error processing opened file", str(e))
-
     def showErrorMessage(self, title, message):
         QMessageBox.critical(self, title, message)
-
-    def openFile(self):
-        filePath, _ = QFileDialog.getOpenFileName(
-            self, "Open File", "", "All Files (*)"
-        )
-        if filePath:
-            self.centralizedOpenFile(filePath)
-            self.terminal.change_directory(os.path.dirname(filePath))
-
-    def openFileFromTree(self, filePath):
-        try:
-            self.centralizedOpenFile(filePath)
-            currentWidget = self.tabWidget.currentWidget()
-            if isinstance(currentWidget, QsciScintilla) and hasattr(
-                currentWidget, "toggle_edit_mode"
-            ):
-                currentWidget.setReadOnly(True)
-                currentWidget.markerDeleteAll(11)  # Delete edit mode marker
-                currentWidget.markerAdd(0, 10)  # Add readonly marker
-
-            if filePath.endswith(".py"):
-                try:
-                    lexer = self.lexerManager.get_lexer("py")
-                    if lexer:
-                        currentWidget.setLexer(lexer)
-                        python_features = PythonFeatures(currentWidget)
-                        python_features.updateRequired.connect(currentWidget.recolor)
-                    else:
-                        logging.error("Python lexer not found")
-                except Exception as e:
-                    logging.exception(f"Error initializing PythonFeatures: {e}")
-            self.updateStatusBarWithLexer()
-            self.updateStatusBar()
-        except Exception as e:
-            logging.exception(f"Error in openFileFromTree: {e}")
 
     def onTabChange(self, index):
         filePath = self.retrieveFilePathForTab(index)
@@ -527,11 +400,7 @@ class Zenith(QMainWindow):
         codespace.markerDeleteAll(UNSAVED_CHANGES_MARKER_NUM)
 
     def openFolder(self):
-        folderPath = QFileDialog.getExistingDirectory(self, "Select Folder")
-        if folderPath:
-            self.fileTree.setRootFolder(folderPath)
-            self.folderOpened.emit(folderPath)
-            self.terminal.change_directory(folderPath)
+        self.openDaemon.openFolder()
 
     def getTextStats(self, widget):
         if isinstance(widget, QTextEdit):
@@ -577,49 +446,15 @@ class Zenith(QMainWindow):
 
             filePath = self.filePathDict.get(self.tabWidget.currentIndex())
             if filePath:
-                encoding = self.getFileEncoding(filePath)
-                lineEnding = self.getLineEnding(currentWidget)
-                fileSize = self.getFileSize(filePath)
+                encoding = self.openDaemon.getFileEncoding(filePath)
+                lineEnding = self.openDaemon.getLineEnding(currentWidget)
+                fileSize = self.openDaemon.getFileSize(filePath)
 
                 self.statusBar.updateEncoding(encoding)
                 self.statusBar.updateLineEnding(lineEnding)
                 self.statusBar.updateFileSize(fileSize)
             editMode = "Edit" if not currentWidget.isReadOnly() else "ReadOnly"
             self.statusBar.updateEditMode(editMode)
-
-    def getFileEncoding(self, filePath):
-        try:
-            with open(filePath, "rb") as file:
-                raw = file.read(4096)
-            result = chardet.detect(raw)
-            return result["encoding"] or "Unknown"
-        except Exception:
-            return "Unknown"
-
-    def getLineEnding(self, widget):
-        if isinstance(widget, QsciScintilla):
-            eol_mode = widget.eolMode()
-            if eol_mode == QsciScintilla.EolMode.EolWindows:
-                return "CRLF"
-            elif eol_mode == QsciScintilla.EolMode.EolUnix:
-                return "LF"
-            elif eol_mode == QsciScintilla.EolMode.EolMac:
-                return "CR"
-        elif isinstance(widget, QTextEdit):
-            text = widget.toPlainText()
-            if "\r\n" in text:
-                return "CRLF"
-            elif "\n" in text:
-                return "LF"
-            elif "\r" in text:
-                return "CR"
-        return "Unknown"
-
-    def getFileSize(self, filePath):
-        try:
-            return os.path.getsize(filePath) / 1024  # Size in KB
-        except Exception:
-            return 0
 
     def toggleEditMode(self):
         currentWidget = self.tabWidget.currentWidget()
@@ -678,7 +513,6 @@ class Zenith(QMainWindow):
         if self.tabWidget.count() == 0:
             self.titleBar.updateTitle(None)
 
-    # Update the handleTabClose method
     def handleTabClose(self, index):
         self.closeTab(index)
 
@@ -723,3 +557,8 @@ class Zenith(QMainWindow):
         ):
             current_widget.python_features.show_calltip()
             logging.debug("Manual calltip triggered")
+
+    def handleCursorPositionChanged(self):
+        currentWidget = self.tabWidget.currentWidget()
+        if isinstance(currentWidget, QsciScintilla):
+            currentWidget.cursorPositionChanged.connect(self.updateStatusBar)

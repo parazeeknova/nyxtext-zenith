@@ -1,4 +1,4 @@
-from lupa import LuaError, LuaRuntime
+from lupa import LuaError, LuaRuntime  # type: ignore
 from PyQt6.QtGui import QAction
 from PyQt6.QtWidgets import QApplication, QMenuBar, QMessageBox
 
@@ -80,12 +80,26 @@ def menu_bar(self, zenithInstance=None):
 
         openAction = QAction("Open", self)
         openAction.setShortcut(shortcuts["open"])
-        openAction.triggered.connect(lambda: self.parent().openFile())
+        if zenithInstance and hasattr(zenithInstance, "openDaemon"):
+            openAction.triggered.connect(zenithInstance.openDaemon.openFile)
+        else:
+            openAction.triggered.connect(
+                lambda: QMessageBox.warning(
+                    self, "Error", "Open file functionality not available"
+                )
+            )
         fileMenu.addAction(openAction)
 
         openFolderAction = QAction("Open Folder", self)
         openFolderAction.setShortcut(shortcuts["open_folder"])
-        openFolderAction.triggered.connect(zenithInstance.openFolder)
+        if zenithInstance and hasattr(zenithInstance, "openDaemon"):
+            openFolderAction.triggered.connect(zenithInstance.openDaemon.openFolder)
+        else:
+            openFolderAction.triggered.connect(
+                lambda: QMessageBox.warning(
+                    self, "Error", "Open folder functionality not available"
+                )
+            )
         fileMenu.addAction(openFolderAction)
 
         fileMenu.addSeparator()
@@ -133,3 +147,5 @@ def menu_bar(self, zenithInstance=None):
         QMessageBox.warning(self, "Error", f"Shortcuts file not found: {filepath}")
     except Exception as e:
         QMessageBox.warning(self, "Error", f"An unexpected error occurred: {e}")
+
+    return menuBar

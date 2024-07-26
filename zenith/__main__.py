@@ -16,7 +16,7 @@ def main():
     mainWindow = Zenith()
 
     if args.open:
-        mainWindow.openFileFromTree(args.open)
+        mainWindow.openDaemon.openFileFromTree(args.open)
 
     mainWindow.show()
     sys.exit(app.exec())

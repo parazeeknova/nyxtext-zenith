@@ -26,7 +26,7 @@ class CustomTitleBar(QWidget):
         self.iconLabel.setStyleSheet("padding-left: 5px;")
         self.layout.addWidget(self.iconLabel, 0, Qt.AlignmentFlag.AlignLeft)
 
-        self.menuBar = menu_bar(self, zenithInstance)
+        self.menuBar = menu_bar(self, self.zenithInstance)
         self.layout.addWidget(self.menuBar, 0)
 
         self.titleLabel = QLabel("Nyxtext Zenith", self)
@@ -111,3 +111,6 @@ class CustomTitleBar(QWidget):
 
     def closeApplication(self):
         self.parent().close()
+
+    def menuBar(self, zenithInstance):
+        return menu_bar(self, zenithInstance)
