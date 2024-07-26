@@ -47,9 +47,9 @@ class OpenDaemon:
 
             # Detect and set the correct line ending
             if isinstance(tab, QsciScintilla):
-                if '\r\n' in content:
+                if "\r\n" in content:
                     tab.setEolMode(QsciScintilla.EolMode.EolWindows)
-                elif '\r' in content:
+                elif "\r" in content:
                     tab.setEolMode(QsciScintilla.EolMode.EolMac)
                 else:
                     tab.setEolMode(QsciScintilla.EolMode.EolUnix)

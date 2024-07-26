@@ -41,11 +41,11 @@ class SaveDaemon:
             if isinstance(currentWidget, QsciScintilla):
                 eol_mode = currentWidget.eolMode()
                 if eol_mode == QsciScintilla.EolMode.EolWindows:
-                    content = content.replace('\n', '\r\n')
+                    content = content.replace("\n", "\r\n")
                 elif eol_mode == QsciScintilla.EolMode.EolUnix:
-                    content = content.replace('\r\n', '\n')
+                    content = content.replace("\r\n", "\n")
                 elif eol_mode == QsciScintilla.EolMode.EolMac:
-                    content = content.replace('\n', '\r')
+                    content = content.replace("\n", "\r")
 
             worker = FileWorker(filePath, content, mode="w")
             worker.signals.finished.connect(self.onFileSaveFinished)
