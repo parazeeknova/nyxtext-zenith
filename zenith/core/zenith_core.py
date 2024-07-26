@@ -14,7 +14,6 @@ from PyQt6.QtCore import (
 from PyQt6.QtGui import QColor, QIcon, QPalette
 from PyQt6.QtWidgets import (
     QApplication,
-    QFileDialog,
     QMainWindow,
     QMessageBox,
     QPushButton,
@@ -36,8 +35,8 @@ from ..scripts.color_scheme_loader import color_schemes
 from ..scripts.def_path import resource
 from ..scripts.file_cache import FileCache
 from ..scripts.shortcuts import key_shortcuts
-from .func.fileWorker import FileWorker
 from .func.openDaemon import OpenDaemon
+from .func.saveDaemon import SaveDaemon
 
 logging.basicConfig(
     level=logging.DEBUG,
@@ -68,6 +67,7 @@ class Zenith(QMainWindow):
         self.tabCounter = 0
 
         self.openDaemon = OpenDaemon(self)
+        self.saveDaemon = SaveDaemon(self)
         self.setupUI()
         self.setupConnections()
         self.setupTerminal()
@@ -235,47 +235,6 @@ class Zenith(QMainWindow):
         self.fileCache.clear()
         QApplication.quit()
 
-    def confirmClose(self, close_all=False):
-        if self.hasUnsavedChanges():
-            dialog = QMessageBox(self)
-            dialog.setWindowTitle("Unsaved Changes")
-            dialog.setText("There are unsaved changes. What would you like to do?")
-            dialog.setStandardButtons(
-                QMessageBox.StandardButton.SaveAll
-                | QMessageBox.StandardButton.Discard
-                | QMessageBox.StandardButton.Cancel
-            )
-            dialog.setDefaultButton(QMessageBox.StandardButton.SaveAll)
-
-            result = dialog.exec()
-            if result == QMessageBox.StandardButton.SaveAll:
-                self.saveAllTabs()
-                return True
-            elif result == QMessageBox.StandardButton.Discard:
-                return True
-            else:  # Cancel
-                return False
-        return True
-
-    def saveAllTabs(self):
-        for i in range(self.tabWidget.count()):
-            if self.isModified(i):
-                self.tabWidget.setCurrentIndex(i)
-                self.saveFile()
-
-    def isModified(self, index=None):
-        if index is None:
-            index = self.tabWidget.currentIndex()
-        widget = self.tabWidget.widget(index)
-        if isinstance(widget, QsciScintilla):
-            return widget.isModified()
-        elif isinstance(widget, QTextEdit):
-            return widget.document().isModified()
-        return False
-
-    def hasUnsavedChanges(self):
-        return any(self.isModified(i) for i in range(self.tabWidget.count()))
-
     def addNewTab(self):
         Workspace(self)
 
@@ -319,85 +278,6 @@ class Zenith(QMainWindow):
     def closeAllTabs(self):
         for index in range(self.tabWidget.count() - 1, -1, -1):
             self.closeTab(index)
-
-    def saveFile(self):
-        currentIndex = self.tabWidget.currentIndex()
-        filePath = self.filePathDict.get(currentIndex)
-
-        if filePath:
-            currentWidget = self.tabWidget.currentWidget()
-            content = (
-                currentWidget.text()
-                if isinstance(currentWidget, QsciScintilla)
-                else currentWidget.toPlainText()
-            )
-
-            worker = FileWorker(filePath, content, mode="w")
-            worker.signals.finished.connect(self.onFileSaveFinished)
-            worker.signals.error.connect(
-                lambda e: self.showErrorMessage("Error saving file", e)
-            )
-            self.workers.append(worker)
-            self.threadPool.start(worker)
-
-            # Update cache with new content
-            self.fileCache.set(filePath, content)
-        else:
-            self.saveFileAs()
-
-    def onFileSaveFinished(self, filePath, _):
-        currentWidget = self.tabWidget.currentWidget()
-        if isinstance(currentWidget, QsciScintilla):
-            currentWidget.setModified(False)
-        elif isinstance(currentWidget, QTextEdit):
-            currentWidget.document().setModified(False)
-
-        self.removeUnsavedChangesMarker(currentWidget)
-        self.statusBar.showMessage(f"File saved: {filePath}", 4000)
-        self.workers = [w for w in self.workers if w.file_path != filePath]
-
-    def saveFileAs(self):
-        currentIndex = self.tabWidget.currentIndex()
-        currentWidget = self.tabWidget.currentWidget()
-        initialPath = self.filePathDict.get(currentIndex, "")
-        filePath, _ = QFileDialog.getSaveFileName(
-            self, "Save File As", initialPath, "All Files (*)"
-        )
-
-        if filePath:
-            content = (
-                currentWidget.text()
-                if isinstance(currentWidget, QsciScintilla)
-                else currentWidget.toPlainText()
-            )
-
-            worker = FileWorker(filePath, content, mode="w")
-            worker.signals.finished.connect(
-                lambda fp, _: self.onFileSaveAsFinished(fp, currentIndex)
-            )
-            worker.signals.error.connect(
-                lambda e: self.showErrorMessage("Error saving file", e)
-            )
-            self.workers.append(worker)
-            self.threadPool.start(worker)
-
-    def onFileSaveAsFinished(self, filePath, currentIndex):
-        self.filePathDict[currentIndex] = filePath
-        fileName = os.path.basename(filePath)
-        self.tabWidget.setTabText(currentIndex, fileName)
-        currentWidget = self.tabWidget.widget(currentIndex)
-        if isinstance(currentWidget, QsciScintilla):
-            currentWidget.setModified(False)
-        elif isinstance(currentWidget, QTextEdit):
-            currentWidget.document().setModified(False)
-
-        self.removeUnsavedChangesMarker(currentWidget)
-        self.statusBar.showMessage(f"File saved as: {filePath}", 4000)
-        self.workers = [w for w in self.workers if w.file_path != filePath]
-
-    def removeUnsavedChangesMarker(self, codespace):
-        UNSAVED_CHANGES_MARKER_NUM = 9
-        codespace.markerDeleteAll(UNSAVED_CHANGES_MARKER_NUM)
 
     def openFolder(self):
         self.openDaemon.openFolder()
@@ -482,37 +362,6 @@ class Zenith(QMainWindow):
             QMessageBox.warning(self, "Error", f"An unexpected error occurred: {e}")
         return {}
 
-    def closeTab(self, index):
-        if self.isModified(index):
-            self.tabWidget.setCurrentIndex(index)
-            dialog = QMessageBox(self)
-            dialog.setWindowTitle("Unsaved Changes")
-            dialog.setText(
-                f"The file in tab {index + 1} has unsaved changes. "
-                "Do you want to save before closing?"
-            )
-            dialog.setStandardButtons(
-                QMessageBox.StandardButton.Save
-                | QMessageBox.StandardButton.Discard
-                | QMessageBox.StandardButton.Cancel
-            )
-            dialog.setDefaultButton(QMessageBox.StandardButton.Save)
-
-            result = dialog.exec()
-            if result == QMessageBox.StandardButton.Save:
-                self.saveFile()
-            elif result == QMessageBox.StandardButton.Cancel:
-                return
-
-        if self.tabWidget.count() > 1:
-            self.tabWidget.removeTab(index)
-            if index in self.filePathDict:
-                del self.filePathDict[index]
-            self.updateFilePathDict()
-
-        if self.tabWidget.count() == 0:
-            self.titleBar.updateTitle(None)
-
     def handleTabClose(self, index):
         self.closeTab(index)
 
@@ -562,3 +411,59 @@ class Zenith(QMainWindow):
         currentWidget = self.tabWidget.currentWidget()
         if isinstance(currentWidget, QsciScintilla):
             currentWidget.cursorPositionChanged.connect(self.updateStatusBar)
+
+    def hasUnsavedChanges(self):
+        return any(self.saveDaemon.isModified(i) for i in range(self.tabWidget.count()))
+
+    def confirmClose(self, close_all=False):
+        if self.hasUnsavedChanges():
+            dialog = QMessageBox(self)
+            dialog.setWindowTitle("Unsaved Changes")
+            dialog.setText("There are unsaved changes. What would you like to do?")
+            dialog.setStandardButtons(
+                QMessageBox.StandardButton.SaveAll
+                | QMessageBox.StandardButton.Discard
+                | QMessageBox.StandardButton.Cancel
+            )
+            dialog.setDefaultButton(QMessageBox.StandardButton.SaveAll)
+
+            result = dialog.exec()
+            if result == QMessageBox.StandardButton.SaveAll:
+                self.saveDaemon.saveAllTabs()
+                return True
+            elif result == QMessageBox.StandardButton.Discard:
+                return True
+            else:  # Cancel
+                return False
+        return True
+
+    def closeTab(self, index):
+        if self.saveDaemon.isModified(index):
+            self.tabWidget.setCurrentIndex(index)
+            dialog = QMessageBox(self)
+            dialog.setWindowTitle("Unsaved Changes")
+            dialog.setText(
+                f"The file in tab {index + 1} has unsaved changes. "
+                "Do you want to save before closing?"
+            )
+            dialog.setStandardButtons(
+                QMessageBox.StandardButton.Save
+                | QMessageBox.StandardButton.Discard
+                | QMessageBox.StandardButton.Cancel
+            )
+            dialog.setDefaultButton(QMessageBox.StandardButton.Save)
+
+            result = dialog.exec()
+            if result == QMessageBox.StandardButton.Save:
+                self.saveDaemon.saveFile()
+            elif result == QMessageBox.StandardButton.Cancel:
+                return
+
+        if self.tabWidget.count() > 1:
+            self.tabWidget.removeTab(index)
+            if index in self.filePathDict:
+                del self.filePathDict[index]
+            self.updateFilePathDict()
+
+        if self.tabWidget.count() == 0:
+            self.titleBar.updateTitle(None)

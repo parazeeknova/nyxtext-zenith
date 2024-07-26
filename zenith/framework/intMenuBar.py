@@ -106,12 +106,26 @@ def menu_bar(self, zenithInstance=None):
 
         saveAction = QAction("Save", self)
         saveAction.setShortcut(shortcuts["save"])
-        saveAction.triggered.connect(lambda: self.parent().saveFile())
+        if zenithInstance and hasattr(zenithInstance, "saveDaemon"):
+            saveAction.triggered.connect(zenithInstance.saveDaemon.saveFile)
+        else:
+            saveAction.triggered.connect(
+                lambda: QMessageBox.warning(
+                    self, "Error", "Save file functionality not available"
+                )
+            )
         fileMenu.addAction(saveAction)
 
         saveAsAction = QAction("Save As", self)
         saveAsAction.setShortcut(shortcuts["save_as"])
-        saveAsAction.triggered.connect(lambda: self.parent().saveFileAs())
+        if zenithInstance and hasattr(zenithInstance, "saveDaemon"):
+            saveAsAction.triggered.connect(zenithInstance.saveDaemon.saveFileAs)
+        else:
+            saveAsAction.triggered.connect(
+                lambda: QMessageBox.warning(
+                    self, "Error", "Save file as functionality not available"
+                )
+            )
         fileMenu.addAction(saveAsAction)
 
         fileMenu.addAction("Save All")
