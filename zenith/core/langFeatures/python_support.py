@@ -30,7 +30,6 @@ class PythonFeatures(QObject):
         except Exception as e:
             logging.exception(f"Error initializing PythonFeatures: {e}")
 
-    
     def customize_lexer(self):
         try:
             lexer = QsciLexerPython(self.codespace)
@@ -42,7 +41,9 @@ class PythonFeatures(QObject):
             comment_font = QFont("JetBrainsMono Nerd Font", 10, italic=True)
             lexer.setFont(comment_font, QsciLexerPython.Comment)
 
-            keyword_font = QFont("JetBrainsMono Nerd Font", 10, weight=QFont.Weight.Bold)
+            keyword_font = QFont(
+                "JetBrainsMono Nerd Font", 10, weight=QFont.Weight.Bold
+            )
             lexer.setFont(keyword_font, QsciLexerPython.Keyword)
 
             number_font = QFont("JetBrainsMono Nerd Font", 10, weight=QFont.Weight.Bold)
