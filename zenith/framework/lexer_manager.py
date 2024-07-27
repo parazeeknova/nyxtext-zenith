@@ -41,6 +41,7 @@ from PyQt6.Qsci import (
 )
 from PyQt6.QtWidgets import QMessageBox
 
+from ..core.langFeatures.python_support import PythonFeatures
 from ..lexers.bash_lexer import customize_bash_lexer
 from ..lexers.batch_lexer import customize_batch_lexer
 from ..lexers.cmake_lexer import customize_cmake_lexer
@@ -58,7 +59,6 @@ from ..lexers.ruby_lexer import customize_ruby_lexer
 from ..lexers.sql_lexer import customize_sql_lexer
 from ..lexers.xml_lexer import customize_xml_lexer
 from ..lexers.yaml_lexer import customize_yaml_lexer
-from ..core.langFeatures.python_support import PythonFeatures
 
 lua = LuaRuntime(unpack_returned_tuples=True)
 
