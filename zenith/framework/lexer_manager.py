@@ -54,11 +54,11 @@ from ..lexers.lua_lexer import customize_lua_lexer
 from ..lexers.markdown_lexer import customize_md_lexer
 from ..lexers.perl_lexer import customize_perl_lexer
 from ..lexers.properties_lexer import customize_properties_lexer
-from ..lexers.python_lexer import customize_python_lexer
 from ..lexers.ruby_lexer import customize_ruby_lexer
 from ..lexers.sql_lexer import customize_sql_lexer
 from ..lexers.xml_lexer import customize_xml_lexer
 from ..lexers.yaml_lexer import customize_yaml_lexer
+from ..core.langFeatures.python_support import PythonFeatures
 
 lua = LuaRuntime(unpack_returned_tuples=True)
 
@@ -143,7 +143,6 @@ class LexerManager:
         self.color_schemes = self.load_color_schemes()
 
         lexer_customizations = {
-            "python": customize_python_lexer,
             "javascript": customize_javascript_lexer,
             "cpp": customize_cpp_lexer,
             "css": customize_css_lexer,
@@ -170,6 +169,8 @@ class LexerManager:
                 lambda lexer, func=customization_func: func(lexer, self.color_schemes),
             )
 
+        self.customize_python_lexer = self.create_python_features
+
     def load_color_schemes(self):
         scheme = r"zenith\color_schemes.lua"
         try:
@@ -193,3 +194,6 @@ class LexerManager:
             if lexer.__class__.__name__ == lexer_name:
                 return lexer
         return None
+
+    def create_python_features(self, codespace):
+        return PythonFeatures(codespace, self.color_schemes)

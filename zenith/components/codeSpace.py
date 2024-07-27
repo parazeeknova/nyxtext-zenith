@@ -29,7 +29,7 @@ from PyQt6.Qsci import (
 from PyQt6.QtGui import QColor
 from PyQt6.QtWidgets import QMessageBox
 
-from ..core.langFeatures.python_features import PythonFeatures
+from ..core.langFeatures.python_support import PythonFeatures
 from ..framework.lexer_manager import LexerManager
 from ..scripts.roman import toRoman
 
@@ -97,7 +97,7 @@ def Codespace(tabWidget, content="", file_path=None):
                     if isinstance(lexer, QsciLexerPython):
                         try:
                             customize_func = lexer_manager.customize_python_lexer
-                            python_features = PythonFeatures(C)
+                            python_features = PythonFeatures(C, color_schemes)
                             python_features.updateRequired.connect(C.recolor)
                             logging.info(
                                 "PythonFeatures initialized for file: %s", file_path
@@ -302,13 +302,17 @@ def Codespace(tabWidget, content="", file_path=None):
             update_status_bar()
 
         C.toggle_edit_mode = toggle_edit_mode
-        
+
         def handle_key_press(event):
             if C.isReadOnly():
-                logging.info("Key press in read-only mode. Prompting to toggle edit mode.")
+                logging.info(
+                    "Key press in read-only mode. Prompting to toggle edit mode."
+                )
                 toggle_edit_mode()
                 if C.isReadOnly():  # If still readonly after prompt
-                    logging.info("Remaining in read-only mode. Key press not processed.")
+                    logging.info(
+                        "Remaining in read-only mode. Key press not processed."
+                    )
                     return  # Don't process the key press
             logging.debug(f"Key press processed: {event.key()}")
             QsciScintilla.keyPressEvent(C, event)

@@ -7,7 +7,7 @@ from PyQt6.QtWidgets import QFileDialog, QTextEdit
 
 from ...components.codeSpace import Codespace
 from ...components.workSpace import Workspace
-from ..langFeatures.python_features import PythonFeatures
+from ...core.langFeatures.python_support import PythonFeatures
 from .fileWorker import FileWorker
 
 

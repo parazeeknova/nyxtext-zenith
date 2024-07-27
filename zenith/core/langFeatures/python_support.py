@@ -1,8 +1,9 @@
 import logging
 
 import jedi  # type: ignore
-from PyQt6.Qsci import QsciAPIs, QsciScintilla
+from PyQt6.Qsci import QsciAPIs, QsciLexerPython, QsciScintilla
 from PyQt6.QtCore import QObject, pyqtSignal
+from PyQt6.QtGui import QColor, QFont
 
 logging.basicConfig(
     level=logging.DEBUG,
@@ -15,20 +16,59 @@ logging.basicConfig(
 class PythonFeatures(QObject):
     updateRequired = pyqtSignal()
 
-    def __init__(self, codespace):
+    def __init__(self, codespace, color_schemes):
         super().__init__()
         self.codespace = codespace
+        self.color_schemes = color_schemes
         self.api = None
         try:
-            if self.codespace.lexer() is None:
-                logging.error("Lexer is None in PythonFeatures initialization")
-                return
+            self.customize_lexer()
             self.api = QsciAPIs(self.codespace.lexer())
             self.setup_autocompletion()
             self.setup_calltips()
             logging.info("PythonFeatures initialized successfully")
         except Exception as e:
             logging.exception(f"Error initializing PythonFeatures: {e}")
+
+    
+    def customize_lexer(self):
+        try:
+            lexer = QsciLexerPython(self.codespace)
+            self.codespace.setLexer(lexer)
+
+            default_font = QFont("JetBrainsMono Nerd Font", 10)
+            lexer.setFont(default_font)
+
+            comment_font = QFont("JetBrainsMono Nerd Font", 10, italic=True)
+            lexer.setFont(comment_font, QsciLexerPython.Comment)
+
+            keyword_font = QFont("JetBrainsMono Nerd Font", 10, weight=QFont.Weight.Bold)
+            lexer.setFont(keyword_font, QsciLexerPython.Keyword)
+
+            number_font = QFont("JetBrainsMono Nerd Font", 10, weight=QFont.Weight.Bold)
+            lexer.setFont(number_font, QsciLexerPython.Number)
+
+            for style, color_key in [
+                (QsciLexerPython.Default, "default"),
+                (QsciLexerPython.Keyword, "keyword"),
+                (QsciLexerPython.Number, "numbers"),
+                (QsciLexerPython.DoubleQuotedString, "string"),
+                (QsciLexerPython.SingleQuotedString, "string2"),
+                (QsciLexerPython.TripleSingleQuotedString, "string"),
+                (QsciLexerPython.TripleDoubleQuotedString, "string2"),
+                (QsciLexerPython.Comment, "comment"),
+                (QsciLexerPython.CommentBlock, "comment"),
+                (QsciLexerPython.Identifier, "default"),
+                (QsciLexerPython.Operator, "operators"),
+                (QsciLexerPython.FunctionMethodName, "func"),
+                (QsciLexerPython.ClassName, "class"),
+                (QsciLexerPython.Decorator, "keyword"),
+            ]:
+                lexer.setColor(QColor(self.color_schemes[color_key]), style)
+
+            logging.info("Python lexer customized successfully")
+        except Exception as e:
+            logging.exception(f"Error customizing Python lexer: {e}")
 
     def setup_autocompletion(self):
         if not self.api:
@@ -126,7 +166,6 @@ class PythonFeatures(QObject):
             "elif",
             "else",
             "except",
-            "False",
             "finally",
             "for",
             "from",
@@ -136,14 +175,12 @@ class PythonFeatures(QObject):
             "in",
             "is",
             "lambda",
-            "None",
             "nonlocal",
             "not",
             "or",
             "pass",
             "raise",
             "return",
-            "True",
             "try",
             "while",
             "with",
