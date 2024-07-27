@@ -56,11 +56,14 @@ def load_color_schemes():
 class codeSpaceContextManager:
     def __init__(self, codespace):
         self.codespace = codespace
+        logging.info("Initializing codeSpaceContextManager")
 
     def __enter__(self):
+        logging.info("Entering codeSpaceContextManager context")
         return self.codespace
 
     def __exit__(self, exc_type, exc_val, exc_tb):
+        logging.info("Exiting codeSpaceContextManager context")
         pass  # Cleanup
 
 
@@ -224,11 +227,14 @@ def Codespace(tabWidget, content="", file_path=None):
         )
 
         def on_margin_clicked(margin, line, state):
+            logging.info(f"Margin clicked: margin={margin}, line={line}, state={state}")
             if margin == 1:  # Assuming 1 is the margin number for breakpoints
                 if C.markersAtLine(line) & (1 << BREAKPOINT_MARKER_NUM):
                     C.markerDelete(line, BREAKPOINT_MARKER_NUM)
+                    logging.info(f"Breakpoint removed at line {line}")
                 else:
                     C.markerAdd(line, BREAKPOINT_MARKER_NUM)
+                    logging.info(f"Breakpoint added at line {line}")
 
         C.marginClicked.connect(on_margin_clicked)
         C.setMarginSensitivity(1, True)
@@ -275,31 +281,36 @@ def Codespace(tabWidget, content="", file_path=None):
 
         def toggle_edit_mode(prompt=True):
             is_readonly = C.isReadOnly()
+            logging.info(f"Toggling edit mode. Current read-only state: {is_readonly}")
             if is_readonly and prompt:
                 reply = QMessageBox.question(
                     C,
                     "Read-only Mode",
-                    "The file is in read-only mode. "
-                    "Do you want to switch to edit mode?",
+                    "The file is in read-only mode. Do you want to switch to edit mode?",
                     QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
                     QMessageBox.StandardButton.No,
                 )
                 if reply == QMessageBox.StandardButton.No:
+                    logging.info("User chose to remain in read-only mode")
                     return
 
             C.setReadOnly(not is_readonly)
             C.markerDeleteAll(READONLY_MARKER_NUM)
             C.markerDeleteAll(EDIT_MARKER_NUM)
             C.markerAdd(0, EDIT_MARKER_NUM if not is_readonly else READONLY_MARKER_NUM)
+            logging.info(f"Edit mode toggled. New read-only state: {C.isReadOnly()}")
             update_status_bar()
 
         C.toggle_edit_mode = toggle_edit_mode
-
+        
         def handle_key_press(event):
             if C.isReadOnly():
+                logging.info("Key press in read-only mode. Prompting to toggle edit mode.")
                 toggle_edit_mode()
                 if C.isReadOnly():  # If still readonly after prompt
+                    logging.info("Remaining in read-only mode. Key press not processed.")
                     return  # Don't process the key press
+            logging.debug(f"Key press processed: {event.key()}")
             QsciScintilla.keyPressEvent(C, event)
 
         C.keyPressEvent = handle_key_press
@@ -327,15 +338,4 @@ def Codespace(tabWidget, content="", file_path=None):
             text_change_thread.join()
 
         C.destroyed.connect(cleanup)
-
-        def run_file(self):
-            if self.file_path:
-                file_type = os.path.splitext(self.file_path)[1]
-                if file_type == ".py":
-                    return ["python", self.file_path]
-                elif file_type == ".js":
-                    return ["node", self.file_path]
-                # Add more file types as needed
-            return None
-
     return C

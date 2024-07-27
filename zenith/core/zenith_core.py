@@ -223,12 +223,14 @@ class Zenith(QMainWindow):
         self.openDaemon.openFile()
 
     def setupConnections(self):
+        logging.info("Setting up connections")
         self.fileTree.visibilityChanged.connect(self.adjustSplitter)
         self.fileTree.dockingChanged.connect(self.handleDockingChange)
         self.tabWidget.currentChanged.connect(self.onTabChange)
         self.fileTree.fileTree.fileSelected.connect(self.openDaemon.openFileFromTree)
         self.tabWidget.tabCloseRequested.connect(self.handleTabClose)
         self.terminalButton.clicked.connect(self.toggleTerminal)
+        logging.info("Connections set up successfully")
 
     def closeApplication(self):
         self.closeAllTabs()
@@ -255,6 +257,7 @@ class Zenith(QMainWindow):
         QMessageBox.critical(self, title, message)
 
     def onTabChange(self, index):
+        logging.info(f"Tab changed to index {index}")
         filePath = self.retrieveFilePathForTab(index)
         self.updateStatusBarWithLexer()
         if filePath:

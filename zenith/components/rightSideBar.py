@@ -1,4 +1,5 @@
 import os
+import logging
 
 from PyQt6.QtCore import pyqtSignal
 from PyQt6.QtWidgets import (
@@ -25,6 +26,7 @@ class DockedFileTreeWidget(QWidget):
         parent=None,
     ):
         super().__init__(parent)
+        logging.info("Initializing DockedFileTreeWidget")
         layout = QVBoxLayout(self)
         headerLayout = QHBoxLayout()
         headerLayout.addWidget(explorerLabel)
@@ -35,6 +37,7 @@ class DockedFileTreeWidget(QWidget):
         layout.addWidget(fileTree)
         layout.addWidget(fullPathLabel)
         self.setLayout(layout)
+        logging.info("DockedFileTreeWidget initialized")
 
 
 class FileTreeWidget(QWidget):
