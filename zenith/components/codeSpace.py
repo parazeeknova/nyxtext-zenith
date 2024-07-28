@@ -152,8 +152,16 @@ def Codespace(tabWidget, content="", file_path=None):
         C.setMatchedBraceForegroundColor(QColor("matched_brace_fg"))
         C.setUnmatchedBraceBackgroundColor(QColor(color_schemes["unmatched_brace_bg"]))
         C.setUnmatchedBraceForegroundColor(QColor(color_schemes["unmatched_brace_fg"]))
+        C.setMarginsForegroundColor(QColor(color_schemes["margin_fg"]))
+        C.setMarginsBackgroundColor(QColor(color_schemes["margin_bg"]))
 
         setup_lexer()
+
+        def set_margin_colors():
+            C.setMarginsForegroundColor(QColor(color_schemes["margin_fg"]))
+            C.setMarginsBackgroundColor(QColor(color_schemes["margin_bg"]))
+
+        set_margin_colors()
 
         romanTitle = f"Codespace {toRoman(codespace_counter)}"
         tabIndex = tabWidget.addTab(C, romanTitle)
@@ -170,8 +178,6 @@ def Codespace(tabWidget, content="", file_path=None):
         # Margin 1: Line numbers
         C.setMarginType(1, QsciScintilla.MarginType.NumberMargin)
         C.setMarginWidth(1, 30)
-        C.setMarginsForegroundColor(QColor(color_schemes["margin_fg"]))
-        C.setMarginsBackgroundColor(QColor(color_schemes["margin_bg"]))
 
         # Margin 2: Folding margin
         C.setMarginType(2, QsciScintilla.MarginType.SymbolMargin)

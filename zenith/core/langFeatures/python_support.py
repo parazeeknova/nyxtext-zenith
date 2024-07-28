@@ -71,6 +71,14 @@ class PythonFeatures(QObject):
             ]:
                 lexer.setColor(QColor(self.color_schemes[color_key]), style)
 
+            # Explicitly set margin colors
+            self.codespace.setMarginsForegroundColor(
+                QColor(self.color_schemes["margin_fg"])
+            )
+            self.codespace.setMarginsBackgroundColor(
+                QColor(self.color_schemes["margin_bg"])
+            )
+
             logging.info("Python lexer customized successfully")
         except Exception as e:
             logging.exception(f"Error customizing Python lexer: {e}")
