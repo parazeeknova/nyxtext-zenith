@@ -6,6 +6,8 @@ from PyQt6.Qsci import QsciAPIs, QsciLexerPython, QsciScintilla
 from PyQt6.QtCore import QMetaObject, QObject, Qt, pyqtSignal, pyqtSlot
 from PyQt6.QtGui import QColor, QFont
 
+from .language_features import LanguageFeatures
+
 logging.basicConfig(
     level=logging.DEBUG,
     filename="zenith_debug.log",
@@ -117,9 +119,7 @@ class PythonFeatures(QObject):
 
     def setup_calltips(self):
         try:
-            self.codespace.setCallTipsStyle(QsciScintilla.CallTipsStyle.CallTipsContext)
-            self.codespace.setCallTipsVisible(0)
-            self.codespace.callTipsStyle()
+            LanguageFeatures.setup_calltip_style(self)
             self.codespace.cursorPositionChanged.connect(self.show_calltip)
             logging.info("Calltips set up successfully")
         except Exception as e:
@@ -150,7 +150,7 @@ class PythonFeatures(QObject):
                 self.api.add(f"{word} - {description}")
 
             # Add type-specific method completions
-            current_word = self.get_current_word()
+            current_word = LanguageFeatures.get_current_word(self)
             if current_word:
                 type_methods = {
                     "list": [
@@ -200,7 +200,18 @@ class PythonFeatures(QObject):
 
             if signatures:
                 signature = signatures[0]
-                params = ", ".join(param.name for param in signature.params)
+                params = []
+                for i, param in enumerate(signature.params):
+                    param_style = 'style="color: {};"'.format(
+                        self.color_schemes["calltip_param"]
+                    )
+                    if i == signature.index:  # Current parameter
+                        param_style = 'style="color: {}; font-weight: bold;"'.format(
+                            self.color_schemes["calltip_current_param"]
+                        )
+                    params.append("<span {}>{}</span>".format(param_style, param.name))
+
+                params_str = ", ".join(params)
                 description = next(
                     (
                         kw.split("|")[1]
@@ -209,35 +220,33 @@ class PythonFeatures(QObject):
                     ),
                     "",
                 )
-                calltip = f"{signature.name}({params})\n{description}"
+
+                function_style = 'style="color: {}; font-weight: bold;"'.format(
+                    self.color_schemes["calltip_function"]
+                )
+                description_style = 'style="color: {};"'.format(
+                    self.color_schemes["calltip_description"]
+                )
+
+                calltip = f"""
+                <div style="font-family: 'JetBrainsMono Nerd Font', monospace; font-size: 11px; padding: 5px;">
+                    <span {function_style}>{signature.name}</span>(<span>{params_str}</span>)
+                    <br><br>
+                    <span {description_style}>{description}</span>
+                </div>
+                """
+
                 self.codespace.callTip(
                     self.codespace.positionFromLineIndex(
                         *self.codespace.getCursorPosition()
                     ),
                     calltip,
                 )
-                logging.debug(f"Calltip shown: {calltip}")
+                logging.debug(f"Calltip shown: {signature.name}")
             else:
                 logging.debug("No calltip available at current position")
         except Exception as e:
             logging.exception(f"Error showing calltip: {e}")
-
-    def get_current_word(self):
-        line, index = self.codespace.getCursorPosition()
-        text = self.codespace.text(line)
-        word_end = index
-        while (
-            word_end < len(text) and text[word_end].isalnum() or text[word_end] in "_."
-        ):
-            word_end += 1
-        word_start = index
-        while (
-            word_start > 0
-            and text[word_start - 1].isalnum()
-            or text[word_start - 1] in "_."
-        ):
-            word_start -= 1
-        return text[word_start:word_end]
 
     def get_python_keywords(self):
         return [

@@ -53,6 +53,16 @@ return {
   unmatched_brace_fg = "	#a5adcb",
   regex = "#F8BD96",
 
+  -- Calltip color scheme
+  calltip_bg = "#24273a",
+  calltip_fg = "#cad3f5",
+  calltip_highlight = "#f5bde6",
+  calltip_function = "#8aadf4",
+  calltip_param = "#a6da95",
+  calltip_current_param = "#f0c6c6",
+  calltip_optional_param = "#c6a0f6",
+  calltip_description = "#b8c0e0",
+
   -- Codespace color scheme
   caret = "#b8c0e0",
   margin_fg = "#a5adcb",

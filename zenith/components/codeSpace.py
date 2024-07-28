@@ -29,6 +29,7 @@ from PyQt6.Qsci import (
 from PyQt6.QtGui import QColor
 from PyQt6.QtWidgets import QMessageBox
 
+from ..core.langFeatures.lua_support import LuaFeatures
 from ..core.langFeatures.python_support import PythonFeatures
 from ..framework.lexer_manager import LexerManager
 from ..scripts.roman import toRoman
@@ -116,7 +117,16 @@ def Codespace(tabWidget, content="", file_path=None):
                     elif isinstance(lexer, QsciLexerJSON):
                         customize_func = lexer_manager.customize_json_lexer
                     elif isinstance(lexer, QsciLexerLua):
-                        customize_func = lexer_manager.customize_lua_lexer
+                        lua_features = None
+                        try:
+                            lua_features = LuaFeatures(C, color_schemes)
+                            lua_features.updateRequired.connect(C.recolor)
+                            C.lua_features = lua_features
+                            logging.info(
+                                "LuaFeatures initialized for file: %s", file_path
+                            )
+                        except Exception as e:
+                            logging.exception(f"Error initializing LuaFeatures: {e}")
                     elif isinstance(lexer, QsciLexerPerl):
                         customize_func = lexer_manager.customize_perl_lexer
                     elif isinstance(lexer, QsciLexerRuby):

@@ -41,6 +41,7 @@ from PyQt6.Qsci import (
 )
 from PyQt6.QtWidgets import QMessageBox
 
+from ..core.langFeatures.lua_support import LuaFeatures
 from ..core.langFeatures.python_support import PythonFeatures
 from ..lexers.bash_lexer import customize_bash_lexer
 from ..lexers.batch_lexer import customize_batch_lexer
@@ -51,7 +52,6 @@ from ..lexers.html_lexer import customize_html_lexer
 from ..lexers.java_lexer import customize_java_lexer
 from ..lexers.javascript_lexer import customize_javascript_lexer
 from ..lexers.json_lexer import customize_json_lexer
-from ..lexers.lua_lexer import customize_lua_lexer
 from ..lexers.markdown_lexer import customize_md_lexer
 from ..lexers.perl_lexer import customize_perl_lexer
 from ..lexers.properties_lexer import customize_properties_lexer
@@ -148,7 +148,6 @@ class LexerManager:
             "css": customize_css_lexer,
             "html": customize_html_lexer,
             "json": customize_json_lexer,
-            "lua": customize_lua_lexer,
             "md": customize_md_lexer,
             "perl": customize_perl_lexer,
             "ruby": customize_ruby_lexer,
@@ -197,3 +196,6 @@ class LexerManager:
 
     def create_python_features(self, codespace):
         return PythonFeatures(codespace, self.color_schemes)
+
+    def create_lua_features(self, codespace):
+        return LuaFeatures(codespace, self.color_schemes)
