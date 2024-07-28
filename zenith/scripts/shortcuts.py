@@ -31,13 +31,35 @@ def key_shortcuts(main_window):
         )
         toggle_edit_mode_shortcut.activated.connect(main_window.toggleEditMode)
 
-        show_calltip_shortcut = QShortcut(QKeySequence("Ctrl+Shift+Space"), main_window)
+        show_calltip_shortcut = QShortcut(
+            QKeySequence(shortcuts["show_call_tips"]), main_window
+        )
         show_calltip_shortcut.activated.connect(main_window.show_calltip)
 
         show_autocompletion_shortcut = QShortcut(
-            QKeySequence("Ctrl+Space"), main_window
+            QKeySequence(shortcuts["show_autocompletion"]), main_window
         )
         show_autocompletion_shortcut.activated.connect(main_window.show_autocompletion)
+
+        zoom_in_shortcut = QShortcut(QKeySequence(shortcuts["zoom_in"]), main_window)
+        zoom_in_shortcut.activated.connect(main_window.zoom_in_font)
+
+        zoom_out_shortcut = QShortcut(QKeySequence(shortcuts["zoom_out"]), main_window)
+        zoom_out_shortcut.activated.connect(main_window.zoom_out_font)
+
+        toggle_terminal_shortcut = QShortcut(
+            QKeySequence(shortcuts["toggle_terminal"]), main_window
+        )
+        toggle_terminal_shortcut.activated.connect(main_window.toggleTerminal)
+
+        maximize_shortcut = QShortcut(QKeySequence(shortcuts["maximize"]), main_window)
+        maximize_shortcut.activated.connect(main_window.titleBar.toggleMaximize)
+
+        minimize_shortcut = QShortcut(QKeySequence(shortcuts["minimize"]), main_window)
+        minimize_shortcut.activated.connect(main_window.showMinimized)
+
+        close_shortcut = QShortcut(QKeySequence(shortcuts["close"]), main_window)
+        close_shortcut.activated.connect(main_window.close)
 
     except LuaError as e:
         QMessageBox.warning(main_window, "Error", f"Error executing Lua script: {e}")

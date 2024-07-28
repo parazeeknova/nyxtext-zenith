@@ -478,3 +478,15 @@ class Zenith(QMainWindow):
         tab_index = self.tabWidget.addTab(new_tab, "Untitled")
         self.tabWidget.setCurrentIndex(tab_index)
         self.updateStatusBar()
+
+    def zoom_in_font(self):
+        for index in range(self.tabWidget.count()):
+            widget = self.tabWidget.widget(index)
+            if isinstance(widget, QsciScintilla):
+                widget.zoomIn(1)
+
+    def zoom_out_font(self):
+        for index in range(self.tabWidget.count()):
+            widget = self.tabWidget.widget(index)
+            if isinstance(widget, QsciScintilla):
+                widget.zoomOut(1)
