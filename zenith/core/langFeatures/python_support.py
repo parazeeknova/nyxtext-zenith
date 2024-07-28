@@ -1,3 +1,4 @@
+# flake8: noqa: E501
 import logging
 
 import jedi  # type: ignore
