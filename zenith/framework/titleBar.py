@@ -10,6 +10,8 @@ titleIcon = resource(r"../media/icon.ico")
 minimiseIcon = resource(r"../media/titlebar/minimise.svg")
 maximiseIcon = resource(r"../media/titlebar/maximise.svg")
 closeIcon = resource(r"../media/titlebar/close.svg")
+workSpaceIcon = resource(r"../media/titlebar/workspace.svg")
+codespaceIcon = resource(r"../media/titlebar/codespace.svg")
 
 
 class CustomTitleBar(QWidget):
@@ -49,6 +51,20 @@ class CustomTitleBar(QWidget):
                 background-color: {color_schemes['titlebar_button_hover']};
             }}
         """
+
+        self.newWorkspaceButton = QPushButton(self)
+        self.newWorkspaceButton.setIcon(QIcon(workSpaceIcon))
+        self.newWorkspaceButton.setIconSize(QSize(12, 12))
+        self.newWorkspaceButton.clicked.connect(self.zenithInstance.addNewWorkspace)
+        self.layout.addWidget(self.newWorkspaceButton)
+        self.newWorkspaceButton.setStyleSheet(button_style)
+
+        self.newCodespaceButton = QPushButton(self)
+        self.newCodespaceButton.setIcon(QIcon(codespaceIcon))
+        self.newCodespaceButton.setIconSize(QSize(12, 12))
+        self.newCodespaceButton.clicked.connect(self.zenithInstance.addNewCodespace)
+        self.layout.addWidget(self.newCodespaceButton)
+        self.newCodespaceButton.setStyleSheet(button_style)
 
         self.minimizeButton = QPushButton(self)
         self.minimizeButton.setIcon(QIcon(minimiseIcon))

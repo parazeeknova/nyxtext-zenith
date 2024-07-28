@@ -457,3 +457,15 @@ class Zenith(QMainWindow):
 
         if self.tabWidget.count() == 0:
             self.titleBar.updateTitle(None)
+
+    def addNewWorkspace(self):
+        new_tab = Workspace(self)
+        tab_index = self.tabWidget.addTab(new_tab, "Untitled")
+        self.tabWidget.setCurrentIndex(tab_index)
+        self.updateStatusBar()
+
+    def addNewCodespace(self):
+        new_tab = Codespace(self.tabWidget)
+        tab_index = self.tabWidget.addTab(new_tab, "Untitled")
+        self.tabWidget.setCurrentIndex(tab_index)
+        self.updateStatusBar()
