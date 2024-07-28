@@ -3,7 +3,7 @@ import re
 import subprocess
 
 from PyQt6.QtCore import QProcess, Qt, pyqtSignal
-from PyQt6.QtGui import QColor, QFont, QKeyEvent, QTextCursor
+from PyQt6.QtGui import QColor, QFont, QIcon, QKeyEvent, QTextCursor
 from PyQt6.QtWidgets import (
     QComboBox,
     QHBoxLayout,
@@ -12,6 +12,11 @@ from PyQt6.QtWidgets import (
     QVBoxLayout,
     QWidget,
 )
+
+from ..scripts.def_path import resource
+
+newTerminalIcon = resource(r"../media/terminal/new.svg")
+killTerminalIcon = resource(r"../media/terminal/remove.svg")
 
 
 class TerminalEmulator(QWidget):
@@ -70,7 +75,8 @@ class TerminalEmulator(QWidget):
         self.terminal_selector.setStyleSheet("QComboBox { min-width: 150px; }")
         self.terminal_selector.currentIndexChanged.connect(self.switchTab)
 
-        new_terminal_button = QPushButton("+")
+        new_terminal_button = QPushButton()
+        new_terminal_button.setIcon(QIcon(newTerminalIcon))
         new_terminal_button.setStyleSheet(
             """
             QPushButton {
@@ -86,7 +92,8 @@ class TerminalEmulator(QWidget):
         new_terminal_button.setToolTip("New Terminal")
         new_terminal_button.clicked.connect(self.addNewTab)
 
-        kill_terminal_button = QPushButton("x")
+        kill_terminal_button = QPushButton()
+        kill_terminal_button.setIcon(QIcon(killTerminalIcon))
         kill_terminal_button.setToolTip("Kill Terminal")
         kill_terminal_button.setStyleSheet(
             """
@@ -147,7 +154,8 @@ class TerminalEmulator(QWidget):
         if powershell_path:
             self.processes[index].start(powershell_path)
             self.terminal.appendPlainText(
-                f"PowerShell Core started at {powershell_path}.\nType your commands below.\n"
+                f"PowerShell Core started at {powershell_path}.\n"
+                "Type your commands below.\n"
             )
         else:
             self.terminal.appendPlainText(

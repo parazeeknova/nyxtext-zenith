@@ -2,6 +2,7 @@ import logging
 import os
 
 from PyQt6.QtCore import pyqtSignal
+from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import (
     QDockWidget,
     QHBoxLayout,
@@ -13,6 +14,12 @@ from PyQt6.QtWidgets import (
 
 from ..framework.fileTree import FileTree
 from ..scripts.color_scheme_loader import color_schemes
+from ..scripts.def_path import resource
+
+newFolderIcon = resource(r"../media/filetree_toolkit/folder.svg")
+newFileIcon = resource(r"../media/filetree_toolkit/file.svg")
+dockIcon = resource(r"../media/filetree_toolkit/dock.svg")
+hideIcon = resource(r"../media/filetree_toolkit/hide.svg")
 
 
 class DockedFileTreeWidget(QWidget):
@@ -70,6 +77,7 @@ class FileTreeWidget(QWidget):
                 color: {color_schemes['sidebar_fg']};
                 padding: 2px;
                 border-top-left-radius: 4px;
+                border-top-right-radius: 4px;
             }}
             """
         )
@@ -77,19 +85,38 @@ class FileTreeWidget(QWidget):
             background-color: {color_schemes['sidebar_button']};
             color: {color_schemes['sidebar_fg']};
             border: none;
+            padding: 2px;
+            spacing: 2px;
         """
-        self.hideButton = QPushButton("🗙")
+        self.hideButton = QPushButton()
+        self.hideButton.setIcon(QIcon(hideIcon))
         self.hideButton.setStyleSheet(button_style + "border-top-right-radius: 4px;")
         self.hideButton.setFixedSize(20, 20)
         self.hideButton.clicked.connect(self.toggleFileTreeVisibility)
 
-        self.floatButton = QPushButton("🗗")
-        self.floatButton.setStyleSheet(button_style + "border-bottom-left-radius: 4px;")
+        self.floatButton = QPushButton()
+        self.floatButton.setIcon(QIcon(dockIcon))
+        self.floatButton.setStyleSheet(button_style)
         self.floatButton.setFixedSize(20, 20)
         self.floatButton.clicked.connect(self.makeFileTreeFloat)
 
+        self.newFileButton = QPushButton()
+        self.newFileButton.setIcon(QIcon(newFileIcon))
+        self.newFileButton.setStyleSheet(button_style + "border-top-left-radius: 4px;")
+        self.newFileButton.setFixedSize(20, 20)
+        self.newFileButton.clicked.connect(self.createNewFile)
+
+        self.newFolderButton = QPushButton()
+        self.newFolderButton.setIcon(QIcon(newFolderIcon))
+        self.newFolderButton.setStyleSheet(button_style)
+        self.newFolderButton.setFixedSize(20, 20)
+        self.newFolderButton.clicked.connect(self.createNewFolder)
+
         # Button Positioning
         headerLayout.addWidget(self.explorerLabel)
+        headerLayout.addStretch()
+        headerLayout.addWidget(self.newFileButton)
+        headerLayout.addWidget(self.newFolderButton)
         headerLayout.addWidget(self.floatButton)
         headerLayout.addWidget(self.hideButton)
         fileTreeLayout.addLayout(headerLayout)
@@ -103,7 +130,7 @@ class FileTreeWidget(QWidget):
         self.currentDirLabel = QLabel(os.path.basename(os.getcwd()))
         self.currentDirLabel.setStyleSheet(label_style + "font-weight: bold;")
 
-        self.fileTree = FileTree(self)
+        self.fileTree = FileTree(self, fileTreeWidget=self)
         fileTreeLayout.addWidget(self.currentDirLabel)
         fileTreeLayout.addWidget(self.fileTree)
         self.fullPathLabel = QLabel(os.getcwd())
@@ -142,3 +169,40 @@ class FileTreeWidget(QWidget):
         self.isFloating = not self.isFloating
 
         self.dockingChanged.emit(self.isFloating)
+
+    def createNewFile(self):
+        parent_index = self.fileTree.currentIndex()
+        parent_path = self.fileTree.model.filePath(parent_index)
+        if not os.path.isdir(parent_path):
+            parent_path = os.path.dirname(parent_path)
+
+        new_file_path = os.path.join(parent_path, "Untitled")
+        counter = 1
+        while os.path.exists(new_file_path):
+            new_file_path = os.path.join(parent_path, f"Untitled{counter}")
+            counter += 1
+
+        with open(new_file_path, "w") as f:
+            pass
+
+        new_index = self.fileTree.model.index(new_file_path)
+        self.fileTree.setCurrentIndex(new_index)
+        self.fileTree.edit(new_index)
+
+    def createNewFolder(self):
+        parent_index = self.fileTree.currentIndex()
+        parent_path = self.fileTree.model.filePath(parent_index)
+        if not os.path.isdir(parent_path):
+            parent_path = os.path.dirname(parent_path)
+
+        new_folder_path = os.path.join(parent_path, "New Folder")
+        counter = 1
+        while os.path.exists(new_folder_path):
+            new_folder_path = os.path.join(parent_path, f"New Folder {counter}")
+            counter += 1
+
+        os.mkdir(new_folder_path)
+
+        new_index = self.fileTree.model.index(new_folder_path)
+        self.fileTree.setCurrentIndex(new_index)
+        self.fileTree.edit(new_index)
