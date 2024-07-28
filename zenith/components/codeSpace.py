@@ -293,7 +293,7 @@ def Codespace(tabWidget, content="", file_path=None):
             QColor("#ee99a0"), EDIT_MARKER_NUM
         )  # Red for edit mode
 
-        C.setReadOnly(True)  # Set initial readonly state
+        C.setReadOnly(False)  # Set initial state
         C.markerAdd(0, READONLY_MARKER_NUM)
 
         def toggle_edit_mode(prompt=True):
@@ -349,10 +349,14 @@ def Codespace(tabWidget, content="", file_path=None):
         text_change_thread.start()
 
         def on_text_changed():
-            current_line, _ = C.getCursorPosition()
-            text_change_queue.put(current_line)
+            C.setModified(True)
+            update_status_bar()
+
+        def on_cursor_position_changed(line, index):
+            update_status_bar()
 
         C.textChanged.connect(on_text_changed)
+        C.cursorPositionChanged.connect(on_cursor_position_changed)
 
         # Clean up the text change thread when the Codespace is closed
         def cleanup():

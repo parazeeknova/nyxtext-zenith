@@ -356,7 +356,7 @@ class Zenith(QMainWindow):
         self.closeTab(index)
 
     def closeEvent(self, event):
-        if self.confirmClose(close_all=True):
+        if self.confirmClose():
             self.closeApplication()
             event.accept()
         else:
@@ -406,10 +406,17 @@ class Zenith(QMainWindow):
         return any(self.saveDaemon.isModified(i) for i in range(self.tabWidget.count()))
 
     def confirmClose(self, close_all=False):
-        if self.hasUnsavedChanges():
+        unsaved_tabs = [
+            i for i in range(self.tabWidget.count()) if self.saveDaemon.isModified(i)
+        ]
+        print(f"Unsaved tabs: {unsaved_tabs}")  # Debug print
+        if unsaved_tabs:
             dialog = QMessageBox(self)
             dialog.setWindowTitle("Unsaved Changes")
-            dialog.setText("There are unsaved changes. What would you like to do?")
+            dialog.setText(
+                f"There are unsaved changes in {len(unsaved_tabs)} tab(s)."
+                + "What would you like to do?"
+            )
             dialog.setStandardButtons(
                 QMessageBox.StandardButton.SaveAll
                 | QMessageBox.StandardButton.Discard
@@ -419,7 +426,9 @@ class Zenith(QMainWindow):
 
             result = dialog.exec()
             if result == QMessageBox.StandardButton.SaveAll:
-                self.saveDaemon.saveAllTabs()
+                for tab_index in unsaved_tabs:
+                    self.tabWidget.setCurrentIndex(tab_index)
+                    self.saveDaemon.saveFile()
                 return True
             elif result == QMessageBox.StandardButton.Discard:
                 return True

@@ -108,6 +108,15 @@ class OpenDaemon:
             self.main_window.updateStatusBar()
         except Exception as e:
             logging.exception(f"Error in openFileFromTree: {e}")
+        currentWidget = self.main_window.tabWidget.currentWidget()
+        if isinstance(currentWidget, QsciScintilla):
+            currentWidget.setModified(False)
+        elif isinstance(currentWidget, QTextEdit):
+            currentWidget.document().setModified(False)
+
+        print(
+            f"File opened. Is modified: {self.main_window.saveDaemon.isModified()}"
+        )  # Debug print
 
     def getFileEncoding(self, filePath):
         try:

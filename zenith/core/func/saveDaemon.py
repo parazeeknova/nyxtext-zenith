@@ -60,6 +60,14 @@ class SaveDaemon:
         else:
             self.saveFileAs()
 
+        currentWidget = self.main_window.tabWidget.currentWidget()
+        if isinstance(currentWidget, QsciScintilla):
+            currentWidget.setModified(False)
+        elif isinstance(currentWidget, QTextEdit):
+            currentWidget.document().setModified(False)
+
+        print(f"File saved. Is modified: {self.isModified()}")  # Debug print
+
     def onFileSaveFinished(self, filePath, _):
         currentWidget = self.main_window.tabWidget.currentWidget()
         if isinstance(currentWidget, QsciScintilla):
