@@ -293,7 +293,8 @@ def Codespace(tabWidget, content="", file_path=None):
                 reply = QMessageBox.question(
                     C,
                     "Read-only Mode",
-                    "The file is in read-only mode. Do you want to switch to edit mode?",
+                    "The file is in read-only mode. "
+                    "Do you want to switch to edit mode?",
                     QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
                     QMessageBox.StandardButton.No,
                 )
