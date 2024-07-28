@@ -8,6 +8,7 @@ from PyQt6.QtWidgets import QFileDialog, QTextEdit
 from ...components.codeSpace import Codespace
 from ...components.workSpace import Workspace
 from ...core.langFeatures.python_support import PythonFeatures
+from ...scripts.color_scheme_loader import color_schemes
 from .fileWorker import FileWorker
 
 
@@ -97,13 +98,10 @@ class OpenDaemon:
 
             if filePath.endswith(".py"):
                 try:
-                    lexer = self.main_window.lexerManager.get_lexer("py")
-                    if lexer:
-                        currentWidget.setLexer(lexer)
-                        python_features = PythonFeatures(currentWidget)
-                        python_features.updateRequired.connect(currentWidget.recolor)
-                    else:
-                        logging.error("Python lexer not found")
+                    python_features = PythonFeatures(currentWidget, color_schemes)
+                    currentWidget.python_features = python_features
+                    python_features.updateRequired.connect(currentWidget.recolor)
+                    logging.info(f"PythonFeatures initialized for file: {filePath}")
                 except Exception as e:
                     logging.exception(f"Error initializing PythonFeatures: {e}")
             self.main_window.updateStatusBarWithLexer()

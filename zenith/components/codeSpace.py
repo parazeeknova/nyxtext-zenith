@@ -95,10 +95,11 @@ def Codespace(tabWidget, content="", file_path=None):
                     C.setLexer(lexer)
                     customize_func = None
                     if isinstance(lexer, QsciLexerPython):
+                        python_features = None
                         try:
-                            customize_func = lexer_manager.customize_python_lexer
                             python_features = PythonFeatures(C, color_schemes)
                             python_features.updateRequired.connect(C.recolor)
+                            C.python_features = python_features
                             logging.info(
                                 "PythonFeatures initialized for file: %s", file_path
                             )

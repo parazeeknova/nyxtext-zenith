@@ -2,7 +2,7 @@ import logging
 
 import jedi  # type: ignore
 from PyQt6.Qsci import QsciAPIs, QsciLexerPython, QsciScintilla
-from PyQt6.QtCore import QObject, pyqtSignal
+from PyQt6.QtCore import QMetaObject, QObject, Qt, pyqtSignal, pyqtSlot
 from PyQt6.QtGui import QColor, QFont
 
 logging.basicConfig(
@@ -17,10 +17,14 @@ class PythonFeatures(QObject):
     updateRequired = pyqtSignal()
 
     def __init__(self, codespace, color_schemes):
-        super().__init__()
+        super().__init__(codespace)
         self.codespace = codespace
         self.color_schemes = color_schemes
         self.api = None
+        QMetaObject.invokeMethod(self, "initialize", Qt.ConnectionType.QueuedConnection)
+
+    @pyqtSlot()
+    def initialize(self):
         try:
             self.customize_lexer()
             self.api = QsciAPIs(self.codespace.lexer())
