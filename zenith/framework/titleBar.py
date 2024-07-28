@@ -53,7 +53,7 @@ class CustomTitleBar(QWidget):
         self.minimizeButton = QPushButton(self)
         self.minimizeButton.setIcon(QIcon(minimiseIcon))
         self.minimizeButton.setIconSize(QSize(12, 12))
-        self.minimizeButton.clicked.connect(parent.showMinimized)
+        self.minimizeButton.clicked.connect(self.minimizeWindow)
         self.layout.addWidget(self.minimizeButton)
         self.minimizeButton.setStyleSheet(button_style)
 
@@ -114,3 +114,6 @@ class CustomTitleBar(QWidget):
 
     def menuBar(self, zenithInstance):
         return menu_bar(self, zenithInstance)
+
+    def minimizeWindow(self):
+        self.parent().showMinimized()

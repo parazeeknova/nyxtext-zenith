@@ -3,14 +3,7 @@ import os
 
 from lupa import LuaRuntime  # type: ignore
 from PyQt6.Qsci import QsciScintilla
-from PyQt6.QtCore import (
-    QEasingCurve,
-    QPropertyAnimation,
-    QSize,
-    Qt,
-    QThreadPool,
-    pyqtSignal,
-)
+from PyQt6.QtCore import QEvent, QSize, Qt, QThreadPool, pyqtSignal
 from PyQt6.QtGui import QColor, QIcon, QPalette
 from PyQt6.QtWidgets import (
     QApplication,
@@ -71,33 +64,27 @@ class Zenith(QMainWindow):
         self.setupUI()
         self.setupConnections()
         self.setupTerminal()
+        self.normalGeometry = None
 
-        self.maximizeAnimation = QPropertyAnimation(self, b"geometry")
-        self.maximizeAnimation.setDuration(300)
-        self.maximizeAnimation.setEasingCurve(QEasingCurve.Type.InOutQuad)
-
-    def animatedMaximize(self):
-        if not self.isMaximized():
-            self.maximizeAnimation.setStartValue(self.geometry())
-            self.maximizeAnimation.setEndValue(self.screen().availableGeometry())
-            self.maximizeAnimation.start()
-        else:
-            self.showNormal()
-
-    def animatedMinimize(self):
-        self.maximizeAnimation.setStartValue(self.geometry())
-        end_rect = self.geometry()
-        end_rect.setHeight(0)
-        self.maximizeAnimation.setEndValue(end_rect)
-        self.maximizeAnimation.finished.connect(self.hide)
-        self.maximizeAnimation.start()
-
-    # Override these methods
     def showMaximized(self):
-        self.animatedMaximize()
+        if not self.isMaximized():
+            self.normalGeometry = self.geometry()
+        super().showMaximized()
 
-    def showMinimized(self):
-        self.animatedMinimize()
+    def showNormal(self):
+        super().showNormal()
+        if self.normalGeometry:
+            self.setGeometry(self.normalGeometry)
+
+    def changeEvent(self, event):
+        if event.type() == QEvent.Type.WindowStateChange:
+            if self.windowState() & Qt.WindowState.WindowMinimized:
+                event.ignore()
+            elif self.windowState() & Qt.WindowState.WindowMaximized:
+                super().showMaximized()
+            else:
+                self.showNormal()
+        super().changeEvent(event)
 
     def setupUI(self):
         self.setWindowTitle("Zenith")
