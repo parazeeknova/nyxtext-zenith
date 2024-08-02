@@ -162,12 +162,12 @@ class Zenith(QMainWindow):
         self.tabWidget.setCornerWidget(self.terminalButton, Qt.Corner.TopRightCorner)
 
         self.setStyleSheet(
-            """
-            QMainWindow {
+            f"""
+            QMainWindow {{
                 border-radius: 10px;
-                background-color: #24273a;
-            }
-        """
+                background-color: {color_schemes['background']};
+            }}
+            """
         )
 
     def setApplicationPalette(self):

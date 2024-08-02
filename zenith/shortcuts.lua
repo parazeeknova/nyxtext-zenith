@@ -17,7 +17,6 @@ return {
   toggle_terminal = "Ctrl+`",
   maximize = "F11",
   minimize = "Ctrl+M",
-  close = "Alt+F4",
   show_call_tips = "Ctrl+Shift+Space", -- show call tips (forced) you don't need this most of the time
   show_autocompletion = "Ctrl+Space", -- show autocompletion (forced) you don't need this most of the time
 }

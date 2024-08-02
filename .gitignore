@@ -1,4 +1,5 @@
 .venv
+.vs
 .mypy_cache
 __pycache__
 zenith_debug.log

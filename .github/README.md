@@ -39,12 +39,13 @@
 <summary>Project Structure</summary>
 
 - [zenith](zenith/) - Main application directory
-  - [Components](zenith/components/) - Components for the application
+  - [colors](zenith/colors/) - Color schemes for the application
+  - [components](zenith/components/) - Components for the application
   - [core](zenith/core/) - Core components for the application (Subclasses, threading, core functions)
-  - [Framework](zenith/framework/) - Framework for the application
-  - [Lexers](zenith/lexers/) - Lexers for syntax highlighting
-  - [Media](zenith/media/) - Media files
-  - [Scripts](zenith/scripts/) - Scripts
+  - [framework](zenith/framework/) - Framework for the application
+  - [lexers](zenith/lexers/) - Lexers for syntax highlighting
+  - [media](zenith/media/) - Media files
+  - [scripts](zenith/scripts/) - Scripts
   - [`__init__.py`](zenith/__init__.py) - Initialization
   - [`__main__.py`](zenith/__main__.py) - Entry point
   - [`color_schemes.lua`](zenith/color_schemes.lua) - Customizable color schemes
@@ -55,7 +56,7 @@
 &nbsp;
 
 <p align="center">
-<strong>Nyxtext-zenith</strong> represents the next leap forward in text editing, building upon the foundation laid by its predecessor, <strong>Nyxtext</strong>. Reborn with PyQt6 and QScintilla. As the successor to <strong>Nyxtext</strong>, the core mission of providing a comprehensive text editor for developers, students, and creatives. Nyxtext-zenith aims to surpass its forerunner by offering an even more robust, intelligent, and versatile text editing experience. It continues the nyxtext legacy of eliminating the need for multiple text-related applications, now with greater efficiency and an expanded feature set.
+<strong>Nyxtext-zenith</strong> represents the next leap forward in text editing, building upon the foundation laid by its predecessor, <strong>Nyxtext</strong>. Reborn with PyQt6 and QScintilla. As the successor to <strong>Nyxtext</strong>, the core mission of providing a comprehensive text editor for developers. Nyxtext-zenith aims to surpass its forerunner by offering an even more robust, intelligent, and versatile text editing experience. It continues the nyxtext legacy of eliminating the need for multiple text-related applications, now with greater efficiency and an expanded feature set.
 </p>
 
 <p align="center">
@@ -100,10 +101,13 @@
 
 ### 🖼️ Screenshots
 
-| Default Look | Compared to VSCode | Docked FileTree | Menu Bar (File) |
-|--------------|--------------|--------------|--------------|
-| ![Default Look](assets/screenshots/Home.png) | ![Python Lexer ](assets/screenshots/Compare.png) | ![Docked Filetree](assets/screenshots/Dockedfiletree.png) | ![Menu](assets/screenshots/Menubar.png) |
+| default | filetree (Docked) | autocompletions | calltips |
+| --- | --- | --- | --- |
+|![default](assets/screenshots/default.png)| ![filetree](assets/screenshots/docked_filetree.png)| ![autocompletions](assets/screenshots/autocompletions.png) | ![calltips](assets/screenshots/calltips.png) |
 
+| filetree | catppuccin (macchiato) | gruvbox | dusk |
+| --- | --- | --- | --- |
+|![filetree](assets/screenshots/context_filetree.png)| ![catppuccin](assets/screenshots/catppuccin.png)| ![gruvbox](assets/screenshots/gruvbox.png) | ![dusk](assets/screenshots/dusk.png) |
 
 
 ### ✨ Installing Nyxtext
@@ -202,13 +206,13 @@ Nyxtext and letting me know how well it works.
 
 ### 🎨 Features :
 - Edit Text files ~ duh.
-- Basic funcaionality of a text editor like save, open, close, etc.
+- Basic functionality of a text editor like save, open, close, etc.
 - **Syntax Highlighting** for _**35+**_ languages.
 - Catppuccin Macciatto theme by default for Python, C++, Javascript, HTML, CSS, JSON, Markdown, and more. (check `zenith/lexers` folder)
 - **Code Folding** for better code readability.
 - **Filetree** for easy navigation. (Toggle with `Ctrl + F`)
 - **Dockable Filetree** panes.
-- Adjustable panes for Filetree, Workspace, and Codespace.
+- Adjustable panes for filetree, Workspace, and Codespace.
 - **Customizable** shortcuts using Lua, edit `zenith/shortcuts.lua`.
 - **Fully Customizable theme** using Lua, edit `zenith/color_schemes.lua` can edit every corner of the app.
 - Ability to toggle between custom titlebar and default titlebar (windows default).
@@ -222,6 +226,8 @@ Nyxtext and letting me know how well it works.
 - Statusbar with line and column number.
 - Dynamic **statusbar** that displays operations performed.
 - Read-only mode for files by default to enter edit mode press `Ctrl + E`.
+- Calltips and autocompletions for Python, Lua currently.
+- **Terminal** integration.
 
 _More features coming soon._
 
@@ -232,20 +238,25 @@ _More features coming soon._
 
 | Shortcut Key | Description |
 | ------------ | ----------- |
-| `Ctrl + N` | Create a new Workspace Tab (for txt editing) |
-| `Ctrl + Shift + N` | Create a new Codespace Tab (for code editing) |
-| `Ctrl + O` | Open File (automatically detects filetype and opens in Workspace os Codespace) | 
-| `Ctrl + Shift + O` | Open Folder in Filetree|
-| `Ctrl + S` | Save File |
-| `Ctrl + Shift + S` | Save File As |
-| `Ctrl + Tab` | Switch Tab next |
-| `Ctrl + Shift + Tab` | Switch Tab previous |
-| `Ctrl + F` | Show/hide FileTree |
-| `Ctrl + W` | Close Tab |
-| `Ctrl + Shift + W` | Close All Tabs |
-| `Ctrl + Shift + Q` | Exit |
-| `Ctrl + E` | Toggle Edit mode |
-| `...` | More soon |
+| <kbd>Ctrl</kbd> + <kbd>N</kbd> | Create a new Workspace Tab (for txt editing) |
+| <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>N</kbd> | Create a new Codespace Tab (for code editing) |
+| <kbd>Ctrl</kbd> + <kbd>O</kbd> | Open File (automatically detects filetype and opens in Workspace os Codespace) | 
+| <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>O</kbd> | Open Folder in Filetree|
+| <kbd>Ctrl</kbd> + <kbd>S</kbd> | Save File |
+| <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>S</kbd> | Save File As |
+| <kbd>Ctrl</kbd> + <kbd>Tab</kbd> | Switch Tab next |
+| <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Tab</kbd> | Switch Tab previous |
+| <kbd>Ctrl</kbd> + <kbd>F</kbd> | Show/hide FileTree |
+| <kbd>Ctrl</kbd> + <kbd>W</kbd> | Close Tab |
+| <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>W</kbd> | Close All Tabs |
+| <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Q</kbd> | Exit |
+| <kbd>Ctrl</kbd> + <kbd>E</kbd> | Toggle Edit mode |
+| <kbd>Ctrl</kbd> + <kbd>=</kbd> | Zoom In |
+| <kbd>Ctrl</kbd> + <kbd>-</kbd> | Zoom Out |
+| <kbd>Ctrl</kbd> + <kbd>`</kbd> | Toggle Terminal |
+| <kbd>F11</kbd> | Maximise |
+| <kbd>Ctrl</kbd> + <kbd>M</kbd> | Minimise |
+| <kbd>...</kbd> | More soon |
 
 > [!TIP]
 > Files can be opened by CLI using `Nyxtext.exe -o <filename>` or `Nyxtext.exe --open <filename>`.
@@ -253,9 +264,9 @@ _More features coming soon._
 ### 💡Future Plans : 
 - [x] ~~Build `exe` for windows~~ - ✅ Done in alphav0.0.1
 - [ ] Complete Menu bar options.
-- [ ] Add more themes.
-- [ ] Add more languages for syntax highlighting.
-- [ ] Terminal integration.
+- [x] ~~Add more themes.~~ - ✅ Done 
+- [X] ~~Add more languages for syntax highlighting.~~ - ✅ Done
+- [x] ~~Terminal integration.~~ - ⚠️ Makeshift for now 
 - [ ] Add more shortcuts. (VIM MOTIONS)
 - [ ] Autocompletions for Python, C++, Javascript, and more.
 - [ ] Linux and MacOS support.
