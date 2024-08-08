@@ -62,8 +62,6 @@
   </details>
 </div>
 
-<br>
-
 ###### *<div align="right"><sub>// Socials</sub></div>*
 <p align="center">
   <a href="https://github.com/parazeeknova/nyxtext">
@@ -98,7 +96,6 @@
     </picture>
   </a>
 </p>
-<br>
 <p align="center">
   <img src="assets/misc/macchiato.png" width="400" />
 </p>
@@ -218,7 +215,6 @@ Nyxtext and letting me know how well it works.
 </details>
 
 <div align="right">
-  <br>
   <a href="#-give-it-a-try"><kbd> <br> 🡅 <br> </kbd></a>
 </div>
 
@@ -284,7 +280,6 @@ _More features coming soon._
 <br>
 
 <div align="right">
-  <br>
   <a href="#-give-it-a-try"><kbd> <br> 🡅 <br> </kbd></a>
 </div>
 
@@ -325,7 +320,6 @@ See [CONTRIBUTING.md](https://github.com/parazeeknova/nyxtext-zenith/blob/main/.
 ### 📜 License
 
 <div align="right">
-  <br>
   <a href="#-give-it-a-try"><kbd> <br> 🡅 <br> </kbd></a>
 </div>
 
