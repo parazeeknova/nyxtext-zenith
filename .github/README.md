@@ -22,6 +22,7 @@
 ![PyQt6](https://img.shields.io/badge/PyQt6-GUI%20Framework-a6da95?style=for-the-badge&logo=qt&logoColor=D9E0EE&labelColor=302D41) 
 ![QScintilla](https://img.shields.io/badge/QScintilla-Text%20Editor%20Component-8bd5ca?style=for-the-badge&logoColor=D9E0EE&labelColor=302D41)
 <br>
+###### *<div align="right"><sub>// guide</sub></div>*
 <br>
 </div>
 
@@ -32,12 +33,10 @@
   <a href="https://github.com/parazeeknova/nyxtext-zenith/blob/main/.github/ABOUT.md"><kbd> <br> About <br> </kbd></a>&ensp;&ensp;
   <a href="https://github.com/parazeeknova/nyxtext-zenith?tab=readme-ov-file#%EF%B8%8F-shortcut-keys"><kbd> <br> Keyboard Shortcuts <br> </kbd></a>
 </div>
-<p align="center">
-  <img src="assets/misc/macchiato.png" width="400" />
-</p>
-<br>
+
 <br>
 
+###### *<div align="right"><sub>// About</sub></div>*
 <p align="center">
 <strong>Nyxtext-zenith</strong> represents the next leap forward in text editing, building upon the foundation laid by its predecessor, <strong>Nyxtext</strong>. Reborn with PyQt6 and QScintilla. As the successor to <strong>Nyxtext</strong>, the core mission of providing a comprehensive text editor for developers. Nyxtext-zenith aims to surpass its forerunner by offering an even more robust, intelligent, and versatile text editing experience. It continues the nyxtext legacy of eliminating the need for multiple text-related applications, now with greater efficiency and an expanded feature set.
 </p>
@@ -65,6 +64,7 @@
 
 <br>
 
+###### *<div align="right"><sub>// Socials</sub></div>*
 <p align="center">
   <a href="https://github.com/parazeeknova/nyxtext">
     <picture>
@@ -98,6 +98,11 @@
     </picture>
   </a>
 </p>
+<br>
+<p align="center">
+  <img src="assets/misc/macchiato.png" width="400" />
+</p>
+<br>
 
 <br>
 
@@ -212,7 +217,10 @@ Nyxtext and letting me know how well it works.
 
 </details>
 
-<br>
+<div align="right">
+  <br>
+  <a href="#-give-it-a-try"><kbd> <br> 🡅 <br> </kbd></a>
+</div>
 
 ### 🎨 Features :
 - Edit Text files ~ duh.
@@ -275,6 +283,11 @@ _More features coming soon._
 
 <br>
 
+<div align="right">
+  <br>
+  <a href="#-give-it-a-try"><kbd> <br> 🡅 <br> </kbd></a>
+</div>
+
 ### 💡Future Plans : 
 - [x] ~~Build `exe` for windows~~ - ✅ Done in alphav0.0.1
 - [ ] Complete Menu bar options.
@@ -310,6 +323,11 @@ See [CONTRIBUTING.md](https://github.com/parazeeknova/nyxtext-zenith/blob/main/.
 <br>
 
 ### 📜 License
+
+<div align="right">
+  <br>
+  <a href="#-give-it-a-try"><kbd> <br> 🡅 <br> </kbd></a>
+</div>
 
 NyxText Zenith is released under the MIT license:
 For more convoluted language, see the [LICENSE](https://github.com/parazeeknova/nyxtext-zenith/blob/main/LICENSE).
