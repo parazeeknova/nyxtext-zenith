@@ -1,3 +1,6 @@
+<p align="center">
+  <img src="assets/misc/macchiato.png" width="400" />
+</p>
 <div align="center">
 
   <a href="https://github.com/parazeeknova/nyxtext-zenith">
@@ -11,10 +14,8 @@
   <a href="https://github.com/parazeeknova/nyxtext-zenith/blob/main/.github/ABOUT.md"><kbd> <br> About <br> </kbd></a>&ensp;&ensp;
   <a href="https://github.com/parazeeknova/nyxtext-zenith?tab=readme-ov-file#%EF%B8%8F-shortcut-keys"><kbd> <br> Keyboard Shortcuts <br> </kbd></a>
 </div>
+
 <br>
-<p align="center">
-  <img src="assets/misc/macchiato.png" width="400" />
-</p>
 
 <p align="center">
 	<a href="https://github.com/parazeeknova/nyxtext-zenith/stargazers">
