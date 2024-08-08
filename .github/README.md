@@ -1,5 +1,5 @@
 ###### *<div align="right"><sub>// give it a try!</sub></div>*
-<p align="center">
+<div align="center">
 	<a href="https://github.com/parazeeknova/nyxtext-zenith/stargazers">
 		<img alt="Stargazers" src="https://img.shields.io/github/stars/parazeeknova/nyxtext-zenith?style=for-the-badge&logo=starship&color=C9CBFF&logoColor=D9E0EE&labelColor=302D41"></a>
 	<a href="https://github.com/parazeeknova/nyxtext-zenith/issues">
@@ -7,7 +7,7 @@
     <a href="https://github.com/parazeeknova/nyxtext-zenith/releases">
     <img alt="Maintained" src="https://img.shields.io/badge/Maintained%3F-yes-green.svg?style=for-the-badge&logo=github&color=F2CDCD&logoColor=D9E0EE&labelColor=302D41"/></a>
 		<img alt="Releases" src="https://img.shields.io/github/release/parazeeknova/nyxtext-zenith.svg?style=for-the-badge&logo=github&color=F2CDCD&logoColor=D9E0EE&labelColor=302D41"/></a>
-</p>
+</div>
 <div align="center">
 
   <a href="https://github.com/parazeeknova/nyxtext-zenith">
@@ -32,30 +32,36 @@
   <a href="https://github.com/parazeeknova/nyxtext-zenith/blob/main/.github/ABOUT.md"><kbd> <br> About <br> </kbd></a>&ensp;&ensp;
   <a href="https://github.com/parazeeknova/nyxtext-zenith?tab=readme-ov-file#%EF%B8%8F-shortcut-keys"><kbd> <br> Keyboard Shortcuts <br> </kbd></a>
 </div>
+<p align="center">
+  <img src="assets/misc/macchiato.png" width="400" />
+</p>
 <br>
-<details>
-<summary>Project Structure</summary>
-
-- [zenith](zenith/) - Main application directory
-  - [colors](zenith/colors/) - Color schemes for the application
-  - [components](zenith/components/) - Components for the application
-  - [core](zenith/core/) - Core components for the application (Subclasses, threading, core functions)
-  - [framework](zenith/framework/) - Framework for the application
-  - [lexers](zenith/lexers/) - Lexers for syntax highlighting
-  - [media](zenith/media/) - Media files
-  - [scripts](zenith/scripts/) - Scripts
-  - [`__init__.py`](zenith/__init__.py) - Initialization
-  - [`__main__.py`](zenith/__main__.py) - Entry point
-  - [`color_schemes.lua`](zenith/color_schemes.lua) - Customizable color schemes
-  - [`shortcuts.lua`](zenith/shortcuts.lua) - Customizable shortcuts
-  - [`config.lua`](zenith/config.lua) - Configuration for the application
-</details>
-
-&nbsp;
+<br>
 
 <p align="center">
 <strong>Nyxtext-zenith</strong> represents the next leap forward in text editing, building upon the foundation laid by its predecessor, <strong>Nyxtext</strong>. Reborn with PyQt6 and QScintilla. As the successor to <strong>Nyxtext</strong>, the core mission of providing a comprehensive text editor for developers. Nyxtext-zenith aims to surpass its forerunner by offering an even more robust, intelligent, and versatile text editing experience. It continues the nyxtext legacy of eliminating the need for multiple text-related applications, now with greater efficiency and an expanded feature set.
 </p>
+
+<div align="center">
+
+  <details>
+  <summary>Project Structure</summary>
+
+  [zenith](zenith/) - Main application directory
+  [colors](zenith/colors/) - Color schemes for the application
+  [components](zenith/components/) - Components for the application
+  [core](zenith/core/) - Core components for the application (Subclasses, threading, core functions)
+  [framework](zenith/framework/) - Framework for the application
+  [lexers](zenith/lexers/) - Lexers for syntax highlighting
+  [media](zenith/media/) - Media files
+  [scripts](zenith/scripts/) - Scripts
+  [`__init__.py`](zenith/__init__.py) - Initialization
+  [`__main__.py`](zenith/__main__.py) - Entry point
+  [`color_schemes.lua`](zenith/color_schemes.lua) - Customizable color schemes
+  [`shortcuts.lua`](zenith/shortcuts.lua) - Customizable shortcuts
+  [`config.lua`](zenith/config.lua) - Configuration for the application
+  </details>
+</div>
 
 <br>
 
@@ -93,9 +99,6 @@
   </a>
 </p>
 
-<p align="center">
-  <img src="assets/misc/macchiato.png" width="400" />
-</p>
 <br>
 
 > [!IMPORTANT]
