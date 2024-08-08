@@ -1,6 +1,3 @@
-<p align="center">
-  <img src="assets/misc/macchiato.png" width="400" />
-</p>
 <div align="center">
 
   <a href="https://github.com/parazeeknova/nyxtext-zenith">
@@ -94,7 +91,10 @@
   </a>
 </p>
 
-&nbsp;
+<p align="center">
+  <img src="assets/misc/macchiato.png" width="400" />
+</p>
+<br>
 
 > [!IMPORTANT]
 > Because the application is not signed by Microsoft, Windows Defender blocks it; add an exclusion in Defender to run the application. Its a false positive, the application is safe to use. or build it yourself from the source code.
