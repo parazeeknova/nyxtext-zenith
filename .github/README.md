@@ -22,8 +22,6 @@
 ![PyQt6](https://img.shields.io/badge/PyQt6-GUI%20Framework-a6da95?style=for-the-badge&logo=qt&logoColor=D9E0EE&labelColor=302D41) 
 ![QScintilla](https://img.shields.io/badge/QScintilla-Text%20Editor%20Component-8bd5ca?style=for-the-badge&logoColor=D9E0EE&labelColor=302D41)
 <br>
-###### *<div align="right"><sub>// guide</sub></div>*
-<br>
 </div>
 
 <div align="center">
