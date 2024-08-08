@@ -57,6 +57,8 @@
 <strong>Nyxtext-zenith</strong> represents the next leap forward in text editing, building upon the foundation laid by its predecessor, <strong>Nyxtext</strong>. Reborn with PyQt6 and QScintilla. As the successor to <strong>Nyxtext</strong>, the core mission of providing a comprehensive text editor for developers. Nyxtext-zenith aims to surpass its forerunner by offering an even more robust, intelligent, and versatile text editing experience. It continues the nyxtext legacy of eliminating the need for multiple text-related applications, now with greater efficiency and an expanded feature set.
 </p>
 
+<br>
+
 <p align="center">
   <a href="https://github.com/parazeeknova/nyxtext">
     <picture>
@@ -91,7 +93,7 @@
   </a>
 </p>
 
----
+&nbsp;
 
 > [!IMPORTANT]
 > Because the application is not signed by Microsoft, Windows Defender blocks it; add an exclusion in Defender to run the application. Its a false positive, the application is safe to use. or build it yourself from the source code.
@@ -203,6 +205,8 @@ I don't have a Mac. If you have a Mac, you can help me a lot by installing
 Nyxtext and letting me know how well it works.
 
 </details>
+
+<br>
 
 ### 🎨 Features :
 - Edit Text files ~ duh.
