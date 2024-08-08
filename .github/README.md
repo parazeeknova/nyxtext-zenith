@@ -1,19 +1,4 @@
-<div align="center">
-
-  <a href="https://github.com/parazeeknova/nyxtext-zenith">
-    <img src="assets/Zenith-banner.png" alt="Logo" width="90%">
-  </a>
-  <br>
-  <br>
-  <a href="https://github.com//parazeeknova/nyxtext-zenith#-installing-nyxtext"><kbd> <br> Installation <br> </kbd></a>&ensp;&ensp;
-  <a href="https://github.com//parazeeknova/nyxtext-zenith#-screenshots"><kbd> <br> Screenshots <br> </kbd></a>&ensp;&ensp;
-  <a href="https://github.com/parazeeknova/nyxtext-zenith/blob/main/.github/CONTRIBUTING.md"><kbd> <br> Contribution <br> </kbd></a>&ensp;&ensp;
-  <a href="https://github.com/parazeeknova/nyxtext-zenith/blob/main/.github/ABOUT.md"><kbd> <br> About <br> </kbd></a>&ensp;&ensp;
-  <a href="https://github.com/parazeeknova/nyxtext-zenith?tab=readme-ov-file#%EF%B8%8F-shortcut-keys"><kbd> <br> Keyboard Shortcuts <br> </kbd></a>
-</div>
-
-<br>
-
+###### *<div align="right"><sub>// give it a try!</sub></div>*
 <p align="center">
 	<a href="https://github.com/parazeeknova/nyxtext-zenith/stargazers">
 		<img alt="Stargazers" src="https://img.shields.io/github/stars/parazeeknova/nyxtext-zenith?style=for-the-badge&logo=starship&color=C9CBFF&logoColor=D9E0EE&labelColor=302D41"></a>
@@ -23,12 +8,29 @@
     <img alt="Maintained" src="https://img.shields.io/badge/Maintained%3F-yes-green.svg?style=for-the-badge&logo=github&color=F2CDCD&logoColor=D9E0EE&labelColor=302D41"/></a>
 		<img alt="Releases" src="https://img.shields.io/github/release/parazeeknova/nyxtext-zenith.svg?style=for-the-badge&logo=github&color=F2CDCD&logoColor=D9E0EE&labelColor=302D41"/></a>
 </p>
+<div align="center">
+
+  <a href="https://github.com/parazeeknova/nyxtext-zenith">
+    <img src="assets/Zenith-banner.png" alt="Logo" width="98%">
+  </a>
+  <br>
+</div>
 
 <div align="center">
 
 ![Python](https://img.shields.io/badge/Python-Programming%20Language-8aadf4?style=for-the-badge&logo=python&logoColor=D9E0EE&labelColor=302D41) 
 ![PyQt6](https://img.shields.io/badge/PyQt6-GUI%20Framework-a6da95?style=for-the-badge&logo=qt&logoColor=D9E0EE&labelColor=302D41) 
 ![QScintilla](https://img.shields.io/badge/QScintilla-Text%20Editor%20Component-8bd5ca?style=for-the-badge&logoColor=D9E0EE&labelColor=302D41)
+<br>
+<br>
+</div>
+
+<div align="center">
+  <a href="https://github.com//parazeeknova/nyxtext-zenith#-installing-nyxtext"><kbd> <br> Installation <br> </kbd></a>&ensp;&ensp;
+  <a href="https://github.com//parazeeknova/nyxtext-zenith#-screenshots"><kbd> <br> Screenshots <br> </kbd></a>&ensp;&ensp;
+  <a href="https://github.com/parazeeknova/nyxtext-zenith/blob/main/.github/CONTRIBUTING.md"><kbd> <br> Contribution <br> </kbd></a>&ensp;&ensp;
+  <a href="https://github.com/parazeeknova/nyxtext-zenith/blob/main/.github/ABOUT.md"><kbd> <br> About <br> </kbd></a>&ensp;&ensp;
+  <a href="https://github.com/parazeeknova/nyxtext-zenith?tab=readme-ov-file#%EF%B8%8F-shortcut-keys"><kbd> <br> Keyboard Shortcuts <br> </kbd></a>
 </div>
 <br>
 <details>
