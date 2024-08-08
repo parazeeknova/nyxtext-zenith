@@ -1,18 +1,17 @@
-<h3 align="center">
-	<img src="assets/Zenith-banner.png" alt="Logo"/><br/>
-</h3>
+<div align="center">
 
-<h6 align="center">
-  <a href="https://github.com//parazeeknova/nyxtext-zenith#-installing-nyxtext">Install</a>
-  ·
-  <a href="https://github.com//parazeeknova/nyxtext-zenith#-screenshots">Showcase</a>
-  ·
-  <a href="https://github.com/parazeeknova/nyxtext-zenith/blob/main/.github/CONTRIBUTING.md">Contribution</a>
-  ·
-  <a href="https://github.com/parazeeknova/nyxtext-zenith/blob/main/.github/ABOUT.md">About</a>
-
-</h6>
-
+  <a href="https://github.com/parazeeknova/nyxtext-zenith">
+    <img src="assets/Zenith-banner.png" alt="Logo" width="90%">
+  </a>
+  <br>
+  <br>
+  <a href="https://github.com//parazeeknova/nyxtext-zenith#-installing-nyxtext"><kbd> <br> Installation <br> </kbd></a>&ensp;&ensp;
+  <a href="https://github.com//parazeeknova/nyxtext-zenith#-screenshots"><kbd> <br> Screenshots <br> </kbd></a>&ensp;&ensp;
+  <a href="https://github.com/parazeeknova/nyxtext-zenith/blob/main/.github/CONTRIBUTING.md"><kbd> <br> Contribution <br> </kbd></a>&ensp;&ensp;
+  <a href="https://github.com/parazeeknova/nyxtext-zenith/blob/main/.github/ABOUT.md"><kbd> <br> About <br> </kbd></a>&ensp;&ensp;
+  <a href="https://github.com/parazeeknova/nyxtext-zenith?tab=readme-ov-file#%EF%B8%8F-shortcut-keys"><kbd> <br> Keyboard Shortcuts <br> </kbd></a>
+</div>
+<br>
 <p align="center">
   <img src="assets/misc/macchiato.png" width="400" />
 </p>
@@ -32,9 +31,8 @@
 ![Python](https://img.shields.io/badge/Python-Programming%20Language-8aadf4?style=for-the-badge&logo=python&logoColor=D9E0EE&labelColor=302D41) 
 ![PyQt6](https://img.shields.io/badge/PyQt6-GUI%20Framework-a6da95?style=for-the-badge&logo=qt&logoColor=D9E0EE&labelColor=302D41) 
 ![QScintilla](https://img.shields.io/badge/QScintilla-Text%20Editor%20Component-8bd5ca?style=for-the-badge&logoColor=D9E0EE&labelColor=302D41)
-
 </div>
-
+<br>
 <details>
 <summary>Project Structure</summary>
 
@@ -98,17 +96,19 @@
 > [!IMPORTANT]
 > Because the application is not signed by Microsoft, Windows Defender blocks it; add an exclusion in Defender to run the application. Its a false positive, the application is safe to use. or build it yourself from the source code.
 
+<br>
 
 ### 🖼️ Screenshots
 
-| default | filetree (Docked) | autocompletions | calltips |
-| --- | --- | --- | --- |
-|![default](assets/screenshots/default.png)| ![filetree](assets/screenshots/docked_filetree.png)| ![autocompletions](assets/screenshots/autocompletions.png) | ![calltips](assets/screenshots/calltips.png) |
+| default                                    | filetree (Docked)                                   | autocompletions                                            | calltips                                     |
+| ------------------------------------------ | --------------------------------------------------- | ---------------------------------------------------------- | -------------------------------------------- |
+| ![default](assets/screenshots/default.png) | ![filetree](assets/screenshots/docked_filetree.png) | ![autocompletions](assets/screenshots/autocompletions.png) | ![calltips](assets/screenshots/calltips.png) |
 
-| filetree | catppuccin (macchiato) | gruvbox | dusk |
-| --- | --- | --- | --- |
-|![filetree](assets/screenshots/context_filetree.png)| ![catppuccin](assets/screenshots/catppuccin.png)| ![gruvbox](assets/screenshots/gruvbox.png) | ![dusk](assets/screenshots/dusk.png) |
+| filetree                                             | catppuccin (macchiato)                           | gruvbox                                    | dusk                                 |
+| ---------------------------------------------------- | ------------------------------------------------ | ------------------------------------------ | ------------------------------------ |
+| ![filetree](assets/screenshots/context_filetree.png) | ![catppuccin](assets/screenshots/catppuccin.png) | ![gruvbox](assets/screenshots/gruvbox.png) | ![dusk](assets/screenshots/dusk.png) |
 
+<br>
 
 ### ✨ Installing Nyxtext
 
@@ -231,35 +231,39 @@ Nyxtext and letting me know how well it works.
 
 _More features coming soon._
 
+<br>
+
 ### ⌨️ Shortcut Keys
 
 > [!TIP]
 > These are the default shortcut keys, you can change them from `shortcuts.lua` in `zenith` folder.
 
-| Shortcut Key | Description |
-| ------------ | ----------- |
-| <kbd>Ctrl</kbd> + <kbd>N</kbd> | Create a new Workspace Tab (for txt editing) |
-| <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>N</kbd> | Create a new Codespace Tab (for code editing) |
-| <kbd>Ctrl</kbd> + <kbd>O</kbd> | Open File (automatically detects filetype and opens in Workspace os Codespace) | 
-| <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>O</kbd> | Open Folder in Filetree|
-| <kbd>Ctrl</kbd> + <kbd>S</kbd> | Save File |
-| <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>S</kbd> | Save File As |
-| <kbd>Ctrl</kbd> + <kbd>Tab</kbd> | Switch Tab next |
-| <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Tab</kbd> | Switch Tab previous |
-| <kbd>Ctrl</kbd> + <kbd>F</kbd> | Show/hide FileTree |
-| <kbd>Ctrl</kbd> + <kbd>W</kbd> | Close Tab |
-| <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>W</kbd> | Close All Tabs |
-| <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Q</kbd> | Exit |
-| <kbd>Ctrl</kbd> + <kbd>E</kbd> | Toggle Edit mode |
-| <kbd>Ctrl</kbd> + <kbd>=</kbd> | Zoom In |
-| <kbd>Ctrl</kbd> + <kbd>-</kbd> | Zoom Out |
-| <kbd>Ctrl</kbd> + <kbd>`</kbd> | Toggle Terminal |
-| <kbd>F11</kbd> | Maximise |
-| <kbd>Ctrl</kbd> + <kbd>M</kbd> | Minimise |
-| <kbd>...</kbd> | More soon |
+| Shortcut Key                                        | Description                                                                    |
+| --------------------------------------------------- | ------------------------------------------------------------------------------ |
+| <kbd>Ctrl</kbd> + <kbd>N</kbd>                      | Create a new Workspace Tab (for txt editing)                                   |
+| <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>N</kbd>   | Create a new Codespace Tab (for code editing)                                  |
+| <kbd>Ctrl</kbd> + <kbd>O</kbd>                      | Open File (automatically detects filetype and opens in Workspace os Codespace) |
+| <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>O</kbd>   | Open Folder in Filetree                                                        |
+| <kbd>Ctrl</kbd> + <kbd>S</kbd>                      | Save File                                                                      |
+| <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>S</kbd>   | Save File As                                                                   |
+| <kbd>Ctrl</kbd> + <kbd>Tab</kbd>                    | Switch Tab next                                                                |
+| <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Tab</kbd> | Switch Tab previous                                                            |
+| <kbd>Ctrl</kbd> + <kbd>F</kbd>                      | Show/hide FileTree                                                             |
+| <kbd>Ctrl</kbd> + <kbd>W</kbd>                      | Close Tab                                                                      |
+| <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>W</kbd>   | Close All Tabs                                                                 |
+| <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Q</kbd>   | Exit                                                                           |
+| <kbd>Ctrl</kbd> + <kbd>E</kbd>                      | Toggle Edit mode                                                               |
+| <kbd>Ctrl</kbd> + <kbd>=</kbd>                      | Zoom In                                                                        |
+| <kbd>Ctrl</kbd> + <kbd>-</kbd>                      | Zoom Out                                                                       |
+| <kbd>Ctrl</kbd> + <kbd>`</kbd>                      | Toggle Terminal                                                                |
+| <kbd>F11</kbd>                                      | Maximise                                                                       |
+| <kbd>Ctrl</kbd> + <kbd>M</kbd>                      | Minimise                                                                       |
+| <kbd>...</kbd>                                      | More soon                                                                      |
 
 > [!TIP]
 > Files can be opened by CLI using `Nyxtext.exe -o <filename>` or `Nyxtext.exe --open <filename>`.
+
+<br>
 
 ### 💡Future Plans : 
 - [x] ~~Build `exe` for windows~~ - ✅ Done in alphav0.0.1
@@ -282,10 +286,9 @@ _More features coming soon._
 ### 🛹 Development
 
 ![Alt](https://repobeats.axiom.co/api/embed/5230d7fbefe5348128ff699761be93de2b030176.svg "Repobeats analytics image")
+[FAQ & Info](https://github.com/parazeeknova/nyxtext-zenith/blob/main/.github/ABOUT.md)
 
 ---
-
-#### For _FAQ_ ❓, _Info_ 📝 : visit [ABOUT](https://github.com/parazeeknova/nyxtext-zenith/blob/main/.github/ABOUT.md)
 
 ### 👐 Contributing
 
@@ -293,6 +296,8 @@ _More features coming soon._
 > Thank you for considering contributing to Nyxtext Zenith! We welcome contributions from everyone, whether you're fixing a bug, adding a feature, or improving documentation.
 
 See [CONTRIBUTING.md](https://github.com/parazeeknova/nyxtext-zenith/blob/main/.github/CONTRIBUTING.md)
+
+<br>
 
 ### 📜 License
 
