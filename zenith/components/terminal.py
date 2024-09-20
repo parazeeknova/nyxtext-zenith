@@ -54,6 +54,43 @@ class TerminalEmulator(QWidget):
 
         self.addNewTab()
 
+    def terminal_key_press_event(self, event: QKeyEvent):
+        cursor = self.terminal.textCursor()
+        if event.key() == Qt.Key.Key_Return or event.key() == Qt.Key.Key_Enter:
+            self.execute_command()
+        elif event.key() == Qt.Key.Key_Backspace:
+            if len(self.current_command) > 0:
+                self.current_command = self.current_command[:-1]
+                cursor.deletePreviousChar()
+        elif event.key() == Qt.Key.Key_Up:
+            self.show_previous_command()
+        elif event.key() == Qt.Key.Key_Down:
+            self.show_next_command()
+        elif event.key() == Qt.Key.Key_Left:
+            if cursor.positionInBlock() > len(self.prompt):
+                cursor.movePosition(QTextCursor.MoveOperation.Left)
+        elif event.key() == Qt.Key.Key_Home:
+            cursor.movePosition(QTextCursor.MoveOperation.StartOfLine)
+            cursor.movePosition(
+                QTextCursor.MoveOperation.Right,
+                QTextCursor.MoveMode.MoveAnchor,
+                len(self.prompt),
+            )
+        else:
+            if cursor.positionInBlock() >= len(self.prompt):
+                self.current_command += event.text()
+                QPlainTextEdit.keyPressEvent(self.terminal, event)
+
+    def execute_command(self):
+        self.terminal.appendPlainText("")
+        self.processes[self.current_process_index].write(
+            self.current_command.encode() + b"\n"
+        )
+        self.command_history.append(self.current_command)
+        self.history_index = len(self.command_history)
+        self.commandEntered.emit(self.current_command)
+        self.current_command = ""
+
     def set_terminal_font(self):
         font_families = [
             "Consolas",
@@ -192,7 +229,7 @@ class TerminalEmulator(QWidget):
             self.processes[self.current_process_index]
             .readAllStandardOutput()
             .data()
-            .decode()
+            .decode(errors="replace")
         )
         self.terminal.moveCursor(QTextCursor.MoveOperation.End)
         self.insert_colored_text(data)
